@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/discover"
+        android:icon="@drawable/film"
+        app:showAsAction="ifRoom"
+        android:title="Discover"
+        />
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/search"
+        app:showAsAction="ifRoom"
+        android:title="Search"
+        />
+    <item
+        android:id="@+id/account"
+        android:icon="@drawable/user"
+        app:showAsAction="ifRoom"
+        android:title="Account"
+        />
+
+
+</menu>

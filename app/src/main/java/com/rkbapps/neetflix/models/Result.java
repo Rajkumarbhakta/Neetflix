@@ -9,9 +9,9 @@ public class Result {
     @SerializedName("adult")
     @Expose
     private Boolean adult;
-    @SerializedName("backdrop_path")
-    @Expose
-    private String backdropPath;
+//    @SerializedName("backdrop_path")
+//    @Expose
+//    private String backdropPath;
     @SerializedName("genre_ids")
     @Expose
     private List<Integer> genreIds;
@@ -21,15 +21,15 @@ public class Result {
     @SerializedName("original_language")
     @Expose
     private String originalLanguage;
-    @SerializedName("original_title")
-    @Expose
-    private String originalTitle;
+//    @SerializedName("original_title")
+//    @Expose
+//    private String originalTitle;
     @SerializedName("overview")
     @Expose
     private String overview;
-    @SerializedName("popularity")
-    @Expose
-    private Double popularity;
+//    @SerializedName("popularity")
+//    @Expose
+//    private Double popularity;
     @SerializedName("poster_path")
     @Expose
     private String posterPath;
@@ -39,9 +39,9 @@ public class Result {
     @SerializedName("title")
     @Expose
     private String title;
-    @SerializedName("video")
-    @Expose
-    private Boolean video;
+//    @SerializedName("video")
+//    @Expose
+//    private Boolean video;
     @SerializedName("vote_average")
     @Expose
     private Double voteAverage;
@@ -57,13 +57,13 @@ public class Result {
         this.adult = adult;
     }
 
-    public String getBackdropPath() {
-        return backdropPath;
-    }
+//    public String getBackdropPath() {
+//        return backdropPath;
+//    }
 
-    public void setBackdropPath(String backdropPath) {
-        this.backdropPath = backdropPath;
-    }
+//    public void setBackdropPath(String backdropPath) {
+//        this.backdropPath = backdropPath;
+//    }
 
     public List<Integer> getGenreIds() {
         return genreIds;
@@ -89,13 +89,13 @@ public class Result {
         this.originalLanguage = originalLanguage;
     }
 
-    public String getOriginalTitle() {
-        return originalTitle;
-    }
-
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
-    }
+//    public String getOriginalTitle() {
+//        return originalTitle;
+//    }
+//
+//    public void setOriginalTitle(String originalTitle) {
+//        this.originalTitle = originalTitle;
+//    }
 
     public String getOverview() {
         return overview;
@@ -104,14 +104,14 @@ public class Result {
     public void setOverview(String overview) {
         this.overview = overview;
     }
-
-    public Double getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(Double popularity) {
-        this.popularity = popularity;
-    }
+//
+//    public Double getPopularity() {
+//        return popularity;
+//    }
+//
+//    public void setPopularity(Double popularity) {
+//        this.popularity = popularity;
+//    }
 
     public String getPosterPath() {
         return posterPath;
@@ -137,13 +137,13 @@ public class Result {
         this.title = title;
     }
 
-    public Boolean getVideo() {
-        return video;
-    }
-
-    public void setVideo(Boolean video) {
-        this.video = video;
-    }
+//    public Boolean getVideo() {
+//        return video;
+//    }
+//
+//    public void setVideo(Boolean video) {
+//        this.video = video;
+//    }
 
     public Double getVoteAverage() {
         return voteAverage;
