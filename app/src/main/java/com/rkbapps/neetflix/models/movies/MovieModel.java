@@ -1,7 +1,8 @@
-package com.rkbapps.neetflix.models;
+package com.rkbapps.neetflix.models.movies;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rkbapps.neetflix.models.Genre;
 
 import java.util.List;
 

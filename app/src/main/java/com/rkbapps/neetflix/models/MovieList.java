@@ -1,53 +1,63 @@
 package com.rkbapps.neetflix.models;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.rkbapps.neetflix.models.movies.MovieResult;
+import com.rkbapps.neetflix.models.tvseries.TvSeriesResult;
 
 import java.util.List;
 
 public class MovieList {
-    @SerializedName("page")
-    @Expose
-    private Integer page;
-    @SerializedName("results")
-    @Expose
-    private List<Result> results;
-    @SerializedName("total_pages")
-    @Expose
-    private Integer totalPages;
-    @SerializedName("total_results")
-    @Expose
-    private Integer totalResults;
 
-    public Integer getPage() {
-        return page;
+    public static final int TV_SERIES = 1;
+    public static final int MOVIE = 0;
+
+    private int viewType;
+    private String type;
+    private List<MovieResult> movieList;
+
+    private List<TvSeriesResult> tvSeriesList;
+
+
+    public MovieList(int viewType, String type, List<MovieResult> movieList, int i) {
+        this.viewType = viewType;
+        this.type = type;
+        this.movieList = movieList;
     }
 
-    public void setPage(Integer page) {
-        this.page = page;
+    public MovieList(int viewType, String type, List<TvSeriesResult> tvSeriesList) {
+        this.viewType = viewType;
+        this.type = type;
+        this.tvSeriesList = tvSeriesList;
     }
 
-    public List<Result> getResults() {
-        return results;
+    public int getViewType() {
+        return viewType;
     }
 
-    public void setResults(List<Result> results) {
-        this.results = results;
+    public void setViewType(int viewType) {
+        this.viewType = viewType;
     }
 
-    public Integer getTotalPages() {
-        return totalPages;
+    public String getType() {
+        return type;
     }
 
-    public void setTotalPages(Integer totalPages) {
-        this.totalPages = totalPages;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public Integer getTotalResults() {
-        return totalResults;
+    public List<MovieResult> getMovieList() {
+        return movieList;
     }
 
-    public void setTotalResults(Integer totalResults) {
-        this.totalResults = totalResults;
+    public void setMovieList(List<MovieResult> movieList) {
+        this.movieList = movieList;
+    }
+
+    public List<TvSeriesResult> getTvSeriesList() {
+        return tvSeriesList;
+    }
+
+    public void setTvSeriesList(List<TvSeriesResult> tvSeriesList) {
+        this.tvSeriesList = tvSeriesList;
     }
 }

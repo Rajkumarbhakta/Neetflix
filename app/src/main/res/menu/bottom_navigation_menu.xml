@@ -5,21 +5,18 @@
     <item
         android:id="@+id/discover"
         android:icon="@drawable/film"
-        app:showAsAction="ifRoom"
         android:title="Discover"
-        />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/search"
         android:icon="@drawable/search"
-        app:showAsAction="ifRoom"
         android:title="Search"
-        />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/account"
         android:icon="@drawable/user"
-        app:showAsAction="ifRoom"
         android:title="Account"
-        />
+        app:showAsAction="ifRoom" />
 
 
 </menu>

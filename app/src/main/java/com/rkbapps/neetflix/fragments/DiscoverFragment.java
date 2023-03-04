@@ -1,24 +1,21 @@
 package com.rkbapps.neetflix.fragments;
 
 import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.activityes.MainActivity;
 
 
 public class DiscoverFragment extends Fragment {
 
-    private TextView movies,tvSeries;
+    private TextView movies, tvSeries;
 
 
     public DiscoverFragment() {
@@ -36,24 +33,24 @@ public class DiscoverFragment extends Fragment {
         tvSeries = view.findViewById(R.id.navTvSeries);
         int containerFragment = R.id.containerFrag;
 
-        loadFragment(new MoviesFragment(),containerFragment);
+        loadFragment(new MoviesFragment(), containerFragment);
 
 
         movies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                movies.setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.selected_type_background));
+                movies.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.selected_type_background));
                 tvSeries.setBackground(null);
-                loadFragment(new MoviesFragment(),containerFragment);
+                loadFragment(new MoviesFragment(), containerFragment);
             }
         });
 
         tvSeries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvSeries.setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.selected_type_background));
+                tvSeries.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.selected_type_background));
                 movies.setBackground(null);
-                loadFragment(new TvSeriesFragment(),containerFragment);
+                loadFragment(new TvSeriesFragment(), containerFragment);
             }
         });
 
@@ -61,7 +58,7 @@ public class DiscoverFragment extends Fragment {
         return view;
     }
 
-    public void loadFragment(Fragment fragment, int container){
+    public void loadFragment(Fragment fragment, int container) {
         getChildFragmentManager().beginTransaction().replace(container, fragment).commit();
     }
 
