@@ -39,12 +39,10 @@ public class MoviesFragment extends Fragment {
 //
 //    private List<Result> upComingMovieList = new ArrayList<>();
 
-    RecyclerView recyclerView;
-
-    //private MovieListAdapter adapter;
-
     private final List<MovieList> movieLists = new ArrayList<>();
 
+    //private MovieListAdapter adapter;
+    RecyclerView recyclerView;
     private ParentAdapter adapter;
 
     public MoviesFragment() {

@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ParentViewHolder> {
-    private List<MovieList> discoverRecycler = new ArrayList<>();
     private final Context context;
+    private List<MovieList> discoverRecycler = new ArrayList<>();
 
     public ParentAdapter(List<MovieList> discoverRecycler, Context context) {
         this.discoverRecycler = discoverRecycler;

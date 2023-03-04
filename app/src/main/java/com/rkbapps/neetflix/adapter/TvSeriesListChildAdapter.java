@@ -19,8 +19,8 @@ import java.util.List;
 
 public class TvSeriesListChildAdapter extends RecyclerView.Adapter<TvSeriesListChildAdapter.TvSeriesViewHolder> {
 
-    private List<TvSeriesResult> seriesList = new ArrayList<>();
     private final Context context;
+    private List<TvSeriesResult> seriesList = new ArrayList<>();
 
     public TvSeriesListChildAdapter(List<TvSeriesResult> seriesList, Context context) {
         this.seriesList = seriesList;

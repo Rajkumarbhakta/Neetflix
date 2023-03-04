@@ -20,7 +20,7 @@ public class RetrofitInstance {
         return movieApi;
     }
 
-    private static TvSeriesApi getTvSeriesApi() {
+    public static TvSeriesApi getTvSeriesApi() {
         if (tvSeriesApi == null) {
             tvSeriesApi = retrofit.create(TvSeriesApi.class);
         }

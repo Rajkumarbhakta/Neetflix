@@ -18,7 +18,7 @@ public class TvSeriesResult {
     private String posterPath;
     @SerializedName("vote_average")
     @Expose
-    private Integer voteAverage;
+    private Double voteAverage;
 
     public TvSeriesResult() {
     }
@@ -43,11 +43,11 @@ public class TvSeriesResult {
         this.posterPath = posterPath;
     }
 
-    public Integer getVoteAverage() {
+    public Double getVoteAverage() {
         return voteAverage;
     }
 
-    public void setVoteAverage(Integer voteAverage) {
+    public void setVoteAverage(Double voteAverage) {
         this.voteAverage = voteAverage;
     }
 }
