@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="145dp"
+        android:layout_width="130dp"
         android:layout_height="210dp"
         android:layout_margin="5dp"
         android:outlineAmbientShadowColor="@color/purple_700"

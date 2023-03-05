@@ -2,6 +2,7 @@ package com.rkbapps.neetflix.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.rkbapps.neetflix.R;
+import com.rkbapps.neetflix.activityes.MoviePreviewActivity;
 import com.rkbapps.neetflix.models.movies.MovieResult;
 
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class MovieListChildAdapter extends RecyclerView.Adapter<MovieListChildAd
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull MovieListChildAdapter.MovieViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieListChildAdapter.MovieViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (movieList.get(position).getPosterPath() != null) {
             Glide.with(context).load("https://image.tmdb.org/t/p/w500" + movieList.get(position).getPosterPath()).into(holder.poster);
         } else {
@@ -48,6 +50,16 @@ public class MovieListChildAdapter extends RecyclerView.Adapter<MovieListChildAd
         holder.releaseYear.setText(movieList.get(position).getReleaseDate());
 
         holder.ratting.setText("" + movieList.get(position).getVoteAverage());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, MoviePreviewActivity.class);
+                i.putExtra("id",movieList.get(position).getId());
+                i.putExtra("tittle",movieList.get(position).getTitle());
+                context.startActivity(i);
+            }
+        });
 
     }
 

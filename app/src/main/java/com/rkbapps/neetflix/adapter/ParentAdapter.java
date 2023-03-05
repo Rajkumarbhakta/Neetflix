@@ -1,6 +1,7 @@
 package com.rkbapps.neetflix.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rkbapps.neetflix.R;
+import com.rkbapps.neetflix.RecyclerTouchListener;
+import com.rkbapps.neetflix.activityes.MoviePreviewActivity;
 import com.rkbapps.neetflix.models.MovieList;
 
 import java.util.ArrayList;
@@ -31,10 +34,8 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ParentView
     public ParentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ParentViewHolder(LayoutInflater.from(context).inflate(R.layout.movie_list_parent_items, parent, false));
     }
-
     @Override
     public void onBindViewHolder(@NonNull ParentViewHolder holder, int position) {
-
         holder.type.setText(discoverRecycler.get(position).getType());
         holder.recyclerViewMovieList.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
 
@@ -44,7 +45,6 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ParentView
         if (discoverRecycler.get(position).getViewType() == MovieList.TV_SERIES) {
             holder.recyclerViewMovieList.setAdapter(new TvSeriesListChildAdapter(discoverRecycler.get(position).getTvSeriesList(), context));
         }
-
     }
 
     @Override
@@ -69,6 +69,20 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ParentView
             super(itemView);
             type = itemView.findViewById(R.id.txtType);
             recyclerViewMovieList = itemView.findViewById(R.id.recyclerMovieList);
+
         }
+//        holder.recyclerViewMovieList.addOnItemTouchListener(new RecyclerTouchListener(context, holder.recyclerViewMovieList, new RecyclerTouchListener.ClickListener() {
+//            @Override
+//            public void onClick(View view, int position) {
+//                Intent i = new Intent(context, MoviePreviewActivity.class);
+//                context.startActivity(i);
+//            }
+//
+//            @Override
+//            public void onLongClick(View view, int position) {
+//
+//            }
+//        }));
     }
+
 }

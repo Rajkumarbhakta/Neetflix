@@ -8,4 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#8c8c8c</color>
+    <color name="emerald">#06d6a0</color>
+    <color name="crayola">#EF476F</color>
+    <color name="mauve">#C8B6FF</color>
 </resources>

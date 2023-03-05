@@ -28,17 +28,6 @@ import retrofit2.Response;
 
 public class MoviesFragment extends Fragment {
 
-    //private RecyclerView popular, trending, topRated, latest, upComing;
-
-//    private List<Result> popularMovieList = new ArrayList<>();
-//    private List<Result> trendingMovieList = new ArrayList<>();
-//
-//    private List<Result> topRatedMovieList = new ArrayList<>();
-//
-//    private List<Result> latestMovieList = new ArrayList<>();
-//
-//    private List<Result> upComingMovieList = new ArrayList<>();
-
     private final List<MovieList> movieLists = new ArrayList<>();
 
     //private MovieListAdapter adapter;
@@ -53,46 +42,8 @@ public class MoviesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movies, container, false);
-//        popular = view.findViewById(R.id.recyclerPopular);
-//        trending = view.findViewById(R.id.recyclerTrending);
-//        topRated = view.findViewById(R.id.recyclerTopRated);
-//        latest = view.findViewById(R.id.recyclerLatest);
-//        upComing = view.findViewById(R.id.recyclerUpcoming);
-//
-//        LinearLayoutManager lmTrending = new LinearLayoutManager(getContext());
-//        lmTrending.setOrientation(RecyclerView.HORIZONTAL);
-//        trending.setLayoutManager(lmTrending);
-//
-//        LinearLayoutManager lmPopular = new LinearLayoutManager(getContext());
-//        lmPopular.setOrientation(RecyclerView.HORIZONTAL);
-//        popular.setLayoutManager(lmPopular);
-//
-//        LinearLayoutManager lmTopRated = new LinearLayoutManager(getContext());
-//        lmTopRated.setOrientation(RecyclerView.HORIZONTAL);
-//        topRated.setLayoutManager(lmTopRated);
-//
-//
-//        LinearLayoutManager lmLatest = new LinearLayoutManager(getContext());
-//        lmLatest.setOrientation(RecyclerView.HORIZONTAL);
-//        latest.setLayoutManager(lmLatest);
-//
-//
-//        LinearLayoutManager lmUpcoming = new LinearLayoutManager(getContext());
-//        lmUpcoming.setOrientation(RecyclerView.HORIZONTAL);
-//        upComing.setLayoutManager(lmUpcoming);
-//
-//
-//        loadTrendingMovies();
-//
-//        loadPopularMovies();
-//
-//        loadTopRatedMovies();
-//
-//        loadLatestMovies();
-//
-//        loadUpComingMovies();
+
         recyclerView = view.findViewById(R.id.recyclerView);
         loadTrendingMovies();
         loadPopularMovies();
@@ -117,9 +68,6 @@ public class MoviesFragment extends Fragment {
             @Override
             public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
                 if (response.isSuccessful()) {
-//                    popularMovieList = response.body().getResults();
-//                    //adapter = new MovieListAdapter(popularMovieList,getContext());
-//                    popular.setAdapter(new MovieListAdapter(popularMovieList, getContext()));
                     movieLists.add(new MovieList(MovieList.MOVIE, "Popular", response.body().getResults(), 1));
                     adapter.notifyDataSetChanged();
                 }
@@ -133,16 +81,12 @@ public class MoviesFragment extends Fragment {
     }
 
     private void loadTrendingMovies() {
-        //trendingMovieList.clear();
         MovieApi movieApi = RetrofitInstance.getMovieApi();
         Call<MovieListModel> responseCall = movieApi.getTrendingMovies(ApiData.API_KEY);
         responseCall.enqueue(new Callback<MovieListModel>() {
             @Override
             public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
                 if (response.isSuccessful()) {
-//                    trendingMovieList = response.body().getResults();
-//                    //adapter = new MovieListAdapter(popularMovieList,getContext());
-//                    trending.setAdapter(new MovieListAdapter(trendingMovieList, getContext()));
                     movieLists.add(new MovieList(MovieList.MOVIE, "Trending", response.body().getResults(), 1));
                     adapter.notifyDataSetChanged();
                 }
