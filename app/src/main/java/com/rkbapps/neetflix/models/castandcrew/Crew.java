@@ -125,4 +125,21 @@ public class Crew {
     public void setJob(String job) {
         this.job = job;
     }
+
+    @Override
+    public String toString() {
+        return "Crew{" +
+                "adult=" + adult +
+                ", gender=" + gender +
+                ", id=" + id +
+                ", knownForDepartment='" + knownForDepartment + '\'' +
+                ", name='" + name + '\'' +
+                ", originalName='" + originalName + '\'' +
+                ", popularity=" + popularity +
+                ", profilePath=" + profilePath +
+                ", creditId='" + creditId + '\'' +
+                ", department='" + department + '\'' +
+                ", job='" + job + '\'' +
+                '}';
+    }
 }

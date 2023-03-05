@@ -12,15 +12,14 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.rkbapps.neetflix.fragments.MovieOverviewFragment;
 import com.rkbapps.neetflix.fragments.ReviewsMovieFRagment;
 import com.rkbapps.neetflix.fragments.VideoAndImageMovieFragment;
-import com.rkbapps.neetflix.models.movies.MovieModel;
 
 public class TabLayoutAdapter extends FragmentPagerAdapter {
 
     private final Context context;
     private final int totalTabs;
-    private int movieId;
+    private final int movieId;
 
-    public TabLayoutAdapter(@NonNull FragmentManager fm, Context context, int totalTabs,int movieId) {
+    public TabLayoutAdapter(@NonNull FragmentManager fm, Context context, int totalTabs, int movieId) {
         super(fm);
         this.context = context;
         this.totalTabs = totalTabs;
@@ -31,8 +30,8 @@ public class TabLayoutAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        Bundle bundle =new Bundle();
-        bundle.putInt("id",movieId);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", movieId);
         switch (position) {
             case 0:
                 MovieOverviewFragment movieOverviewFragment = new MovieOverviewFragment();
@@ -45,7 +44,7 @@ public class TabLayoutAdapter extends FragmentPagerAdapter {
             case 2:
                 ReviewsMovieFRagment reviewsMovieFRagment = new ReviewsMovieFRagment();
                 reviewsMovieFRagment.setArguments(bundle);
-                return  reviewsMovieFRagment;
+                return reviewsMovieFRagment;
             default:
                 return null;
         }

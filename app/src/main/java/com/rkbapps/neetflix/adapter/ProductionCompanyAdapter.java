@@ -18,8 +18,8 @@ import java.util.List;
 
 public class ProductionCompanyAdapter extends RecyclerView.Adapter<ProductionCompanyAdapter.ProductionCompanyViewHolder> {
 
-    private Context context;
-    private List<ProductionCompany> productionCompanyList;
+    private final Context context;
+    private final List<ProductionCompany> productionCompanyList;
 
     public ProductionCompanyAdapter(Context context, List<ProductionCompany> productionCompanyList) {
         this.context = context;
@@ -29,18 +29,22 @@ public class ProductionCompanyAdapter extends RecyclerView.Adapter<ProductionCom
     @NonNull
     @Override
     public ProductionCompanyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ProductionCompanyViewHolder(LayoutInflater.from(context).inflate(R.layout.cast_item_view,parent,false));
+        return new ProductionCompanyViewHolder(LayoutInflater.from(context).inflate(R.layout.cast_item_view, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductionCompanyViewHolder holder, int position) {
 
         holder.companyName.setText(productionCompanyList.get(position).getName());
-
-        if(productionCompanyList.get(position).getLogoPath()!=null)
-            Glide.with(context).load("https://image.tmdb.org/t/p/w500/"+productionCompanyList.get(position).getLogoPath()).into(holder.logo);
+        if (productionCompanyList.get(position).getOriginCountry() != null)
+            holder.country.setText(productionCompanyList.get(position).getOriginCountry());
         else
-            Glide.with(context).load("").into(holder.logo);
+            holder.country.setText("");
+
+        if (productionCompanyList.get(position).getLogoPath() != null)
+            Glide.with(context).load("https://image.tmdb.org/t/p/w500/" + productionCompanyList.get(position).getLogoPath()).into(holder.logo);
+        else
+            Glide.with(context).load(R.drawable.film_company).into(holder.logo);
 
 
     }
@@ -53,11 +57,13 @@ public class ProductionCompanyAdapter extends RecyclerView.Adapter<ProductionCom
     public class ProductionCompanyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView logo;
-        TextView companyName;
+        TextView companyName, country;
+
         public ProductionCompanyViewHolder(@NonNull View itemView) {
             super(itemView);
             logo = itemView.findViewById(R.id.imgCast);
             companyName = itemView.findViewById(R.id.txtCastName);
+            country = itemView.findViewById(R.id.txtField);
         }
     }
 }

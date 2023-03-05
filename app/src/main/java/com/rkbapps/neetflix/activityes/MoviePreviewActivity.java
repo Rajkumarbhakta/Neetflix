@@ -16,7 +16,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.rkbapps.neetflix.R;
 import com.rkbapps.neetflix.adapter.GenreAdapter;
 import com.rkbapps.neetflix.adapter.TabLayoutAdapter;
-import com.rkbapps.neetflix.fragments.MovieOverviewFragment;
 import com.rkbapps.neetflix.models.Genre;
 import com.rkbapps.neetflix.models.movies.MovieModel;
 import com.rkbapps.neetflix.services.ApiData;
@@ -33,12 +32,11 @@ import retrofit2.Response;
 public class MoviePreviewActivity extends AppCompatActivity {
 
 
+    private final List<Genre> genreList = new ArrayList<>();
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
     private MovieModel movieModel = new MovieModel();
     private RecyclerView recyclerView;
-    private final List<Genre> genreList = new ArrayList<>();
     private TextView rating, budget, revenue, releaseDate, runtime, tagLine;
     private ImageView backdrop;
     private Toolbar toolbar;
@@ -104,7 +102,7 @@ public class MoviePreviewActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
-        TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager(), this, tabLayout.getTabCount(),id);
+        TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager(), this, tabLayout.getTabCount(), id);
         viewPager.setAdapter(tabLayoutAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
