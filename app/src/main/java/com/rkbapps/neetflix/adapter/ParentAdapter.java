@@ -1,7 +1,6 @@
 package com.rkbapps.neetflix.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.RecyclerTouchListener;
-import com.rkbapps.neetflix.activityes.MoviePreviewActivity;
 import com.rkbapps.neetflix.models.MovieList;
 
 import java.util.ArrayList;
@@ -34,6 +31,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ParentView
     public ParentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ParentViewHolder(LayoutInflater.from(context).inflate(R.layout.movie_list_parent_items, parent, false));
     }
+
     @Override
     public void onBindViewHolder(@NonNull ParentViewHolder holder, int position) {
         holder.type.setText(discoverRecycler.get(position).getType());

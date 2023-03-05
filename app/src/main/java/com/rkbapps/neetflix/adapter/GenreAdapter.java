@@ -42,6 +42,7 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
 
     public static class GenreViewHolder extends RecyclerView.ViewHolder {
         TextView genre;
+
         public GenreViewHolder(@NonNull View itemView) {
             super(itemView);
             genre = itemView.findViewById(R.id.txtGenre);

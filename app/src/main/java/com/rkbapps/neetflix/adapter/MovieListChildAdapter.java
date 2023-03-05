@@ -55,8 +55,8 @@ public class MovieListChildAdapter extends RecyclerView.Adapter<MovieListChildAd
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, MoviePreviewActivity.class);
-                i.putExtra("id",movieList.get(position).getId());
-                i.putExtra("tittle",movieList.get(position).getTitle());
+                i.putExtra("id", movieList.get(position).getId());
+                i.putExtra("tittle", movieList.get(position).getTitle());
                 context.startActivity(i);
             }
         });

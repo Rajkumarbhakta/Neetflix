@@ -1,19 +1,17 @@
 package com.rkbapps.neetflix.activityes;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.rkbapps.neetflix.R;
 import com.rkbapps.neetflix.adapter.GenreAdapter;
@@ -39,11 +37,10 @@ public class MoviePreviewActivity extends AppCompatActivity {
 
     private MovieModel movieModel = new MovieModel();
     private RecyclerView recyclerView;
-    private List<Genre> genreList = new ArrayList<>();
-    private TextView rating,budget,revenue,releaseDate,runtime,tagLine;
-        private ImageView backdrop;
-        private Toolbar toolbar;
-
+    private final List<Genre> genreList = new ArrayList<>();
+    private TextView rating, budget, revenue, releaseDate, runtime, tagLine;
+    private ImageView backdrop;
+    private Toolbar toolbar;
 
 
     @SuppressLint("MissingInflatedId")
@@ -51,15 +48,15 @@ public class MoviePreviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_preview);
-        int id = getIntent().getIntExtra("id",-1);
+        int id = getIntent().getIntExtra("id", -1);
         String tittle = getIntent().getStringExtra("tittle");
 
-        tabLayout= findViewById(R.id.tabLayoutMovie);
+        tabLayout = findViewById(R.id.tabLayoutMovie);
         viewPager = findViewById(R.id.pagerMovie);
-        recyclerView=findViewById(R.id.recyclerGenre);
+        recyclerView = findViewById(R.id.recyclerGenre);
         rating = findViewById(R.id.txtRattingMovie);
         budget = findViewById(R.id.txtBudgetMovie);
-        revenue= findViewById(R.id.txtRevenueMovie);
+        revenue = findViewById(R.id.txtRevenueMovie);
         releaseDate = findViewById(R.id.txtReleaseDateMovie);
         runtime = findViewById(R.id.txtRuntime);
         backdrop = findViewById(R.id.imgBackdropMovie);
@@ -71,26 +68,26 @@ public class MoviePreviewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         MovieApi movieApi = RetrofitInstance.getMovieApi();
         Call<MovieModel> responseCall = movieApi.getMovieDetails(id, ApiData.API_KEY);
         responseCall.enqueue(new Callback<MovieModel>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     movieModel = response.body();
-                    recyclerView.setAdapter(new GenreAdapter(getApplicationContext(),movieModel.getGenres()));
-                    if(movieModel.getBackdropPath()!=null)
-                        Glide.with(getApplicationContext()).load("https://image.tmdb.org/t/p/w500"+movieModel.getBackdropPath()).into(backdrop);
+                    recyclerView.setAdapter(new GenreAdapter(getApplicationContext(), movieModel.getGenres()));
+                    if (movieModel.getBackdropPath() != null)
+                        Glide.with(getApplicationContext()).load("https://image.tmdb.org/t/p/w500" + movieModel.getBackdropPath()).into(backdrop);
                     else
                         Glide.with(getApplicationContext()).load("").into(backdrop);
 
-                    rating.setText(""+movieModel.getVoteAverage());
-                    releaseDate.setText(""+movieModel.getReleaseDate());
-                    budget.setText(""+(movieModel.getBudget()/1000000)+"M");
-                    revenue.setText(""+(movieModel.getRevenue()/1000000+"M"));
-                    runtime.setText(""+(movieModel.getRuntime()/60)+"h"+(movieModel.getRuntime()%60)+"m");
+                    rating.setText("" + movieModel.getVoteAverage());
+                    releaseDate.setText("" + movieModel.getReleaseDate());
+                    budget.setText("" + (movieModel.getBudget() / 1000000) + "M");
+                    revenue.setText("" + (movieModel.getRevenue() / 1000000 + "M"));
+                    runtime.setText("" + (movieModel.getRuntime() / 60) + "h" + (movieModel.getRuntime() % 60) + "m");
                     tagLine.setText(movieModel.getTagline());
 
                 }
@@ -107,20 +104,20 @@ public class MoviePreviewActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
-        TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager(),this,tabLayout.getTabCount());
+        TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager(), this, tabLayout.getTabCount());
         viewPager.setAdapter(tabLayoutAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
 
     }
 
-    private void loadMovieDetails(int id){
+    private void loadMovieDetails(int id) {
         MovieApi movieApi = RetrofitInstance.getMovieApi();
         Call<MovieModel> responseCall = movieApi.getMovieDetails(id, ApiData.API_KEY);
         responseCall.enqueue(new Callback<MovieModel>() {
             @Override
             public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     movieModel = response.body();
                 }
             }

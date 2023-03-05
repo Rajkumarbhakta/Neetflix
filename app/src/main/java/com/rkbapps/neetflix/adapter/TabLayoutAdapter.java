@@ -14,8 +14,8 @@ import com.rkbapps.neetflix.fragments.VideoAndImageMovieFragment;
 
 public class TabLayoutAdapter extends FragmentPagerAdapter {
 
-    private Context context;
-    private int totalTabs;
+    private final Context context;
+    private final int totalTabs;
 
     public TabLayoutAdapter(@NonNull FragmentManager fm, Context context, int totalTabs) {
         super(fm);
@@ -24,18 +24,18 @@ public class TabLayoutAdapter extends FragmentPagerAdapter {
     }
 
 
-
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        switch (position){
+        switch (position) {
             case 0:
                 return new MovieOverviewFragment();
             case 1:
                 return new VideoAndImageMovieFragment();
             case 2:
                 return new ReviewsMovieFRagment();
-            default:return null;
+            default:
+                return null;
         }
     }
 
@@ -47,14 +47,15 @@ public class TabLayoutAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position){
+        switch (position) {
             case 0:
                 return "Overview";
             case 1:
                 return "Video & Images";
             case 2:
                 return "Reviews";
-            default:return null;
+            default:
+                return null;
         }
     }
 }

@@ -18,23 +18,23 @@
             android:id="@+id/txtType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:padding="10dp"
             android:text="Popular"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
             android:textColor="@color/white"
             android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/txtSeeMore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="See more"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:textColor="@color/white"
-                android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/txtSeeMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:text="See more"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 

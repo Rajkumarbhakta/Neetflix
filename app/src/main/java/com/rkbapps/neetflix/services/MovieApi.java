@@ -12,6 +12,7 @@ public interface MovieApi {
     // to get popular movies
     @GET("movie/popular")
     Call<MovieListModel> getPopularMovies(@Query("api_key") String apiKey);
+
     //to get trending movies
     @GET("trending/movie/day")
     Call<MovieListModel> getTrendingMovies(@Query("api_key") String apiKey);
