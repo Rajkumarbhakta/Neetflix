@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.rkbapps.neetflix.R;
 import com.rkbapps.neetflix.adapter.GenreAdapter;
 import com.rkbapps.neetflix.adapter.TabLayoutAdapter;
+import com.rkbapps.neetflix.fragments.MovieOverviewFragment;
 import com.rkbapps.neetflix.models.Genre;
 import com.rkbapps.neetflix.models.movies.MovieModel;
 import com.rkbapps.neetflix.services.ApiData;
@@ -67,7 +68,6 @@ public class MoviePreviewActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(tittle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         MovieApi movieApi = RetrofitInstance.getMovieApi();
         Call<MovieModel> responseCall = movieApi.getMovieDetails(id, ApiData.API_KEY);
@@ -104,29 +104,11 @@ public class MoviePreviewActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
-        TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager(), this, tabLayout.getTabCount());
+        TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager(), this, tabLayout.getTabCount(),id);
         viewPager.setAdapter(tabLayoutAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
 
     }
 
-    private void loadMovieDetails(int id) {
-        MovieApi movieApi = RetrofitInstance.getMovieApi();
-        Call<MovieModel> responseCall = movieApi.getMovieDetails(id, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<MovieModel>() {
-            @Override
-            public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
-                if (response.isSuccessful()) {
-                    movieModel = response.body();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieModel> call, Throwable t) {
-
-            }
-        });
-
-    }
 }

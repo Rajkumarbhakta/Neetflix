@@ -46,6 +46,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.15.0'
 
 
-
+    implementation 'com.mikhaellopez:circularimageview:4.3.1'
 
 }

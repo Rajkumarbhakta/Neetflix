@@ -1,6 +1,7 @@
 package com.rkbapps.neetflix.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,29 +12,40 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.rkbapps.neetflix.fragments.MovieOverviewFragment;
 import com.rkbapps.neetflix.fragments.ReviewsMovieFRagment;
 import com.rkbapps.neetflix.fragments.VideoAndImageMovieFragment;
+import com.rkbapps.neetflix.models.movies.MovieModel;
 
 public class TabLayoutAdapter extends FragmentPagerAdapter {
 
     private final Context context;
     private final int totalTabs;
+    private int movieId;
 
-    public TabLayoutAdapter(@NonNull FragmentManager fm, Context context, int totalTabs) {
+    public TabLayoutAdapter(@NonNull FragmentManager fm, Context context, int totalTabs,int movieId) {
         super(fm);
         this.context = context;
         this.totalTabs = totalTabs;
+        this.movieId = movieId;
     }
 
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
+        Bundle bundle =new Bundle();
+        bundle.putInt("id",movieId);
         switch (position) {
             case 0:
-                return new MovieOverviewFragment();
+                MovieOverviewFragment movieOverviewFragment = new MovieOverviewFragment();
+                movieOverviewFragment.setArguments(bundle);
+                return movieOverviewFragment;
             case 1:
-                return new VideoAndImageMovieFragment();
+                VideoAndImageMovieFragment videoAndImageMovieFragment = new VideoAndImageMovieFragment();
+                videoAndImageMovieFragment.setArguments(bundle);
+                return videoAndImageMovieFragment;
             case 2:
-                return new ReviewsMovieFRagment();
+                ReviewsMovieFRagment reviewsMovieFRagment = new ReviewsMovieFRagment();
+                reviewsMovieFRagment.setArguments(bundle);
+                return  reviewsMovieFRagment;
             default:
                 return null;
         }
