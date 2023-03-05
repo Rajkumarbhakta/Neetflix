@@ -29,9 +29,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MovieOverviewFragment extends Fragment {
-    MovieApi movieApi = RetrofitInstance.getMovieApi();
+    private final MovieApi movieApi = RetrofitInstance.getMovieApi();
     private TextView overview;
     private RecyclerView productionCompany, cast, similarMovies, crew;
+
     public MovieOverviewFragment() {
         // Required empty public constructor
     }

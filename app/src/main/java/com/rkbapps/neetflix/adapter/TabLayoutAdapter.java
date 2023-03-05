@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.rkbapps.neetflix.fragments.MovieOverviewFragment;
-import com.rkbapps.neetflix.fragments.ReviewsMovieFRagment;
+import com.rkbapps.neetflix.fragments.ReviewsMovieFragment;
 import com.rkbapps.neetflix.fragments.VideoAndImageMovieFragment;
 
 public class TabLayoutAdapter extends FragmentPagerAdapter {
@@ -42,7 +42,7 @@ public class TabLayoutAdapter extends FragmentPagerAdapter {
                 videoAndImageMovieFragment.setArguments(bundle);
                 return videoAndImageMovieFragment;
             case 2:
-                ReviewsMovieFRagment reviewsMovieFRagment = new ReviewsMovieFRagment();
+                ReviewsMovieFragment reviewsMovieFRagment = new ReviewsMovieFragment();
                 reviewsMovieFRagment.setArguments(bundle);
                 return reviewsMovieFRagment;
             default:

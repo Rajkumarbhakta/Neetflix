@@ -1,5 +1,6 @@
 package com.rkbapps.neetflix.services;
 
+import com.rkbapps.neetflix.models.Review.ReviewModel;
 import com.rkbapps.neetflix.models.castandcrew.CreditsModel;
 import com.rkbapps.neetflix.models.movies.MovieListModel;
 import com.rkbapps.neetflix.models.movies.MovieModel;
@@ -36,5 +37,8 @@ public interface MovieApi {
 
     @GET("movie/{movie_id}/similar")
     Call<MovieListModel> getSimilarMovies(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
+
+    @GET("movie/{movie_id}/reviews")
+    Call<ReviewModel> getMovieReviews(@Path("movie_id") int movieId, @Query("api_key") String apiKey, @Query("language") String language);
 
 }
