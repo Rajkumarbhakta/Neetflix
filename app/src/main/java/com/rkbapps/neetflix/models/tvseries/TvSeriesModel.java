@@ -54,7 +54,7 @@ public class TvSeriesModel {
     private Episode nextEpisodeToAir;
     @SerializedName("networks")
     @Expose
-    private List<Network> networks;
+    private List<ProductionCompany> networks;
     @SerializedName("number_of_episodes")
     @Expose
     private Integer numberOfEpisodes;
@@ -219,11 +219,11 @@ public class TvSeriesModel {
         this.nextEpisodeToAir = nextEpisodeToAir;
     }
 
-    public List<Network> getNetworks() {
+    public List<ProductionCompany> getNetworks() {
         return networks;
     }
 
-    public void setNetworks(List<Network> networks) {
+    public void setNetworks(List<ProductionCompany> networks) {
         this.networks = networks;
     }
 

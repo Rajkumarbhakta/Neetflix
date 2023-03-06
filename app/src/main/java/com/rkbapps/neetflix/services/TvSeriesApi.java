@@ -1,6 +1,7 @@
 package com.rkbapps.neetflix.services;
 
 import com.rkbapps.neetflix.models.Review.ReviewModel;
+import com.rkbapps.neetflix.models.castandcrew.CreditsModel;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesListModel;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesModel;
 
@@ -29,6 +30,8 @@ public interface TvSeriesApi {
     @GET("tv/{tv_id}/reviews")
     Call<ReviewModel> getSeriesReview(@Path("tv_id") int id,@Query("api_key") String apiKey);
 
+    @GET("tv/{tv_id}/credits")
+    Call<CreditsModel> getSeriesCredits(@Path("tv_id") int id,@Query("api_key") String apiKey);
 
 
 }
