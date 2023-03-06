@@ -67,6 +67,8 @@ public class MoviePreviewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+
+
         MovieApi movieApi = RetrofitInstance.getMovieApi();
         Call<MovieModel> responseCall = movieApi.getMovieDetails(id, ApiData.API_KEY);
         responseCall.enqueue(new Callback<MovieModel>() {
@@ -87,10 +89,8 @@ public class MoviePreviewActivity extends AppCompatActivity {
                     revenue.setText("" + (movieModel.getRevenue() / 1000000 + "M"));
                     runtime.setText("" + (movieModel.getRuntime() / 60) + "h" + (movieModel.getRuntime() % 60) + "m");
                     tagLine.setText(movieModel.getTagline());
-
                 }
             }
-
             @Override
             public void onFailure(Call<MovieModel> call, Throwable t) {
 
@@ -102,7 +102,7 @@ public class MoviePreviewActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
-        TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager(), this, tabLayout.getTabCount(), id);
+        TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager(), this, tabLayout.getTabCount(), id, TabLayoutAdapter.MOVIE);
         viewPager.setAdapter(tabLayoutAdapter);
         tabLayout.setupWithViewPager(viewPager);
 

@@ -1,9 +1,12 @@
 package com.rkbapps.neetflix.services;
 
+import com.rkbapps.neetflix.models.Review.ReviewModel;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesListModel;
+import com.rkbapps.neetflix.models.tvseries.TvSeriesModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface TvSeriesApi {
@@ -19,6 +22,14 @@ public interface TvSeriesApi {
 
     @GET("tv/airing_today")
     Call<TvSeriesListModel> getAiringTodaySeries(@Query("api_key") String apiKey);
+
+    @GET("tv/{tv_id}")
+    Call<TvSeriesModel> getSeriesDetails(@Path("tv_id") int id,@Query("api_key") String apiKey);
+
+    @GET("tv/{tv_id}/reviews")
+    Call<ReviewModel> getSeriesReview(@Path("tv_id") int id,@Query("api_key") String apiKey);
+
+
 
 }
 
