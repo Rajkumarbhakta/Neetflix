@@ -1,0 +1,19 @@
+package com.rkbapps.neetflix.services;
+
+import com.rkbapps.neetflix.models.person.ExternalIds;
+import com.rkbapps.neetflix.models.person.PersonDetails;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+
+public interface PersonApi {
+
+    @GET("person/{person_id}/external_ids")
+    Call<ExternalIds> getPersonExternalIds(@Path("person_id") int personId, @Query("api_key") String apiKey);
+
+    @GET("person/{person_id}")
+    Call<PersonDetails> getPersonDetails(@Path("person_id") int personId, @Query("api_key") String apiKey);
+
+}

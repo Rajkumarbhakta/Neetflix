@@ -1,6 +1,8 @@
 package com.rkbapps.neetflix.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.rkbapps.neetflix.R;
+import com.rkbapps.neetflix.activityes.PersonActivity;
 import com.rkbapps.neetflix.models.castandcrew.Cast;
 
 import java.util.List;
@@ -33,7 +36,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CastViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CastViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.castName.setText(casts.get(position).getName());
         if (casts.get(position).getCharacter() != null)
             holder.character.setText(casts.get(position).getCharacter());
@@ -50,6 +53,20 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
             else
                 Glide.with(context).load(R.drawable.male_placeholder).into(holder.cast);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, PersonActivity.class);
+                i.putExtra("id",casts.get(position).getId());
+                i.putExtra("name",casts.get(position).getName());
+                i.putExtra("image",casts.get(position).getProfilePath());
+                i.putExtra("gender",casts.get(position).getGender());
+                i.putExtra("popularity",casts.get(position).getPopularity());
+                i.putExtra("department",casts.get(position).getKnownForDepartment());
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override

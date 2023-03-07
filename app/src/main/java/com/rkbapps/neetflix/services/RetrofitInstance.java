@@ -11,6 +11,7 @@ public class RetrofitInstance {
 
     private static MovieApi movieApi = null;
     private static TvSeriesApi tvSeriesApi = null;
+    private static PersonApi personApi = null;
 
 
     public static MovieApi getMovieApi() {
@@ -27,5 +28,10 @@ public class RetrofitInstance {
         return tvSeriesApi;
     }
 
-
+    public static PersonApi getPersonApi() {
+        if(personApi == null){
+            personApi = retrofit.create(PersonApi.class);
+        }
+        return personApi;
+    }
 }
