@@ -51,6 +51,12 @@ public class MovieListChildAdapter extends RecyclerView.Adapter<MovieListChildAd
 
         holder.ratting.setText("" + movieList.get(position).getVoteAverage());
 
+        if (movieList.get(position).getAdult()) {
+            holder.nsfw.setVisibility(View.VISIBLE);
+        } else {
+            holder.nsfw.setVisibility(View.INVISIBLE);
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +76,7 @@ public class MovieListChildAdapter extends RecyclerView.Adapter<MovieListChildAd
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView poster;
+        ImageView poster, nsfw;
         TextView tittle, releaseYear, ratting;
 
         public MovieViewHolder(@NonNull View itemView) {
@@ -79,6 +85,7 @@ public class MovieListChildAdapter extends RecyclerView.Adapter<MovieListChildAd
             tittle = itemView.findViewById(R.id.txtTittle);
             releaseYear = itemView.findViewById(R.id.txtReleaseYear);
             ratting = itemView.findViewById(R.id.txtRatting);
+            nsfw = itemView.findViewById(R.id.imgNsfw);
         }
     }
 }

@@ -34,6 +34,7 @@ public class SeriesOverviewFragment extends Fragment {
     private final TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
     private TextView overview, status, type, firstAirDate, lastAirDate;
     private RecyclerView cast, crew, productionCompanies, similarSeries, network, seasons;
+
     public SeriesOverviewFragment() {
         // Required empty public constructor
     }

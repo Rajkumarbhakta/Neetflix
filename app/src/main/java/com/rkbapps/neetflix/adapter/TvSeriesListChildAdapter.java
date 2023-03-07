@@ -52,6 +52,8 @@ public class TvSeriesListChildAdapter extends RecyclerView.Adapter<TvSeriesListC
         holder.ratting.setText("" + seriesList.get(position).getVoteAverage());
 
 
+        holder.nsfw.setVisibility(View.INVISIBLE);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +72,7 @@ public class TvSeriesListChildAdapter extends RecyclerView.Adapter<TvSeriesListC
 
     public static class TvSeriesViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView poster;
+        ImageView poster, nsfw;
         TextView tittle, releaseYear, ratting;
 
         public TvSeriesViewHolder(@NonNull View itemView) {
@@ -79,6 +81,7 @@ public class TvSeriesListChildAdapter extends RecyclerView.Adapter<TvSeriesListC
             tittle = itemView.findViewById(R.id.txtTittle);
             releaseYear = itemView.findViewById(R.id.txtReleaseYear);
             ratting = itemView.findViewById(R.id.txtRatting);
+            nsfw = itemView.findViewById(R.id.imgNsfw);
         }
     }
 }

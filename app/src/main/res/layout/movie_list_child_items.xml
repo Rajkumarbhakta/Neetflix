@@ -18,12 +18,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imgMoviePoster"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/poster" />
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgMoviePoster"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/poster"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgNsfw"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/nsfw"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.96"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imgMoviePoster"
+                app:layout_constraintVertical_bias="0.01999998" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     </androidx.cardview.widget.CardView>
 
