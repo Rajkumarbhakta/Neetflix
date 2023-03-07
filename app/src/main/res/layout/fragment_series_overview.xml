@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/black"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".fragments.SeriesOverviewFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -40,95 +41,110 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp">
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Status : "
-                    android:textSize="18sp"
-                    android:textStyle="bold"
                     android:textColor="@color/amethyst"
-                    />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/txtSeriesStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
                     android:textColor="@color/white"
-                    />
+                    android:textSize="18sp" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp">
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Type : "
-                    android:textSize="18sp"
-                    android:textStyle="bold"
                     android:textColor="@color/amethyst"
-                    />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/txtSeriesType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
                     android:textColor="@color/white"
-                    />
+                    android:textSize="18sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp">
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="First air date : "
-                    android:textSize="18sp"
-                    android:textStyle="bold"
                     android:textColor="@color/amethyst"
-                    />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/txtFirstAirDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
                     android:textColor="@color/white"
-                    />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                >
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Last air date : "
-                    android:textSize="18sp"
-                    android:textStyle="bold"
                     android:textColor="@color/amethyst"
-                    />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/lastAirDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
                     android:textColor="@color/white"
-                    />
+                    android:textSize="18sp" />
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:padding="5dp"
+                android:text="Seasons"
+                android:textColor="@color/rose"
+                android:textSize="25sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerSeasons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -157,6 +173,21 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerCrewSeries"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:padding="5dp"
+                android:text="Network"
+                android:textColor="@color/rose"
+                android:textSize="25sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerNetwork"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

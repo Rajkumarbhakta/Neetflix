@@ -25,13 +25,16 @@ public interface TvSeriesApi {
     Call<TvSeriesListModel> getAiringTodaySeries(@Query("api_key") String apiKey);
 
     @GET("tv/{tv_id}")
-    Call<TvSeriesModel> getSeriesDetails(@Path("tv_id") int id,@Query("api_key") String apiKey);
+    Call<TvSeriesModel> getSeriesDetails(@Path("tv_id") int id, @Query("api_key") String apiKey);
 
     @GET("tv/{tv_id}/reviews")
-    Call<ReviewModel> getSeriesReview(@Path("tv_id") int id,@Query("api_key") String apiKey);
+    Call<ReviewModel> getSeriesReview(@Path("tv_id") int id, @Query("api_key") String apiKey);
 
     @GET("tv/{tv_id}/credits")
-    Call<CreditsModel> getSeriesCredits(@Path("tv_id") int id,@Query("api_key") String apiKey);
+    Call<CreditsModel> getSeriesCredits(@Path("tv_id") int id, @Query("api_key") String apiKey);
+
+    @GET("tv/{tv_id}/similar")
+    Call<TvSeriesListModel> getSimilarTvSeries(@Path("tv_id") int id, @Query("api_key") String apiKey);
 
 
 }

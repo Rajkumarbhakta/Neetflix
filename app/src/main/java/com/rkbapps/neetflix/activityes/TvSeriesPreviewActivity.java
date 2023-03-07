@@ -1,16 +1,15 @@
 package com.rkbapps.neetflix.activityes;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
@@ -29,7 +28,7 @@ import retrofit2.Response;
 public class TvSeriesPreviewActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private TextView ratting,firstAirDate,originalLanguage,totalEpisodes,totalSeasons,tagLine;
+    private TextView ratting, firstAirDate, originalLanguage, totalEpisodes, totalSeasons, tagLine;
     private RecyclerView recyclerGenre;
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -37,6 +36,7 @@ public class TvSeriesPreviewActivity extends AppCompatActivity {
     private ImageView backdrop;
 
     private TvSeriesModel tvSeriesModel;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +45,9 @@ public class TvSeriesPreviewActivity extends AppCompatActivity {
         int id = getIntent().getIntExtra("id", -1);
         String tittle = getIntent().getStringExtra("tittle");
 
-        toolbar=findViewById(R.id.toolbarTvSeries);
+        toolbar = findViewById(R.id.toolbarTvSeries);
         ratting = findViewById(R.id.txtRattingTvSeries);
-        firstAirDate=findViewById(R.id.txtReleaseDateTvSeries);
+        firstAirDate = findViewById(R.id.txtReleaseDateTvSeries);
         originalLanguage = findViewById(R.id.txtOriginalLanguageSeries);
         totalEpisodes = findViewById(R.id.txtNumberOfEpisodeSeries);
         totalSeasons = findViewById(R.id.txtTotalSeasons);
@@ -57,7 +57,7 @@ public class TvSeriesPreviewActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayoutSeries);
         backdrop = findViewById(R.id.imgBackdropTvSeries);
 
-        recyclerGenre.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+        recyclerGenre.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
 
         setSupportActionBar(toolbar);
@@ -70,21 +70,21 @@ public class TvSeriesPreviewActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<TvSeriesModel> call, Response<TvSeriesModel> response) {
-               if(response.isSuccessful()){
-                    tvSeriesModel=response.body();
+                if (response.isSuccessful()) {
+                    tvSeriesModel = response.body();
 
-                    ratting.setText(""+tvSeriesModel.getVoteAverage());
+                    ratting.setText("" + tvSeriesModel.getVoteAverage());
                     firstAirDate.setText(tvSeriesModel.getFirstAirDate());
                     originalLanguage.setText(tvSeriesModel.getOriginalLanguage());
-                    totalEpisodes.setText(tvSeriesModel.getNumberOfEpisodes()+"E");
-                    totalSeasons.setText(tvSeriesModel.getNumberOfSeasons()+"S");
+                    totalEpisodes.setText(tvSeriesModel.getNumberOfEpisodes() + "E");
+                    totalSeasons.setText(tvSeriesModel.getNumberOfSeasons() + "S");
                     tagLine.setText(tvSeriesModel.getTagline());
-                    if(tvSeriesModel.getBackdropPath()!=null){
-                        Glide.with(getApplicationContext()).load("https://image.tmdb.org/t/p/w500"+tvSeriesModel.getBackdropPath()).into(backdrop);
-                    }else{
+                    if (tvSeriesModel.getBackdropPath() != null) {
+                        Glide.with(getApplicationContext()).load("https://image.tmdb.org/t/p/w500" + tvSeriesModel.getBackdropPath()).into(backdrop);
+                    } else {
                         Glide.with(getApplicationContext()).load("").into(backdrop);
                     }
-                    recyclerGenre.setAdapter(new GenreAdapter(getApplicationContext(),tvSeriesModel.getGenres()));
+                    recyclerGenre.setAdapter(new GenreAdapter(getApplicationContext(), tvSeriesModel.getGenres()));
                 }
             }
 
@@ -97,13 +97,11 @@ public class TvSeriesPreviewActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
-        tabLayout.addTab(tabLayout.newTab());
 
 
-        TabLayoutAdapter tabAdapter = new TabLayoutAdapter(getSupportFragmentManager(),getApplicationContext(),tabLayout.getTabCount(),id,TabLayoutAdapter.SERIES);
+        TabLayoutAdapter tabAdapter = new TabLayoutAdapter(getSupportFragmentManager(), getApplicationContext(), tabLayout.getTabCount(), id, TabLayoutAdapter.SERIES);
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
-
 
 
     }

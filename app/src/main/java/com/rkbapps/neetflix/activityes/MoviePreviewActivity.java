@@ -91,6 +91,7 @@ public class MoviePreviewActivity extends AppCompatActivity {
                     tagLine.setText(movieModel.getTagline());
                 }
             }
+
             @Override
             public void onFailure(Call<MovieModel> call, Throwable t) {
 
