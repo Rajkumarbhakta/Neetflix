@@ -37,7 +37,6 @@ public class PersonPersonalInfoFragment extends Fragment {
         int id = getArguments().getInt("id");
 
         biography = view.findViewById(R.id.txtBiography);
-        biography.setMovementMethod(new ScrollingMovementMethod());
 
         PersonApi personApi = RetrofitInstance.getPersonApi();
         Call<PersonDetails> responseCall = personApi.getPersonDetails(id, ApiData.API_KEY);
