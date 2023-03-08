@@ -2,6 +2,7 @@ package com.rkbapps.neetflix.adapter.tab;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,9 +15,9 @@ import com.rkbapps.neetflix.fragments.person.PersonPersonalInfoFragment;
 import com.rkbapps.neetflix.fragments.person.PersonSeriesFragment;
 
 public class TabLayoutPersonAdapter extends FragmentPagerAdapter {
-    private int id;
-    private int numOfTabs;
-    private Context context;
+    private final int id;
+    private final int numOfTabs;
+    private final Context context;
 
     public TabLayoutPersonAdapter(@NonNull FragmentManager fm, int id, int numOfTabs, Context context) {
         super(fm);
@@ -32,7 +33,7 @@ public class TabLayoutPersonAdapter extends FragmentPagerAdapter {
         Bundle bundle = new Bundle();
         bundle.putInt("id", id);
 
-        switch (position){
+        switch (position) {
             case 0:
                 PersonPersonalInfoFragment personPersonalInfoFragment = new PersonPersonalInfoFragment();
                 personPersonalInfoFragment.setArguments(bundle);
@@ -50,7 +51,8 @@ public class TabLayoutPersonAdapter extends FragmentPagerAdapter {
                 personSeriesFragment.setArguments(bundle);
                 return personSeriesFragment;
 
-            default:return null;
+            default:
+                return null;
 
         }
     }
@@ -63,12 +65,17 @@ public class TabLayoutPersonAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        switch(position){
-            case 0: return "Personal Info";
-            case 1: return "Images";
-            case 2:return  "Movies";
-            case 3:return "Tv Series";
-            default:return null;
+        switch (position) {
+            case 0:
+                return "Personal Info";
+            case 1:
+                return "Images";
+            case 2:
+                return "Movies";
+            case 3:
+                return "Tv Series";
+            default:
+                return null;
         }
     }
 }

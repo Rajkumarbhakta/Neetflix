@@ -29,7 +29,7 @@ public class RetrofitInstance {
     }
 
     public static PersonApi getPersonApi() {
-        if(personApi == null){
+        if (personApi == null) {
             personApi = retrofit.create(PersonApi.class);
         }
         return personApi;

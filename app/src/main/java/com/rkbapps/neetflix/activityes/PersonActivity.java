@@ -1,12 +1,12 @@
 package com.rkbapps.neetflix.activityes;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -24,7 +24,7 @@ import retrofit2.Response;
 
 public class PersonActivity extends AppCompatActivity {
 
-    private TextView personName,popularityTxt,knownForDepartment,genderText,biography;
+    private TextView personName, popularityTxt, knownForDepartment, genderText, biography;
     private ImageView personImage;
     private MaterialToolbar toolbar;
     private TabLayout tabLayout;
@@ -35,17 +35,17 @@ public class PersonActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
-        int id = getIntent().getIntExtra("id",-1);
+        int id = getIntent().getIntExtra("id", -1);
 
-        int gender = getIntent().getIntExtra("gender",-1);
+        int gender = getIntent().getIntExtra("gender", -1);
         String name = getIntent().getStringExtra("name");
         String image = getIntent().getStringExtra("image");
         String department = getIntent().getStringExtra("department");
-        Double popularity = getIntent().getDoubleExtra("popularity",0.0);
+        Double popularity = getIntent().getDoubleExtra("popularity", 0.0);
 
 
-        personImage= findViewById(R.id.imgPerson);
-        personName= findViewById(R.id.txtPersonName);
+        personImage = findViewById(R.id.imgPerson);
+        personName = findViewById(R.id.txtPersonName);
         popularityTxt = findViewById(R.id.txtPopularity);
         knownForDepartment = findViewById(R.id.txtKnownForDepartment);
         //biography = findViewById(R.id.txtBiography);
@@ -60,31 +60,26 @@ public class PersonActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        if(gender == 1){
+        if (gender == 1) {
             genderText.setText("Female");
-        }
-        else if(gender == 2){
+        } else if (gender == 2) {
             genderText.setText("Male");
         } else {
             genderText.setText("-");
         }
 
         knownForDepartment.setText(department);
-        popularityTxt.setText(popularity+"");
+        popularityTxt.setText(popularity + "");
 
 
         if (image != null)
             Glide.with(this).load("https://image.tmdb.org/t/p/w500/" + image).into(personImage);
         else {
-            if (gender == 1){
+            if (gender == 1) {
                 Glide.with(this).load(R.drawable.female_placeholder).into(personImage);
-            }
-
-            else if (gender == 2){
+            } else if (gender == 2) {
                 Glide.with(this).load(R.drawable.male_placeholder).into(personImage);
-            }
-
-            else{
+            } else {
                 Glide.with(this).load(R.drawable.male_placeholder).into(personImage);
             }
 
@@ -96,14 +91,14 @@ public class PersonActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<PersonDetails> call, Response<PersonDetails> response) {
                 //if(response.isSuccessful())
-                    //biography.setText(response.body().getBiography());
+                //biography.setText(response.body().getBiography());
             }
+
             @Override
             public void onFailure(Call<PersonDetails> call, Throwable t) {
 
             }
         });
-
 
 
         personName.setText(name);
@@ -113,7 +108,7 @@ public class PersonActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
-        viewPager.setAdapter(new TabLayoutPersonAdapter(getSupportFragmentManager(),id,tabLayout.getTabCount(),getApplicationContext()));
+        viewPager.setAdapter(new TabLayoutPersonAdapter(getSupportFragmentManager(), id, tabLayout.getTabCount(), getApplicationContext()));
         tabLayout.setupWithViewPager(viewPager);
 
     }

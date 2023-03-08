@@ -58,12 +58,12 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, PersonActivity.class);
-                i.putExtra("id",casts.get(position).getId());
-                i.putExtra("name",casts.get(position).getName());
-                i.putExtra("image",casts.get(position).getProfilePath());
-                i.putExtra("gender",casts.get(position).getGender());
-                i.putExtra("popularity",casts.get(position).getPopularity());
-                i.putExtra("department",casts.get(position).getKnownForDepartment());
+                i.putExtra("id", casts.get(position).getId());
+                i.putExtra("name", casts.get(position).getName());
+                i.putExtra("image", casts.get(position).getProfilePath());
+                i.putExtra("gender", casts.get(position).getGender());
+                i.putExtra("popularity", casts.get(position).getPopularity());
+                i.putExtra("department", casts.get(position).getKnownForDepartment());
                 context.startActivity(i);
             }
         });

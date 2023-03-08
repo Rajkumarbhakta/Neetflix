@@ -1,8 +1,8 @@
 package com.rkbapps.neetflix.services;
 
-import com.rkbapps.neetflix.models.person.images.PersonImageModel;
 import com.rkbapps.neetflix.models.person.ExternalIds;
 import com.rkbapps.neetflix.models.person.PersonDetails;
+import com.rkbapps.neetflix.models.person.images.PersonImageModel;
 import com.rkbapps.neetflix.models.person.movie.WorkForMovies;
 import com.rkbapps.neetflix.models.person.tvseries.WorkForSeries;
 

@@ -2,7 +2,6 @@ package com.rkbapps.neetflix.fragments.person;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +21,11 @@ import retrofit2.Response;
 
 public class PersonPersonalInfoFragment extends Fragment {
 
+    private TextView biography;
+
     public PersonPersonalInfoFragment() {
         // Required empty public constructor
     }
-
-    private TextView biography;
 
     @SuppressLint("MissingInflatedId")
     @Override

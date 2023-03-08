@@ -58,12 +58,12 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.CrewViewHolder
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, PersonActivity.class);
-                i.putExtra("id",crews.get(position).getId());
-                i.putExtra("name",crews.get(position).getName());
-                i.putExtra("gender",crews.get(position).getGender());
+                i.putExtra("id", crews.get(position).getId());
+                i.putExtra("name", crews.get(position).getName());
+                i.putExtra("gender", crews.get(position).getGender());
                 i.putExtra("image", (String) crews.get(position).getProfilePath());
-                i.putExtra("popularity",crews.get(position).getPopularity());
-                i.putExtra("department",crews.get(position).getKnownForDepartment());
+                i.putExtra("popularity", crews.get(position).getPopularity());
+                i.putExtra("department", crews.get(position).getKnownForDepartment());
                 context.startActivity(i);
             }
         });

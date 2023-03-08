@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rkbapps.neetflix.R;
+import com.rkbapps.neetflix.adapter.ProductionCompanyAdapter;
+import com.rkbapps.neetflix.adapter.TvSeriesListChildAdapter;
 import com.rkbapps.neetflix.adapter.credit.CastAdapter;
 import com.rkbapps.neetflix.adapter.credit.CrewAdapter;
-import com.rkbapps.neetflix.adapter.ProductionCompanyAdapter;
 import com.rkbapps.neetflix.adapter.series.SeasonAdapter;
-import com.rkbapps.neetflix.adapter.TvSeriesListChildAdapter;
 import com.rkbapps.neetflix.models.castandcrew.CreditsModel;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesListModel;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesModel;

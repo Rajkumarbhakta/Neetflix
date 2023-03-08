@@ -25,12 +25,12 @@ public class PersonSeriesAdapter extends RecyclerView.Adapter<PersonSeriesAdapte
     public static final int AS_CAST = 0;
     public static final int AS_CREW = 1;
 
-    private int type;
-    private Context context;
+    private final int type;
+    private final Context context;
     private List<AsACastModel> asACastModelList;
     private List<AsACrewModel> asACrewModelList;
 
-    public PersonSeriesAdapter(int type, Context context, List<AsACastModel> asACastModelList,int i) {
+    public PersonSeriesAdapter(int type, Context context, List<AsACastModel> asACastModelList, int i) {
         this.type = type;
         this.context = context;
         this.asACastModelList = asACastModelList;
@@ -45,28 +45,28 @@ public class PersonSeriesAdapter extends RecyclerView.Adapter<PersonSeriesAdapte
     @NonNull
     @Override
     public PersonCreditViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PersonCreditViewHolder(LayoutInflater.from(context).inflate(R.layout.person_credit_item,parent,false));
+        return new PersonCreditViewHolder(LayoutInflater.from(context).inflate(R.layout.person_credit_item, parent, false));
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull PersonCreditViewHolder holder, int position) {
         Intent i = new Intent(context, TvSeriesPreviewActivity.class);
-        if(type == AS_CAST){
+        if (type == AS_CAST) {
             holder.tittle.setText(asACastModelList.get(position).getName());
             holder.date.setText(asACastModelList.get(position).getFirstAirDate());
-            holder.rating.setText(asACastModelList.get(position).getVoteAverage()+"");
+            holder.rating.setText(asACastModelList.get(position).getVoteAverage() + "");
             if (asACastModelList.get(position).getPosterPath() != null) {
                 Glide.with(context).load("https://image.tmdb.org/t/p/w500" + asACastModelList.get(position).getPosterPath()).into(holder.poster);
             } else {
                 Glide.with(context).load("").into(holder.poster);
             }
-            if(!asACastModelList.get(position).getCharacter().equals(""))
-                holder.description.setText("As "+asACastModelList.get(position).getCharacter()+" for "+asACastModelList.get(position).getEpisodeCount()+" episode.");
+            if (!asACastModelList.get(position).getCharacter().equals(""))
+                holder.description.setText("As " + asACastModelList.get(position).getCharacter() + " for " + asACastModelList.get(position).getEpisodeCount() + " episode.");
             else
                 holder.description.setText("---");
 
-            if(asACastModelList.get(position).getAdult())
+            if (asACastModelList.get(position).getAdult())
                 holder.isNsfw.setVisibility(View.VISIBLE);
             else
                 holder.isNsfw.setVisibility(View.INVISIBLE);
@@ -74,21 +74,21 @@ public class PersonSeriesAdapter extends RecyclerView.Adapter<PersonSeriesAdapte
             i.putExtra("id", asACastModelList.get(position).getId());
             i.putExtra("tittle", asACastModelList.get(position).getName());
         }
-        if(type == AS_CREW){
+        if (type == AS_CREW) {
             holder.tittle.setText(asACrewModelList.get(position).getName());
             holder.date.setText(asACrewModelList.get(position).getFirstAirDate());
-            holder.rating.setText(asACrewModelList.get(position).getVoteAverage()+"");
+            holder.rating.setText(asACrewModelList.get(position).getVoteAverage() + "");
             if (asACrewModelList.get(position).getPosterPath() != null) {
                 Glide.with(context).load("https://image.tmdb.org/t/p/w500" + asACrewModelList.get(position).getPosterPath()).into(holder.poster);
             } else {
                 Glide.with(context).load("").into(holder.poster);
             }
-            if(!asACrewModelList.get(position).getJob().equals(""))
-                holder.description.setText("As "+asACrewModelList.get(position).getJob()+" for "+asACrewModelList.get(position).getEpisodeCount()+" episode.");
+            if (!asACrewModelList.get(position).getJob().equals(""))
+                holder.description.setText("As " + asACrewModelList.get(position).getJob() + " for " + asACrewModelList.get(position).getEpisodeCount() + " episode.");
             else
                 holder.description.setText("---");
 
-            if(asACrewModelList.get(position).getAdult())
+            if (asACrewModelList.get(position).getAdult())
                 holder.isNsfw.setVisibility(View.VISIBLE);
             else
                 holder.isNsfw.setVisibility(View.INVISIBLE);
@@ -108,7 +108,7 @@ public class PersonSeriesAdapter extends RecyclerView.Adapter<PersonSeriesAdapte
 
     @Override
     public int getItemCount() {
-        if(type == AS_CAST)
+        if (type == AS_CAST)
             return asACastModelList.size();
         else
             return asACrewModelList.size();
@@ -116,14 +116,14 @@ public class PersonSeriesAdapter extends RecyclerView.Adapter<PersonSeriesAdapte
 
     public class PersonCreditViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView poster,isNsfw;
-        TextView tittle,date,rating,description;
+        ImageView poster, isNsfw;
+        TextView tittle, date, rating, description;
 
         public PersonCreditViewHolder(@NonNull View itemView) {
             super(itemView);
 
             poster = itemView.findViewById(R.id.imgPersonItemPoster);
-            tittle = itemView.findViewById(R.id.txtPersonItemTittle);;
+            tittle = itemView.findViewById(R.id.txtPersonItemTittle);
             date = itemView.findViewById(R.id.txtPersonItemDate);
             rating = itemView.findViewById(R.id.txtPersonItemRatting);
             description = itemView.findViewById(R.id.txtPersonItemDescription);

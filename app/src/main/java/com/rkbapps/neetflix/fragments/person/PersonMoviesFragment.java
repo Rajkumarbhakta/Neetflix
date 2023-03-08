@@ -2,20 +2,17 @@ package com.rkbapps.neetflix.fragments.person;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.rkbapps.neetflix.R;
 import com.rkbapps.neetflix.adapter.person.PersonMoviesAdapter;
-import com.rkbapps.neetflix.adapter.person.PersonSeriesAdapter;
 import com.rkbapps.neetflix.models.person.movie.WorkForMovies;
-import com.rkbapps.neetflix.models.person.tvseries.WorkForSeries;
 import com.rkbapps.neetflix.services.ApiData;
 import com.rkbapps.neetflix.services.PersonApi;
 import com.rkbapps.neetflix.services.RetrofitInstance;
@@ -26,11 +23,12 @@ import retrofit2.Response;
 
 public class PersonMoviesFragment extends Fragment {
 
+    private RecyclerView cast, crew;
+
     public PersonMoviesFragment() {
         // Required empty public constructor
     }
 
-    private RecyclerView cast,crew;
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,10 +37,10 @@ public class PersonMoviesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_person_movies, container, false);
         int id = getArguments().getInt("id");
         cast = view.findViewById(R.id.recyclerPersonMoviesAsCast);
-        crew= view.findViewById(R.id.recyclerPersonMoviesAsCrew);
+        crew = view.findViewById(R.id.recyclerPersonMoviesAsCrew);
 
-        cast.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
-        crew.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
+        cast.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        crew.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
 
         PersonApi personApi = RetrofitInstance.getPersonApi();
 
@@ -50,9 +48,9 @@ public class PersonMoviesFragment extends Fragment {
         responseCall.enqueue(new Callback<WorkForMovies>() {
             @Override
             public void onResponse(Call<WorkForMovies> call, Response<WorkForMovies> response) {
-                if(response.isSuccessful()){
-                    cast.setAdapter(new PersonMoviesAdapter(PersonMoviesAdapter.AS_CAST,getContext(),response.body().getCast(), 0));
-                    crew.setAdapter(new PersonMoviesAdapter(PersonMoviesAdapter.AS_CREW,getContext(),response.body().getCrew()));
+                if (response.isSuccessful()) {
+                    cast.setAdapter(new PersonMoviesAdapter(PersonMoviesAdapter.AS_CAST, getContext(), response.body().getCast(), 0));
+                    crew.setAdapter(new PersonMoviesAdapter(PersonMoviesAdapter.AS_CREW, getContext(), response.body().getCrew()));
                 }
             }
 

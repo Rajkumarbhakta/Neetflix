@@ -1,10 +1,10 @@
 package com.rkbapps.neetflix;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.rkbapps.neetflix.activityes.MainActivity;
 
@@ -22,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }
-        },3000);
+        }, 3000);
 
     }
 }

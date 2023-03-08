@@ -3,8 +3,6 @@ package com.rkbapps.neetflix.models.person.tvseries;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class AsACrewModel {
     @SerializedName("adult")
     @Expose
