@@ -86,7 +86,7 @@ public class TabLayoutAdapter extends FragmentPagerAdapter {
             case 0:
                 return "Overview";
             case 1:
-                return "Video & Images";
+                return "Videos & Images";
             case 2:
                 return "Reviews";
             default:
