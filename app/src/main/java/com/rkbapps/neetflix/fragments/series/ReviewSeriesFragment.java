@@ -1,4 +1,4 @@
-package com.rkbapps.neetflix.fragments;
+package com.rkbapps.neetflix.fragments.series;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

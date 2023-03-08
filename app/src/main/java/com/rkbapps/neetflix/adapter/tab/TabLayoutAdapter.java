@@ -1,4 +1,4 @@
-package com.rkbapps.neetflix.adapter;
+package com.rkbapps.neetflix.adapter.tab;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.rkbapps.neetflix.fragments.MovieOverviewFragment;
-import com.rkbapps.neetflix.fragments.ReviewSeriesFragment;
-import com.rkbapps.neetflix.fragments.ReviewsMovieFragment;
-import com.rkbapps.neetflix.fragments.SeriesOverviewFragment;
-import com.rkbapps.neetflix.fragments.VideoAndImageMovieFragment;
-import com.rkbapps.neetflix.fragments.VideoAndImageSeriesFragment;
+import com.rkbapps.neetflix.fragments.movie.MovieOverviewFragment;
+import com.rkbapps.neetflix.fragments.series.ReviewSeriesFragment;
+import com.rkbapps.neetflix.fragments.movie.ReviewsMovieFragment;
+import com.rkbapps.neetflix.fragments.series.SeriesOverviewFragment;
+import com.rkbapps.neetflix.fragments.movie.VideoAndImageMovieFragment;
+import com.rkbapps.neetflix.fragments.series.VideoAndImageSeriesFragment;
 
 public class TabLayoutAdapter extends FragmentPagerAdapter {
     public static final int MOVIE = 0;

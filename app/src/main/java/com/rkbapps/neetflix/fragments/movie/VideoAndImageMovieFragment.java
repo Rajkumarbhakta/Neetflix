@@ -1,4 +1,4 @@
-package com.rkbapps.neetflix.fragments;
+package com.rkbapps.neetflix.fragments.movie;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

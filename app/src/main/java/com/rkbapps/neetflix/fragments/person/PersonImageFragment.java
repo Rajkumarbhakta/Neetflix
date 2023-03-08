@@ -1,4 +1,4 @@
-package com.rkbapps.neetflix.fragments;
+package com.rkbapps.neetflix.fragments.person;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.PersonImageAdapter;
-import com.rkbapps.neetflix.models.images.PersonImageModel;
+import com.rkbapps.neetflix.adapter.person.PersonImageAdapter;
+import com.rkbapps.neetflix.models.person.images.PersonImageModel;
 import com.rkbapps.neetflix.services.ApiData;
 import com.rkbapps.neetflix.services.PersonApi;
 import com.rkbapps.neetflix.services.RetrofitInstance;

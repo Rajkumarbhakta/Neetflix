@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.rkbapps.neetflix.R;
 import com.rkbapps.neetflix.adapter.GenreAdapter;
-import com.rkbapps.neetflix.adapter.TabLayoutAdapter;
+import com.rkbapps.neetflix.adapter.tab.TabLayoutAdapter;
 import com.rkbapps.neetflix.models.Genre;
 import com.rkbapps.neetflix.models.movies.MovieModel;
 import com.rkbapps.neetflix.services.ApiData;

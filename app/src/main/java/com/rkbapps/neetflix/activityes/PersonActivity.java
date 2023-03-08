@@ -4,11 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,14 +12,11 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.TabLayoutPersonAdapter;
-import com.rkbapps.neetflix.models.person.ExternalIds;
+import com.rkbapps.neetflix.adapter.tab.TabLayoutPersonAdapter;
 import com.rkbapps.neetflix.models.person.PersonDetails;
 import com.rkbapps.neetflix.services.ApiData;
 import com.rkbapps.neetflix.services.PersonApi;
 import com.rkbapps.neetflix.services.RetrofitInstance;
-
-import org.w3c.dom.Text;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -115,6 +108,7 @@ public class PersonActivity extends AppCompatActivity {
 
         personName.setText(name);
 
+        tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());

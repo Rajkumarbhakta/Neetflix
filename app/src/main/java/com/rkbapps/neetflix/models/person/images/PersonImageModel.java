@@ -1,4 +1,4 @@
-package com.rkbapps.neetflix.models.images;
+package com.rkbapps.neetflix.models.person.images;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

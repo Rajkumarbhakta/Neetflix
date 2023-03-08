@@ -1,4 +1,4 @@
-package com.rkbapps.neetflix.adapter;
+package com.rkbapps.neetflix.adapter.tab;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,9 +8,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.rkbapps.neetflix.fragments.PersonImageFragment;
-import com.rkbapps.neetflix.fragments.PersonMoviesAndSeriesFragment;
-import com.rkbapps.neetflix.fragments.PersonPersonalInfoFragment;
+import com.rkbapps.neetflix.fragments.person.PersonImageFragment;
+import com.rkbapps.neetflix.fragments.person.PersonMoviesFragment;
+import com.rkbapps.neetflix.fragments.person.PersonPersonalInfoFragment;
+import com.rkbapps.neetflix.fragments.person.PersonSeriesFragment;
 
 public class TabLayoutPersonAdapter extends FragmentPagerAdapter {
     private int id;
@@ -41,9 +42,13 @@ public class TabLayoutPersonAdapter extends FragmentPagerAdapter {
                 personImageFragment.setArguments(bundle);
                 return personImageFragment;
             case 2:
-                PersonMoviesAndSeriesFragment personMoviesAndSeriesFragment = new PersonMoviesAndSeriesFragment();
-                personMoviesAndSeriesFragment.setArguments(bundle);
-                return personMoviesAndSeriesFragment;
+                PersonMoviesFragment personMoviesFragment = new PersonMoviesFragment();
+                personMoviesFragment.setArguments(bundle);
+                return personMoviesFragment;
+            case 3:
+                PersonSeriesFragment personSeriesFragment = new PersonSeriesFragment();
+                personSeriesFragment.setArguments(bundle);
+                return personSeriesFragment;
 
             default:return null;
 
@@ -59,10 +64,10 @@ public class TabLayoutPersonAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch(position){
-            case 0:
-                return "Personal Info";
+            case 0: return "Personal Info";
             case 1: return "Images";
-            case 2:return  "Movies & TvSeries";
+            case 2:return  "Movies";
+            case 3:return "Tv Series";
             default:return null;
         }
     }

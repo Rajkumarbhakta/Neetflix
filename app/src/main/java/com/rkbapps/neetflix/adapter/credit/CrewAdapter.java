@@ -1,4 +1,4 @@
-package com.rkbapps.neetflix.adapter;
+package com.rkbapps.neetflix.adapter.credit;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

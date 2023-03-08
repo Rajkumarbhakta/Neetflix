@@ -1,4 +1,4 @@
-package com.rkbapps.neetflix.fragments;
+package com.rkbapps.neetflix.fragments.series;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.CastAdapter;
-import com.rkbapps.neetflix.adapter.CrewAdapter;
+import com.rkbapps.neetflix.adapter.credit.CastAdapter;
+import com.rkbapps.neetflix.adapter.credit.CrewAdapter;
 import com.rkbapps.neetflix.adapter.ProductionCompanyAdapter;
-import com.rkbapps.neetflix.adapter.SeasonAdapter;
+import com.rkbapps.neetflix.adapter.series.SeasonAdapter;
 import com.rkbapps.neetflix.adapter.TvSeriesListChildAdapter;
 import com.rkbapps.neetflix.models.castandcrew.CreditsModel;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesListModel;

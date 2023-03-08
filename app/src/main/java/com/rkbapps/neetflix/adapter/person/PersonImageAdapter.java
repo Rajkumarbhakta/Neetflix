@@ -1,4 +1,4 @@
-package com.rkbapps.neetflix.adapter;
+package com.rkbapps.neetflix.adapter.person;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.models.images.Profile;
+import com.rkbapps.neetflix.models.person.images.Profile;
 
 import java.util.List;
 
