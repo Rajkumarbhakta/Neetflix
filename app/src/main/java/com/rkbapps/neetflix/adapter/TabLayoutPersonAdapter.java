@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.rkbapps.neetflix.fragments.PersonImageFragment;
 import com.rkbapps.neetflix.fragments.PersonMoviesAndSeriesFragment;
 import com.rkbapps.neetflix.fragments.PersonPersonalInfoFragment;
 
@@ -36,6 +37,10 @@ public class TabLayoutPersonAdapter extends FragmentPagerAdapter {
                 personPersonalInfoFragment.setArguments(bundle);
                 return personPersonalInfoFragment;
             case 1:
+                PersonImageFragment personImageFragment = new PersonImageFragment();
+                personImageFragment.setArguments(bundle);
+                return personImageFragment;
+            case 2:
                 PersonMoviesAndSeriesFragment personMoviesAndSeriesFragment = new PersonMoviesAndSeriesFragment();
                 personMoviesAndSeriesFragment.setArguments(bundle);
                 return personMoviesAndSeriesFragment;
@@ -56,7 +61,8 @@ public class TabLayoutPersonAdapter extends FragmentPagerAdapter {
         switch(position){
             case 0:
                 return "Personal Info";
-            case 1: return  "Movies & TvSeries";
+            case 1: return "Images";
+            case 2:return  "Movies & TvSeries";
             default:return null;
         }
     }

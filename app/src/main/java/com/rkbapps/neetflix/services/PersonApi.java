@@ -1,5 +1,6 @@
 package com.rkbapps.neetflix.services;
 
+import com.rkbapps.neetflix.models.images.PersonImageModel;
 import com.rkbapps.neetflix.models.person.ExternalIds;
 import com.rkbapps.neetflix.models.person.PersonDetails;
 
@@ -16,4 +17,6 @@ public interface PersonApi {
     @GET("person/{person_id}")
     Call<PersonDetails> getPersonDetails(@Path("person_id") int personId, @Query("api_key") String apiKey);
 
+    @GET("person/{person_id}/images")
+    Call<PersonImageModel> getPersonImages(@Path("person_id") int personId, @Query("api_key") String apiKey);
 }

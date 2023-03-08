@@ -117,6 +117,7 @@ public class PersonActivity extends AppCompatActivity {
 
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
+        tabLayout.addTab(tabLayout.newTab());
 
         viewPager.setAdapter(new TabLayoutPersonAdapter(getSupportFragmentManager(),id,tabLayout.getTabCount(),getApplicationContext()));
         tabLayout.setupWithViewPager(viewPager);
