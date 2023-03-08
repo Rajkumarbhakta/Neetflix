@@ -3,6 +3,7 @@ package com.rkbapps.neetflix.services;
 import com.rkbapps.neetflix.models.person.images.PersonImageModel;
 import com.rkbapps.neetflix.models.person.ExternalIds;
 import com.rkbapps.neetflix.models.person.PersonDetails;
+import com.rkbapps.neetflix.models.person.movie.WorkForMovies;
 import com.rkbapps.neetflix.models.person.tvseries.WorkForSeries;
 
 import retrofit2.Call;
@@ -23,4 +24,7 @@ public interface PersonApi {
 
     @GET("person/{person_id}/tv_credits")
     Call<WorkForSeries> getPersonSeriesCredits(@Path("person_id") int personId, @Query("api_key") String apiKey);
+
+    @GET("person/{person_id}/movie_credits")
+    Call<WorkForMovies> getPersonMovieCredits(@Path("person_id") int personId, @Query("api_key") String apiKey);
 }
