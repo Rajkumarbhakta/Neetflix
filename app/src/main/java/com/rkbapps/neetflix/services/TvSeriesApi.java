@@ -2,6 +2,7 @@ package com.rkbapps.neetflix.services;
 
 import com.rkbapps.neetflix.models.Review.ReviewModel;
 import com.rkbapps.neetflix.models.castandcrew.CreditsModel;
+import com.rkbapps.neetflix.models.images.ImagesModel;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesListModel;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesModel;
 
@@ -35,6 +36,11 @@ public interface TvSeriesApi {
 
     @GET("tv/{tv_id}/similar")
     Call<TvSeriesListModel> getSimilarTvSeries(@Path("tv_id") int id, @Query("api_key") String apiKey);
+
+    @GET("tv/{tv_id}/images")
+    Call<ImagesModel> getSeriesImages(@Path("tv_id") int id, @Query("api_key") String apiKey);
+
+
 
 
 }
