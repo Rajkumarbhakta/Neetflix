@@ -45,5 +45,8 @@ public interface MovieApi {
     @GET("movie/{movie_id}/images")
     Call<ImagesModel> getMovieImages(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
 
+    @GET("search/movie")
+    Call<MovieListModel> getMovieSearchResult(@Query("api_key") String apiKey,@Query("query") String query,@Query("include_adult") boolean include_adult);
+
 
 }

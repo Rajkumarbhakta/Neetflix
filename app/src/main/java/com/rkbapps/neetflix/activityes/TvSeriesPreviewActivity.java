@@ -62,6 +62,7 @@ public class TvSeriesPreviewActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(tittle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         TvSeriesApi api = RetrofitInstance.getTvSeriesApi();

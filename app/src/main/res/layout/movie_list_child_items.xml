@@ -35,8 +35,8 @@
 
             <ImageView
                 android:id="@+id/imgNsfw"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/nsfw"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

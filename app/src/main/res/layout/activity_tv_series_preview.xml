@@ -35,13 +35,14 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/backdrop"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="@integer/material_motion_duration_short_1" />
+                app:layout_collapseParallaxMultiplier="0.7" />
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbarTvSeries"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/transparent"
+                app:layout_collapseMode="pin"
 
                 />
 
@@ -53,6 +54,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -197,7 +199,7 @@
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/pagerSeries"
                     android:layout_width="match_parent"
-                    android:layout_height="800dp">
+                    android:layout_height="match_parent">
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabLayoutSeries"

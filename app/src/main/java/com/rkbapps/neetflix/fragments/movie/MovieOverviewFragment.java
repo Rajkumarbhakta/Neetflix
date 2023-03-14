@@ -94,7 +94,6 @@ public class MovieOverviewFragment extends Fragment {
             public void onResponse(Call<CreditsModel> call, Response<CreditsModel> response) {
                 if (response.isSuccessful()) {
                     crew.setAdapter(new CrewAdapter(getContext(), response.body().getCrew()));
-                    Log.d("crew", "" + response.body().getCrew().get(0).toString());
                     cast.setAdapter(new CastAdapter(getContext(), response.body().getCast()));
                 }
             }

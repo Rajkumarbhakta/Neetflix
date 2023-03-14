@@ -40,6 +40,9 @@ public interface TvSeriesApi {
     @GET("tv/{tv_id}/images")
     Call<ImagesModel> getSeriesImages(@Path("tv_id") int id, @Query("api_key") String apiKey);
 
+    @GET("search/tv")
+    Call<TvSeriesListModel> getSeriesSearchResult(@Query("api_key") String apiKey,@Query("query") String query,@Query("include_adult") boolean include_adult);
+
 
 
 
