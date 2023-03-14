@@ -8,8 +8,8 @@
     android:paddingBottom="10dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="130dp"
-        android:layout_height="210dp"
+        android:layout_width="113dp"
+        android:layout_height="170dp"
         android:layout_margin="5dp"
         android:outlineAmbientShadowColor="@color/purple_700"
         app:cardCornerRadius="10dp"
@@ -59,6 +59,7 @@
         android:maxLines="1"
         android:text="Tittle"
         android:textColor="@color/white"
+        android:textSize="12sp"
         android:textStyle="bold" />
 
     <RelativeLayout
@@ -75,7 +76,7 @@
             android:layout_centerVertical="true"
             android:text="2002"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
         <ImageView
             android:layout_width="16dp"
@@ -91,7 +92,7 @@
             android:layout_centerVertical="true"
             android:text="4.5"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
     </RelativeLayout>
 

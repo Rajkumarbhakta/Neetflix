@@ -3,14 +3,17 @@ package com.rkbapps.neetflix.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rkbapps.neetflix.R;
 import com.rkbapps.neetflix.adapter.MovieListChildAdapter;
@@ -34,6 +37,7 @@ public class SearchMovieResultFragment extends Fragment {
     }
 
     private static RecyclerView recyclerView;
+    static int totalPages;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -43,15 +47,34 @@ public class SearchMovieResultFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search_movie_result, container, false);
         String query = getArguments().getString("query");
         recyclerView=view.findViewById(R.id.recyclerSearchMovies);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
 
         bindData(query);
+
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//
+//
+//
+//            }
+//
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//
+//
+//            }
+//        });
 
         return view;
     }
     public static void bindData(String query){
-        if(!query.equals("") || query!=null)
+        if(!query.equals("") || query!=null) {
             loadMovieSearchResult(query);
+        }
     }
 
 

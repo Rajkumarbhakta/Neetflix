@@ -40,7 +40,7 @@ public class SearchSeriesResultFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search_series_result, container, false);
         String query = getArguments().getString("query");
         recyclerView=view.findViewById(R.id.recyclerSearchSeries);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
 
         bindData(query);
 
