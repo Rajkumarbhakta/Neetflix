@@ -60,7 +60,7 @@ public class PersonMoviesAdapter extends RecyclerView.Adapter<PersonMoviesAdapte
             if (asACastModelList.get(position).getPosterPath() != null) {
                 Glide.with(context).load("https://image.tmdb.org/t/p/w500" + asACastModelList.get(position).getPosterPath()).into(holder.poster);
             } else {
-                Glide.with(context).load("").into(holder.poster);
+                Glide.with(context).load(R.drawable.default_poster).into(holder.poster);
             }
             if (!asACastModelList.get(position).getCharacter().equals(""))
                 holder.description.setText("As " + asACastModelList.get(position).getCharacter());

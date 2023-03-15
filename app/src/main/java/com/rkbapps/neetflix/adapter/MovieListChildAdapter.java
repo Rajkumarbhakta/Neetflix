@@ -41,9 +41,10 @@ public class MovieListChildAdapter extends RecyclerView.Adapter<MovieListChildAd
     public void onBindViewHolder(@NonNull MovieListChildAdapter.MovieViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (movieList.get(position).getPosterPath() != null) {
             Glide.with(context).load("https://image.tmdb.org/t/p/w500" + movieList.get(position).getPosterPath()).into(holder.poster);
-        } else {
-            Glide.with(context).load("").into(holder.poster);
         }
+        else
+            Glide.with(context).load(R.drawable.default_poster).into(holder.poster);
+
 
         holder.tittle.setText(movieList.get(position).getTitle());
 

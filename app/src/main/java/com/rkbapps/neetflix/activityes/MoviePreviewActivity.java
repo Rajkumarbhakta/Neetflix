@@ -101,7 +101,7 @@ public class MoviePreviewActivity extends AppCompatActivity {
                     if (movieModel.getBackdropPath() != null)
                         Glide.with(getApplicationContext()).load("https://image.tmdb.org/t/p/w500" + movieModel.getBackdropPath()).into(backdrop);
                     else
-                        Glide.with(getApplicationContext()).load("").into(backdrop);
+                        Glide.with(getApplicationContext()).load(R.drawable.general_backdrop).into(backdrop);
 
                     rating.setText("" + movieModel.getVoteAverage());
                     releaseDate.setText("" + movieModel.getReleaseDate());

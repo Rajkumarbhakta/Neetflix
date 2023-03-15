@@ -42,7 +42,7 @@ public class TvSeriesListChildAdapter extends RecyclerView.Adapter<TvSeriesListC
         if (seriesList.get(position).getPosterPath() != null) {
             Glide.with(context).load("https://image.tmdb.org/t/p/w500" + seriesList.get(position).getPosterPath()).into(holder.poster);
         } else {
-            Glide.with(context).load("").into(holder.poster);
+            Glide.with(context).load(R.drawable.default_poster).into(holder.poster);
         }
 
         holder.tittle.setText(seriesList.get(position).getName());

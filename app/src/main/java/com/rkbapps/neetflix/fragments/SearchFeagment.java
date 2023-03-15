@@ -43,7 +43,7 @@ public class SearchFeagment extends Fragment {
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
-        viewPager.setAdapter(new TabAdapterSearch(getChildFragmentManager(),getContext(),tabLayout.getTabCount(),""));
+        viewPager.setAdapter(new TabAdapterSearch(getChildFragmentManager(),getContext(),tabLayout.getTabCount(),"dummyString"));
         tabLayout.setupWithViewPager(viewPager);
 
         searchView.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {

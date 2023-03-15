@@ -38,8 +38,9 @@ public class SearchMovieResultFragment extends Fragment {
 
     private static RecyclerView recyclerView;
     static int totalPages;
+    private static TextView textNoMovie;
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "SetTextI18n"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,7 +48,10 @@ public class SearchMovieResultFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search_movie_result, container, false);
         String query = getArguments().getString("query");
         recyclerView=view.findViewById(R.id.recyclerSearchMovies);
+        textNoMovie = view.findViewById(R.id.txtSearchNoMovie);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
+
+
 
         bindData(query);
 
@@ -71,9 +75,12 @@ public class SearchMovieResultFragment extends Fragment {
 
         return view;
     }
+    @SuppressLint("SetTextI18n")
     public static void bindData(String query){
-        if(!query.equals("") || query!=null) {
+        if(!query.equals("dummyString") && query!=null) {
             loadMovieSearchResult(query);
+        }else {
+            textNoMovie.setText("Try to search something.");
         }
     }
 
@@ -86,13 +93,26 @@ public class SearchMovieResultFragment extends Fragment {
             @Override
             public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
                 if(response.isSuccessful()){
-                    recyclerView.setAdapter(new MovieListChildAdapter(response.body().getResults(), recyclerView.getContext()));
+                    if(response.body().getResults().size()==0 || response.body().getResults()==null){
+                        recyclerView.setVisibility(View.GONE);
+                        textNoMovie.setText("No movie found.");
+                        textNoMovie.setVisibility(View.VISIBLE);
+                    }else {
+                        textNoMovie.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        recyclerView.setAdapter(new MovieListChildAdapter(response.body().getResults(), recyclerView.getContext()));
+                    }
+                }else{
+                    recyclerView.setVisibility(View.GONE);
+                    textNoMovie.setText(response.message());
+                    textNoMovie.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<MovieListModel> call, Throwable t) {
-
+                recyclerView.setVisibility(View.GONE);
+                textNoMovie.setText(t.getMessage());
             }
         });
 
