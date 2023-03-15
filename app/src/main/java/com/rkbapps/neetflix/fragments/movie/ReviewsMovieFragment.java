@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +38,9 @@ public class ReviewsMovieFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_reviews_movie, container, false);
         int id = getArguments().getInt("id");
         RecyclerView recyclerView = view.findViewById(R.id.recyclerReview);
+        TextView noReview = view.findViewById(R.id.txtNoMovieReview);
+
+        noReview.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
         MovieApi movieApi = RetrofitInstance.getMovieApi();
@@ -44,13 +49,26 @@ public class ReviewsMovieFragment extends Fragment {
         responseCall.enqueue(new Callback<ReviewModel>() {
             @Override
             public void onResponse(Call<ReviewModel> call, Response<ReviewModel> response) {
-                if (response.isSuccessful())
-                    recyclerView.setAdapter(new ReviewAdapter(getContext(), response.body().getResults()));
+                if (response.isSuccessful()){
+                    if(response.body()!=null){
+                        if(response.body().getResults()==null || response.body().getResults().size()==0){
+                            noReview.setVisibility(View.VISIBLE);
+                        }else {
+                            recyclerView.setAdapter(new ReviewAdapter(getContext(), response.body().getResults()));
+                        }
+
+                    }else {
+                        Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(getContext(), ""+response.message(), Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override
             public void onFailure(Call<ReviewModel> call, Throwable t) {
-
+                Toast.makeText(getContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
