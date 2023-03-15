@@ -55,7 +55,7 @@ public class SearchSeriesResultFragment extends Fragment {
     private static void loadSeriesSearchResult(String query){
         TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
 
-        Call<TvSeriesListModel> responseCall = tvSeriesApi.getSeriesSearchResult(ApiData.API_KEY,query,true);
+        Call<TvSeriesListModel> responseCall = tvSeriesApi.getSeriesSearchResult(ApiData.API_KEY,query,false);
 
         responseCall.enqueue(new Callback<TvSeriesListModel>() {
             @Override

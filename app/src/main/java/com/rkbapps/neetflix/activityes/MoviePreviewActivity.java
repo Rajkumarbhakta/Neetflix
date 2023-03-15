@@ -47,6 +47,7 @@ public class MoviePreviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_preview);
+
         int id = getIntent().getIntExtra("id", -1);
         String tittle = getIntent().getStringExtra("tittle");
 

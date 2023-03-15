@@ -81,7 +81,7 @@ public class SearchMovieResultFragment extends Fragment {
     private static void loadMovieSearchResult(String query){
         MovieApi movieApi = RetrofitInstance.getMovieApi();
 
-        Call<MovieListModel> responseCall = movieApi.getMovieSearchResult(ApiData.API_KEY,query,true);
+        Call<MovieListModel> responseCall = movieApi.getMovieSearchResult(ApiData.API_KEY,query,false);
         responseCall.enqueue(new Callback<MovieListModel>() {
             @Override
             public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
