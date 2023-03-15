@@ -2,7 +2,6 @@ package com.rkbapps.neetflix.activityes;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,7 +43,7 @@ public class MoviePreviewActivity extends AppCompatActivity {
     private MovieModel movieModel = new MovieModel();
     private RecyclerView recyclerView;
     private TextView rating, budget, revenue, releaseDate, runtime, tagLine;
-    private ImageView backdrop,bookmark;
+    private ImageView backdrop, bookmark;
     private Toolbar toolbar;
 
     private Database mDatabase;
@@ -68,16 +67,16 @@ public class MoviePreviewActivity extends AppCompatActivity {
         releaseDate = findViewById(R.id.txtReleaseDateMovie);
         runtime = findViewById(R.id.txtRuntime);
         backdrop = findViewById(R.id.imgBackdropMovie);
-        bookmark=findViewById(R.id.bookmarkMovie);
+        bookmark = findViewById(R.id.bookmarkMovie);
         tagLine = findViewById(R.id.txtTagLine);
         toolbar = findViewById(R.id.toolbarMovie);
 
 
         mDatabase = DatabaseReference.getDatabase(getApplicationContext());
 
-        if(mDatabase.getContentDao().isBookmarked(id)){
+        if (mDatabase.getContentDao().isBookmarked(id)) {
             bookmark.setImageResource(R.drawable.bookmark);
-        }else {
+        } else {
             bookmark.setImageResource(R.drawable.bookmark_border);
         }
 
@@ -109,14 +108,14 @@ public class MoviePreviewActivity extends AppCompatActivity {
                     revenue.setText("" + (movieModel.getRevenue() / 1000000 + "M"));
                     runtime.setText("" + (movieModel.getRuntime() / 60) + "h" + (movieModel.getRuntime() % 60) + "m");
                     tagLine.setText(movieModel.getTagline());
-                }else {
-                    Toast.makeText(MoviePreviewActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MoviePreviewActivity.this, "" + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<MovieModel> call, Throwable t) {
-                Toast.makeText(MoviePreviewActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MoviePreviewActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -134,30 +133,30 @@ public class MoviePreviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(mDatabase.getContentDao().isBookmarked(id)){
+                if (mDatabase.getContentDao().isBookmarked(id)) {
                     mDatabase.getContentDao().removeBookmark(id);
                     Toast.makeText(MoviePreviewActivity.this, "Removed from bookmark", Toast.LENGTH_SHORT).show();
                     bookmark.setImageResource(R.drawable.bookmark_border);
 
-                }else {
-                responseCall.clone().enqueue(new Callback<MovieModel>() {
-                    @Override
-                    public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
-                        if(response.isSuccessful()) {
-                            EntityModel entityModel = new EntityModel(EntityModel.MOVIE,response.body().getAdult(),response.body().getId(),response.body().getPosterPath(),response.body().getReleaseDate(),response.body().getTitle(),response.body().getVoteAverage());
-                            mDatabase.getContentDao().addToBookmark(entityModel);
-                            bookmark.setImageResource(R.drawable.bookmark);
-                            Toast.makeText(MoviePreviewActivity.this, "Added to bookmark", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(MoviePreviewActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
+                } else {
+                    responseCall.clone().enqueue(new Callback<MovieModel>() {
+                        @Override
+                        public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
+                            if (response.isSuccessful()) {
+                                EntityModel entityModel = new EntityModel(EntityModel.MOVIE, response.body().getAdult(), response.body().getId(), response.body().getPosterPath(), response.body().getReleaseDate(), response.body().getTitle(), response.body().getVoteAverage());
+                                mDatabase.getContentDao().addToBookmark(entityModel);
+                                bookmark.setImageResource(R.drawable.bookmark);
+                                Toast.makeText(MoviePreviewActivity.this, "Added to bookmark", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(MoviePreviewActivity.this, "" + response.message(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<MovieModel> call, Throwable t) {
-                        Toast.makeText(MoviePreviewActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<MovieModel> call, Throwable t) {
+                            Toast.makeText(MoviePreviewActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
                 }
 

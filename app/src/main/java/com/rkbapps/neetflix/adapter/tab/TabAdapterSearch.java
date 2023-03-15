@@ -15,7 +15,7 @@ import com.rkbapps.neetflix.fragments.SearchSeriesResultFragment;
 public class TabAdapterSearch extends FragmentPagerAdapter {
     private final Context context;
     private final int totalTabs;
-    private String query;
+    private final String query;
 
     public TabAdapterSearch(@NonNull FragmentManager fm, Context context, int totalTabs, String query) {
         super(fm);
@@ -28,8 +28,8 @@ public class TabAdapterSearch extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Bundle bundle = new Bundle();
-        bundle.putString("query",query);
-        switch (position){
+        bundle.putString("query", query);
+        switch (position) {
             case 0:
                 SearchMovieResultFragment searchMovieResultFragment = new SearchMovieResultFragment();
                 searchMovieResultFragment.setArguments(bundle);
@@ -38,7 +38,8 @@ public class TabAdapterSearch extends FragmentPagerAdapter {
                 SearchSeriesResultFragment searchSeriesResultFragment = new SearchSeriesResultFragment();
                 searchSeriesResultFragment.setArguments(bundle);
                 return searchSeriesResultFragment;
-            default: return null;
+            default:
+                return null;
         }
     }
 
@@ -50,10 +51,13 @@ public class TabAdapterSearch extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position){
-            case 0:return "Movies";
-            case 1:return "Tv Series";
-            default:return null;
+        switch (position) {
+            case 0:
+                return "Movies";
+            case 1:
+                return "Tv Series";
+            default:
+                return null;
         }
     }
 }

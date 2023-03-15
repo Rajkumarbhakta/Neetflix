@@ -21,13 +21,14 @@ import java.util.Objects;
 
 public class SearchFeagment extends Fragment {
 
-    public SearchFeagment() {
-        // Required empty public constructor
-    }
     private SearchBar searchBar;
     private SearchView searchView;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
+    public SearchFeagment() {
+        // Required empty public constructor
+    }
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -35,7 +36,7 @@ public class SearchFeagment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_feagment, container, false);
-        searchBar=view.findViewById(R.id.search_bar);
+        searchBar = view.findViewById(R.id.search_bar);
         searchView = view.findViewById(R.id.searchView);
         tabLayout = view.findViewById(R.id.tabLayoutSearch);
         viewPager = view.findViewById(R.id.pagerSearch);
@@ -43,14 +44,14 @@ public class SearchFeagment extends Fragment {
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
-        viewPager.setAdapter(new TabAdapterSearch(getChildFragmentManager(),getContext(),tabLayout.getTabCount(),"dummyString"));
+        viewPager.setAdapter(new TabAdapterSearch(getChildFragmentManager(), getContext(), tabLayout.getTabCount(), "dummyString"));
         tabLayout.setupWithViewPager(viewPager);
 
         searchView.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 searchBar.setText(searchView.getText());
-                if(!Objects.requireNonNull(searchView.getText()).toString().equals("")) {
+                if (!Objects.requireNonNull(searchView.getText()).toString().equals("")) {
                     SearchMovieResultFragment.bindData(searchView.getText().toString());
                     SearchSeriesResultFragment.bindData(searchView.getText().toString());
                 }

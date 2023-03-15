@@ -2,11 +2,11 @@ package com.rkbapps.neetflix.fragments.movie;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +32,7 @@ public class MovieOverviewFragment extends Fragment {
     private final MovieApi movieApi = RetrofitInstance.getMovieApi();
     private TextView overview;
     private RecyclerView productionCompany, cast, similarMovies, crew;
+    private TextView noCast, noCrew, noProductionCo, noSimilarMovies;
 
     public MovieOverviewFragment() {
         // Required empty public constructor
@@ -52,10 +53,19 @@ public class MovieOverviewFragment extends Fragment {
         productionCompany = view.findViewById(R.id.recyclerProductionCompanyMovie);
         similarMovies = view.findViewById(R.id.recyclerSimilarMovies);
 
+        noCast = view.findViewById(R.id.txtNoCastDataMovies);
+        noCrew = view.findViewById(R.id.txtNoCrewDataMovies);
+        noProductionCo = view.findViewById(R.id.txtNoProductionCoMovies);
+        noSimilarMovies = view.findViewById(R.id.txtNoSimilarMovies);
+
+        noCast.setVisibility(View.GONE);
+        noCrew.setVisibility(View.GONE);
+        noProductionCo.setVisibility(View.GONE);
+        noSimilarMovies.setVisibility(View.GONE);
+
         crew.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         productionCompany.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         cast.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-
         similarMovies.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
 
 
@@ -74,14 +84,24 @@ public class MovieOverviewFragment extends Fragment {
             @Override
             public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
                 if (response.isSuccessful()) {
-                    overview.setText(response.body().getOverview());
-                    productionCompany.setAdapter(new ProductionCompanyAdapter(getContext(), response.body().getProductionCompanies()));
+                    if (response.body() != null) {
+                        overview.setText(response.body().getOverview());
+                        if (response.body().getProductionCompanies() == null || response.body().getProductionCompanies().size() == 0) {
+                            noProductionCo.setVisibility(View.VISIBLE);
+                        } else {
+                            productionCompany.setAdapter(new ProductionCompanyAdapter(getContext(), response.body().getProductionCompanies()));
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<MovieModel> call, Throwable t) {
-
+                Toast.makeText(getContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -93,14 +113,28 @@ public class MovieOverviewFragment extends Fragment {
             @Override
             public void onResponse(Call<CreditsModel> call, Response<CreditsModel> response) {
                 if (response.isSuccessful()) {
-                    crew.setAdapter(new CrewAdapter(getContext(), response.body().getCrew()));
-                    cast.setAdapter(new CastAdapter(getContext(), response.body().getCast()));
+                    if (response.body() != null) {
+                        if (response.body().getCast().size() == 0 || response.body().getCast() == null) {
+                            noCast.setVisibility(View.VISIBLE);
+                        } else {
+                            cast.setAdapter(new CastAdapter(getContext(), response.body().getCast()));
+                        }
+                        if (response.body().getCrew().size() == 0 || response.body().getCrew() == null) {
+                            noCrew.setVisibility(View.VISIBLE);
+                        } else {
+                            crew.setAdapter(new CrewAdapter(getContext(), response.body().getCrew()));
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<CreditsModel> call, Throwable t) {
-
+                Toast.makeText(getContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -112,18 +146,26 @@ public class MovieOverviewFragment extends Fragment {
             @Override
             public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
                 if (response.isSuccessful()) {
-                    similarMovies.setAdapter(new MovieListChildAdapter(response.body().getResults(), getContext()));
+                    if (response.body() != null) {
+                        if (response.body().getResults() == null || response.body().getResults().size() == 0) {
+                            noSimilarMovies.setVisibility(View.VISIBLE);
+                        } else {
+                            similarMovies.setAdapter(new MovieListChildAdapter(response.body().getResults(), getContext()));
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<MovieListModel> call, Throwable t) {
-
+                Toast.makeText(getContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
-
     }
-
 
 }

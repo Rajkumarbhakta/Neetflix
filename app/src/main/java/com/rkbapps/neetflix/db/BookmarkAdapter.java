@@ -21,8 +21,8 @@ import java.util.List;
 
 public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.BookMarkViewHolder> {
 
-    private Context context;
-    private List<EntityModel> entityModelList;
+    private final Context context;
+    private final List<EntityModel> entityModelList;
 
     public BookmarkAdapter(Context context, List<EntityModel> entityModelList) {
         this.context = context;
@@ -59,13 +59,13 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.BookMa
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(entityModelList.get(position).getType()==EntityModel.MOVIE){
+                if (entityModelList.get(position).getType() == EntityModel.MOVIE) {
                     Intent i = new Intent(context, MoviePreviewActivity.class);
                     i.putExtra("id", entityModelList.get(position).getId());
                     i.putExtra("tittle", entityModelList.get(position).getTitle());
                     context.startActivity(i);
                 }
-                if(entityModelList.get(position).getType()==EntityModel.SERIES){
+                if (entityModelList.get(position).getType() == EntityModel.SERIES) {
                     Intent i = new Intent(context, TvSeriesPreviewActivity.class);
                     i.putExtra("id", entityModelList.get(position).getId());
                     i.putExtra("tittle", entityModelList.get(position).getTitle());
@@ -86,6 +86,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.BookMa
     public static class BookMarkViewHolder extends RecyclerView.ViewHolder {
         ImageView poster, nsfw;
         TextView tittle, releaseYear, ratting;
+
         public BookMarkViewHolder(@NonNull View itemView) {
             super(itemView);
             poster = itemView.findViewById(R.id.imgMoviePoster);

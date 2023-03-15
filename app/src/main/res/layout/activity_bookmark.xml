@@ -36,7 +36,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerBookmark"
         android:layout_width="0dp"

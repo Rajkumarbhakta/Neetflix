@@ -24,10 +24,13 @@ import retrofit2.Response;
 
 
 public class VideoAndImageSeriesFragment extends Fragment {
+    TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
+    private RecyclerView backdrops, videos, posters;
+
     public VideoAndImageSeriesFragment() {
         // Required empty public constructor
     }
-    private RecyclerView backdrops, videos, posters;
+
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,20 +48,20 @@ public class VideoAndImageSeriesFragment extends Fragment {
         loadSeriesImages(id);
 
 
-
         return view;
     }
-    TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
-    private void loadSeriesImages(int id){
+
+    private void loadSeriesImages(int id) {
         Call<ImagesModel> responseCall = tvSeriesApi.getSeriesImages(id, ApiData.API_KEY);
         responseCall.enqueue(new Callback<ImagesModel>() {
             @Override
             public void onResponse(Call<ImagesModel> call, Response<ImagesModel> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     posters.setAdapter(new PosterAdapter(getContext(), response.body().getPosters()));
                     backdrops.setAdapter(new BackdropAdapter(getContext(), response.body().getBackdrops()));
                 }
             }
+
             @Override
             public void onFailure(Call<ImagesModel> call, Throwable t) {
 

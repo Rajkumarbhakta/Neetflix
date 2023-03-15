@@ -13,20 +13,20 @@ public interface ContentDao {
 
     //For inserting new data in database;
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public long addToBookmark(EntityModel entityModel);
+    long addToBookmark(EntityModel entityModel);
 
     //for deleting a data from database;
     @Delete
-    public void deleteBookmark(EntityModel entityModel);
+    void deleteBookmark(EntityModel entityModel);
 
     //get all bookmarked data from database
     @Query("select * from content")
-    public List<EntityModel> getMyBookmarks();
+    List<EntityModel> getMyBookmarks();
 
     @Query("select id from content where id=:enterId")
-    public boolean isBookmarked(int enterId);
+    boolean isBookmarked(int enterId);
 
     @Query("delete from content where id=:enterId")
-    public void removeBookmark(int enterId);
+    void removeBookmark(int enterId);
 
 }

@@ -51,6 +51,17 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/txtNoCrewDataMovies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No data available"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -64,6 +75,16 @@
                 android:id="@+id/recyclerCrewMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtNoCastDataMovies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No data available"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -81,6 +102,16 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/txtNoProductionCoMovies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No data available"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -95,7 +126,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-
+            <TextView
+                android:id="@+id/txtNoSimilarMovies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No data available"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

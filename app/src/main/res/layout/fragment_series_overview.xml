@@ -147,6 +147,16 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/txtNoSeasonData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No data available"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -160,6 +170,16 @@
                 android:id="@+id/recyclerCastSeries"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtNoCastDataSeries"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No data available"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -177,6 +197,16 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/txtNoCrewDataSeries"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No data available"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -190,6 +220,16 @@
                 android:id="@+id/recyclerNetwork"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtNoNetworkDataSeries"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No data available"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -207,6 +247,16 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/txtNoProductionCoDataSeries"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No data available"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -220,6 +270,16 @@
                 android:id="@+id/recyclerSimilarSeries"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtNoSimilarSeries"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No similar series available"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
 
 
         </LinearLayout>

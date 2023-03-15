@@ -25,27 +25,11 @@ import retrofit2.Response;
 
 public class SearchSeriesResultFragment extends Fragment {
 
-    public SearchSeriesResultFragment() {
-        // Required empty public constructor
-    }
-
     private static RecyclerView recyclerView;
     private static TextView txtNoSeries;
 
-    @SuppressLint("MissingInflatedId")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search_series_result, container, false);
-        String query = getArguments().getString("query");
-        recyclerView = view.findViewById(R.id.recyclerSearchSeries);
-        txtNoSeries = view.findViewById(R.id.txtSearchNoSeries);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-
-        bindData(query);
-
-        return view;
+    public SearchSeriesResultFragment() {
+        // Required empty public constructor
     }
 
     @SuppressLint("SetTextI18n")
@@ -90,6 +74,22 @@ public class SearchSeriesResultFragment extends Fragment {
         });
 
 
+    }
+
+    @SuppressLint("MissingInflatedId")
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_search_series_result, container, false);
+        String query = getArguments().getString("query");
+        recyclerView = view.findViewById(R.id.recyclerSearchSeries);
+        txtNoSeries = view.findViewById(R.id.txtSearchNoSeries);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+
+        bindData(query);
+
+        return view;
     }
 
 }
