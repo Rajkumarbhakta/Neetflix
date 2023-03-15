@@ -137,7 +137,7 @@ public class TvSeriesPreviewActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<TvSeriesModel> call, Response<TvSeriesModel> response) {
                             if(response.isSuccessful()) {
-                                EntityModel entityModel = new EntityModel(EntityModel.MOVIE,response.body().getAdult(),response.body().getId(),response.body().getPosterPath(),response.body().getFirstAirDate(),response.body().getName(),response.body().getVoteAverage());
+                                EntityModel entityModel = new EntityModel(EntityModel.SERIES,response.body().getAdult(),response.body().getId(),response.body().getPosterPath(),response.body().getFirstAirDate(),response.body().getName(),response.body().getVoteAverage());
                                 mDatabase.getContentDao().addToBookmark(entityModel);
                                 bookmark.setImageResource(R.drawable.bookmark);
                                 Toast.makeText(TvSeriesPreviewActivity.this, "Added to bookmark", Toast.LENGTH_SHORT).show();
