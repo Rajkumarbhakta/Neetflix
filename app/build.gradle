@@ -45,9 +45,13 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.15.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.15.0'
 
-
+    //circular image view
     implementation 'com.mikhaellopez:circularimageview:4.3.1'
-
+    //expandable text view
     implementation 'io.github.glailton.expandabletextview:expandabletextview:1.0.3'
+    //room
+    def room_version = "2.5.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 
 }
