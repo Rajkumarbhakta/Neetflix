@@ -1,6 +1,8 @@
 package com.rkbapps.neetflix.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.rkbapps.neetflix.R;
+import com.rkbapps.neetflix.activityes.ImagePreviewActivity;
 import com.rkbapps.neetflix.models.images.Backdrop;
 
 import java.util.List;
@@ -32,8 +35,19 @@ public class BackdropAdapter extends RecyclerView.Adapter<BackdropAdapter.Backdr
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BackdropViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BackdropViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Glide.with(context).load("https://image.tmdb.org/t/p/w500" + backdrops.get(position).getFilePath()).into(holder.backdropImg);
+
+        holder.backdropImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, ImagePreviewActivity.class);
+                i.putExtra("imageKey",backdrops.get(position).getFilePath());
+                context.startActivity(i);
+
+            }
+        });
+
     }
 
     @Override

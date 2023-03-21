@@ -5,6 +5,7 @@ import com.rkbapps.neetflix.models.castandcrew.CreditsModel;
 import com.rkbapps.neetflix.models.images.ImagesModel;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesListModel;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesModel;
+import com.rkbapps.neetflix.models.tvseries.seasons.SeasonsDetails;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -43,6 +44,8 @@ public interface TvSeriesApi {
     @GET("search/tv")
     Call<TvSeriesListModel> getSeriesSearchResult(@Query("api_key") String apiKey, @Query("query") String query, @Query("include_adult") boolean include_adult);
 
+    @GET("tv/{tv_id}/season/{season_number}")
+    Call<SeasonsDetails> getSeasonsDetails(@Path("tv_id") int tvId,@Path("season_number") int seasonsNumber,@Query("api_key") String apiKey);
 
 }
 

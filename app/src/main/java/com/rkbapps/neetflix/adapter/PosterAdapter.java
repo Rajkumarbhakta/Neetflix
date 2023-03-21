@@ -1,6 +1,8 @@
 package com.rkbapps.neetflix.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.rkbapps.neetflix.R;
+import com.rkbapps.neetflix.activityes.ImagePreviewActivity;
 import com.rkbapps.neetflix.models.images.Poster;
 
 import java.util.List;
@@ -32,8 +35,16 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PosterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PosterViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Glide.with(context).load("https://image.tmdb.org/t/p/w500" + posters.get(position).getFilePath()).into(holder.posterItem);
+        holder.posterItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, ImagePreviewActivity.class);
+                i.putExtra("imageKey",posters.get(position).getFilePath());
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override
