@@ -1,6 +1,7 @@
 package com.rkbapps.neetflix.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rkbapps.neetflix.R;
 import com.rkbapps.neetflix.adapter.TvSeriesListChildAdapter;
+import com.rkbapps.neetflix.db.SharedPreferanceValues;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesListModel;
 import com.rkbapps.neetflix.services.ApiData;
 import com.rkbapps.neetflix.services.RetrofitInstance;
@@ -43,7 +45,7 @@ public class SearchSeriesResultFragment extends Fragment {
     private static void loadSeriesSearchResult(String query) {
         TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
 
-        Call<TvSeriesListModel> responseCall = tvSeriesApi.getSeriesSearchResult(ApiData.API_KEY, query, false);
+        Call<TvSeriesListModel> responseCall = tvSeriesApi.getSeriesSearchResult(ApiData.API_KEY, query, SharedPreferanceValues.readNsfw(recyclerView.getContext()));
 
         responseCall.enqueue(new Callback<TvSeriesListModel>() {
             @SuppressLint("SetTextI18n")

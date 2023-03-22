@@ -1,6 +1,7 @@
 package com.rkbapps.neetflix.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rkbapps.neetflix.R;
 import com.rkbapps.neetflix.adapter.MovieListChildAdapter;
+import com.rkbapps.neetflix.db.SharedPreferanceValues;
 import com.rkbapps.neetflix.models.movies.MovieListModel;
 import com.rkbapps.neetflix.services.ApiData;
 import com.rkbapps.neetflix.services.MovieApi;
@@ -46,7 +48,7 @@ public class SearchMovieResultFragment extends Fragment {
     private static void loadMovieSearchResult(String query) {
         MovieApi movieApi = RetrofitInstance.getMovieApi();
 
-        Call<MovieListModel> responseCall = movieApi.getMovieSearchResult(ApiData.API_KEY, query, false);
+        Call<MovieListModel> responseCall = movieApi.getMovieSearchResult(ApiData.API_KEY, query, SharedPreferanceValues.readNsfw(recyclerView.getContext()));
         responseCall.enqueue(new Callback<MovieListModel>() {
             @Override
             public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
