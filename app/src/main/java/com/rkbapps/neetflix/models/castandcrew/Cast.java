@@ -3,7 +3,9 @@ package com.rkbapps.neetflix.models.castandcrew;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Cast {
+import java.io.Serializable;
+
+public class Cast implements Serializable {
     @SerializedName("adult")
     @Expose
     private Boolean adult;

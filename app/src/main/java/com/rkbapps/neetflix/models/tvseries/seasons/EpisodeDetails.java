@@ -93,4 +93,22 @@ public class EpisodeDetails implements Serializable {
     public List<Cast> getGuestStars() {
         return guestStars;
     }
+
+    @Override
+    public String toString() {
+        return "EpisodeDetails{" +
+                "airDate='" + airDate + '\'' +
+                ", episodeNumber=" + episodeNumber +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", overview='" + overview + '\'' +
+                ", runtime=" + runtime +
+                ", seasonNumber=" + seasonNumber +
+                ", showId=" + showId +
+                ", stillPath='" + stillPath + '\'' +
+                ", voteAverage=" + voteAverage +
+                ", voteCount=" + voteCount +
+                ", guestStars=" + guestStars +
+                '}';
+    }
 }

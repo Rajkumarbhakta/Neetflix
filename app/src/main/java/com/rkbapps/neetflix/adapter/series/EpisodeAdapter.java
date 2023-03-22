@@ -2,6 +2,7 @@ package com.rkbapps.neetflix.adapter.series;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.rkbapps.neetflix.R;
+import com.rkbapps.neetflix.activityes.EpisodeDetailsActivity;
 import com.rkbapps.neetflix.models.tvseries.seasons.EpisodeDetails;
 
 import java.util.List;
@@ -35,7 +37,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SeasonsD
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull SeasonsDetailsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SeasonsDetailsViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         if(episodeDetails.get(position).getStillPath()==null){
             Glide.with(context).load(R.drawable.general_backdrop).into(holder.stillImage);
@@ -59,6 +61,16 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SeasonsD
         holder.ratting.setText(""+episodeDetails.get(position).getVoteAverage());
 
         holder.episodeName.setText(episodeDetails.get(position).getName());
+
+        Intent i = new Intent(context, EpisodeDetailsActivity.class);
+        i.putExtra("episodeDetails",episodeDetails.get(position));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(i);
+            }
+        });
 
 
     }

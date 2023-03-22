@@ -1,6 +1,7 @@
 package com.rkbapps.neetflix.activityes;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -38,20 +39,22 @@ public class SeasonsDetailsActivity extends AppCompatActivity {
         recyclerEpisode = findViewById(R.id.recyclerEpisode);
         toolbar = findViewById(R.id.toolbarSeasonsPreview);
 
+        Context context = this;
+
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(seasonsName);
 
         recyclerEpisode.setLayoutManager(new LinearLayoutManager(this));
         if (tvID != -1 && seasonsNumber != -1)
-            loadSeasonsDetails(tvID, seasonsNumber);
+            loadSeasonsDetails(tvID, seasonsNumber,context);
         else
             Toast.makeText(this, "Something went wrong.", Toast.LENGTH_SHORT).show();
 
     }
 
 
-    private void loadSeasonsDetails(int tvId, int seasonsNumber) {
+    private void loadSeasonsDetails(int tvId, int seasonsNumber,Context context) {
         TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
         Call<SeasonsDetails> responseCall = tvSeriesApi.getSeasonsDetails(tvId, seasonsNumber, ApiData.API_KEY);
         responseCall.enqueue(new Callback<SeasonsDetails>() {
@@ -59,7 +62,7 @@ public class SeasonsDetailsActivity extends AppCompatActivity {
             public void onResponse(Call<SeasonsDetails> call, Response<SeasonsDetails> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        recyclerEpisode.setAdapter(new EpisodeAdapter(getApplicationContext(), response.body().getEpisodes()));
+                        recyclerEpisode.setAdapter(new EpisodeAdapter(context, response.body().getEpisodes()));
                     } else
                         Toast.makeText(SeasonsDetailsActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
                 } else
