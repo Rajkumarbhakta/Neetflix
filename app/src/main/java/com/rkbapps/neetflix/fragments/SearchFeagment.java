@@ -26,6 +26,7 @@ public class SearchFeagment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+
     public SearchFeagment() {
         // Required empty public constructor
     }
@@ -41,6 +42,7 @@ public class SearchFeagment extends Fragment {
         tabLayout = view.findViewById(R.id.tabLayoutSearch);
         viewPager = view.findViewById(R.id.pagerSearch);
 
+
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
@@ -50,16 +52,21 @@ public class SearchFeagment extends Fragment {
         searchView.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if (event == null || event.getAction() != KeyEvent.ACTION_DOWN)
+                    return false;
+
                 searchBar.setText(searchView.getText());
                 if (!Objects.requireNonNull(searchView.getText()).toString().equals("")) {
                     SearchMovieResultFragment.bindData(searchView.getText().toString());
                     SearchSeriesResultFragment.bindData(searchView.getText().toString());
                 }
                 searchView.hide();
-                return false;
+
+                return true;
+
             }
         });
-
 
         return view;
     }

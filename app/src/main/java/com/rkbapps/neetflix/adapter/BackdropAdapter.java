@@ -42,7 +42,7 @@ public class BackdropAdapter extends RecyclerView.Adapter<BackdropAdapter.Backdr
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ImagePreviewActivity.class);
-                i.putExtra("imageKey",backdrops.get(position).getFilePath());
+                i.putExtra("imageKey", backdrops.get(position).getFilePath());
                 context.startActivity(i);
 
             }

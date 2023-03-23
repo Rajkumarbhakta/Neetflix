@@ -107,7 +107,7 @@ public class SeriesOverviewFragment extends Fragment {
                         if (tvSeriesModel.getSeasons().size() == 0 || tvSeriesModel.getSeasons() == null) {
                             noSeason.setVisibility(View.VISIBLE);
                         } else {
-                            seasons.setAdapter(new SeasonAdapter(getContext(), tvSeriesModel.getSeasons(),id));
+                            seasons.setAdapter(new SeasonAdapter(getContext(), tvSeriesModel.getSeasons(), id));
                         }
 
                         if (tvSeriesModel.getNetworks().size() == 0 || tvSeriesModel.getNetworks() == null) {

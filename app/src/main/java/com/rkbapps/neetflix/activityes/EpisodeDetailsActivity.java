@@ -2,7 +2,6 @@ package com.rkbapps.neetflix.activityes;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +27,7 @@ public class EpisodeDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_episode_details);
 
-         ImageView episodePoster  = findViewById(R.id.imgEpisodeBackdrop);
+        ImageView episodePoster = findViewById(R.id.imgEpisodeBackdrop);
         TextView episodeNumber = findViewById(R.id.txtEpisodeNumberDetails);
         TextView episodeName = findViewById(R.id.txtEpisodeTittle);
         TextView overview = findViewById(R.id.txtEpisodeOverview);
@@ -40,13 +39,13 @@ public class EpisodeDetailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        recyclerGuest.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+        recyclerGuest.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
-        if(episodeDetails!=null){
+        if (episodeDetails != null) {
 
-            if(episodeDetails.getStillPath()==null){
+            if (episodeDetails.getStillPath() == null) {
                 Glide.with(this).load(R.drawable.general_backdrop).into(episodePoster);
-            }else {
+            } else {
                 Glide.with(this).load("https://image.tmdb.org/t/p/original/" + episodeDetails.getStillPath()).into(episodePoster);
             }
 
@@ -54,13 +53,13 @@ public class EpisodeDetailsActivity extends AppCompatActivity {
 
             overview.setText(episodeDetails.getOverview());
 
-            recyclerGuest.setAdapter(new CastAdapter(this,episodeDetails.getGuestStars()));
+            recyclerGuest.setAdapter(new CastAdapter(this, episodeDetails.getGuestStars()));
 
-            episodeNumber.setText("Season "+episodeDetails.getSeasonNumber()+"  Episode "+episodeDetails.getEpisodeNumber());
+            episodeNumber.setText("Season " + episodeDetails.getSeasonNumber() + "  Episode " + episodeDetails.getEpisodeNumber());
 
-            getSupportActionBar().setTitle("Episode "+episodeDetails.getEpisodeNumber());
+            getSupportActionBar().setTitle("Episode " + episodeDetails.getEpisodeNumber());
 
-        }else
+        } else
             Toast.makeText(this, "Something Went Wrong.", Toast.LENGTH_SHORT).show();
     }
 

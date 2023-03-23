@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
@@ -16,8 +15,6 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.rkbapps.neetflix.R;
 import com.rkbapps.neetflix.activityes.BookmarkActivity;
 import com.rkbapps.neetflix.db.SharedPreferanceValues;
-
-import java.util.Objects;
 
 
 public class AccountFragment extends Fragment {
@@ -41,7 +38,7 @@ public class AccountFragment extends Fragment {
         boolean isNsfw = SharedPreferanceValues.readNsfw(requireContext());
 
 
-            switchNsfw.setChecked(isNsfw);
+        switchNsfw.setChecked(isNsfw);
 
 
         bookmark.setOnClickListener(new View.OnClickListener() {
@@ -56,11 +53,10 @@ public class AccountFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                SharedPreferanceValues.writeNsfw(requireContext(),isChecked);
+                SharedPreferanceValues.writeNsfw(requireContext(), isChecked);
 
             }
         });
-
 
 
         return view;

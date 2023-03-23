@@ -47,14 +47,14 @@ public class SeasonsDetailsActivity extends AppCompatActivity {
 
         recyclerEpisode.setLayoutManager(new LinearLayoutManager(this));
         if (tvID != -1 && seasonsNumber != -1)
-            loadSeasonsDetails(tvID, seasonsNumber,context);
+            loadSeasonsDetails(tvID, seasonsNumber, context);
         else
             Toast.makeText(this, "Something went wrong.", Toast.LENGTH_SHORT).show();
 
     }
 
 
-    private void loadSeasonsDetails(int tvId, int seasonsNumber,Context context) {
+    private void loadSeasonsDetails(int tvId, int seasonsNumber, Context context) {
         TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
         Call<SeasonsDetails> responseCall = tvSeriesApi.getSeasonsDetails(tvId, seasonsNumber, ApiData.API_KEY);
         responseCall.enqueue(new Callback<SeasonsDetails>() {

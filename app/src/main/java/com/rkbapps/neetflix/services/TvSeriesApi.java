@@ -42,10 +42,10 @@ public interface TvSeriesApi {
     Call<ImagesModel> getSeriesImages(@Path("tv_id") int id, @Query("api_key") String apiKey);
 
     @GET("search/tv")
-    Call<TvSeriesListModel> getSeriesSearchResult(@Query("api_key") String apiKey, @Query("query") String query, @Query("include_adult") boolean include_adult);
+    Call<TvSeriesListModel> getSeriesSearchResult(@Query("api_key") String apiKey, @Query("query") String query, @Query("page") int page, @Query("include_adult") boolean include_adult);
 
     @GET("tv/{tv_id}/season/{season_number}")
-    Call<SeasonsDetails> getSeasonsDetails(@Path("tv_id") int tvId,@Path("season_number") int seasonsNumber,@Query("api_key") String apiKey);
+    Call<SeasonsDetails> getSeasonsDetails(@Path("tv_id") int tvId, @Path("season_number") int seasonsNumber, @Query("api_key") String apiKey);
 
 }
 

@@ -41,7 +41,7 @@ public class PersonImageAdapter extends RecyclerView.Adapter<PersonImageAdapter.
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ImagePreviewActivity.class);
-                i.putExtra("imageKey",profileList.get(position).getFilePath());
+                i.putExtra("imageKey", profileList.get(position).getFilePath());
                 context.startActivity(i);
             }
         });

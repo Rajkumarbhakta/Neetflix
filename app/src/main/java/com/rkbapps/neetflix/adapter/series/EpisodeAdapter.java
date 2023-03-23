@@ -39,31 +39,31 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SeasonsD
     @Override
     public void onBindViewHolder(@NonNull SeasonsDetailsViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
-        if(episodeDetails.get(position).getStillPath()==null){
+        if (episodeDetails.get(position).getStillPath() == null) {
             Glide.with(context).load(R.drawable.general_backdrop).into(holder.stillImage);
-        }else {
+        } else {
             Glide.with(context).load("https://image.tmdb.org/t/p/original/" + episodeDetails.get(position).getStillPath()).into(holder.stillImage);
         }
 
-        holder.episodeNumber.setText("Episode "+episodeDetails.get(position).getEpisodeNumber());
+        holder.episodeNumber.setText("Episode " + episodeDetails.get(position).getEpisodeNumber());
 
         try {
-            if(episodeDetails.get(position).getRuntime()/60 == 0){
-                holder.runtime.setText(episodeDetails.get(position).getRuntime()+"M");
-            }else{
-                holder.runtime.setText(episodeDetails.get(position).getRuntime()/60+"H"+episodeDetails.get(position).getRuntime()%60+"M");
+            if (episodeDetails.get(position).getRuntime() / 60 == 0) {
+                holder.runtime.setText(episodeDetails.get(position).getRuntime() + "M");
+            } else {
+                holder.runtime.setText(episodeDetails.get(position).getRuntime() / 60 + "H" + episodeDetails.get(position).getRuntime() % 60 + "M");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-        holder.ratting.setText(""+episodeDetails.get(position).getVoteAverage());
+        holder.ratting.setText("" + episodeDetails.get(position).getVoteAverage());
 
         holder.episodeName.setText(episodeDetails.get(position).getName());
 
         Intent i = new Intent(context, EpisodeDetailsActivity.class);
-        i.putExtra("episodeDetails",episodeDetails.get(position));
+        i.putExtra("episodeDetails", episodeDetails.get(position));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +82,8 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SeasonsD
 
     public static class SeasonsDetailsViewHolder extends RecyclerView.ViewHolder {
         ImageView stillImage;
-        TextView episodeNumber,runtime,ratting,episodeName;
+        TextView episodeNumber, runtime, ratting, episodeName;
+
         public SeasonsDetailsViewHolder(@NonNull View itemView) {
             super(itemView);
             stillImage = itemView.findViewById(R.id.imgStillImage);

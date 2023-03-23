@@ -49,26 +49,26 @@ public class ReviewsMovieFragment extends Fragment {
         responseCall.enqueue(new Callback<ReviewModel>() {
             @Override
             public void onResponse(Call<ReviewModel> call, Response<ReviewModel> response) {
-                if (response.isSuccessful()){
-                    if(response.body()!=null){
-                        if(response.body().getResults()==null || response.body().getResults().size()==0){
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getResults() == null || response.body().getResults().size() == 0) {
                             noReview.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             recyclerView.setAdapter(new ReviewAdapter(getContext(), response.body().getResults()));
                         }
 
-                    }else {
+                    } else {
                         Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
-                }else {
-                    Toast.makeText(getContext(), ""+response.message(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<ReviewModel> call, Throwable t) {
-                Toast.makeText(getContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

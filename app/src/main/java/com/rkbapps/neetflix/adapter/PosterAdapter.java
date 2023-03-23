@@ -41,7 +41,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ImagePreviewActivity.class);
-                i.putExtra("imageKey",posters.get(position).getFilePath());
+                i.putExtra("imageKey", posters.get(position).getFilePath());
                 context.startActivity(i);
             }
         });
