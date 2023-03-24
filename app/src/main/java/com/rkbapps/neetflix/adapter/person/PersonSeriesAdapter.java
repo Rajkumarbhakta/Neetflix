@@ -81,7 +81,7 @@ public class PersonSeriesAdapter extends RecyclerView.Adapter<PersonSeriesAdapte
             if (asACrewModelList.get(position).getPosterPath() != null) {
                 Glide.with(context).load("https://image.tmdb.org/t/p/w500" + asACrewModelList.get(position).getPosterPath()).into(holder.poster);
             } else {
-                Glide.with(context).load("").into(holder.poster);
+                Glide.with(context).load(R.drawable.default_poster).into(holder.poster);
             }
             if (!asACrewModelList.get(position).getJob().equals(""))
                 holder.description.setText("As " + asACrewModelList.get(position).getJob() + " for " + asACrewModelList.get(position).getEpisodeCount() + " episode.");

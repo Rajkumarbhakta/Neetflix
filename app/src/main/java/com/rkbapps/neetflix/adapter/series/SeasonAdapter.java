@@ -45,7 +45,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         if (seasonList.get(position).getPosterPath() != null) {
             Glide.with(context).load("https://image.tmdb.org/t/p/w500" + seasonList.get(position).getPosterPath()).into(holder.seasonPoster);
         } else {
-            Glide.with(context).load("").into(holder.seasonPoster);
+            Glide.with(context).load(R.drawable.default_poster).into(holder.seasonPoster);
         }
 
         holder.seasonTitle.setText(seasonList.get(position).getName());
