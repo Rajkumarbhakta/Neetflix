@@ -64,7 +64,7 @@ public class TvSeriesFragment extends Fragment {
 
     private void loadPopularSeries() {
         TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
-        Call<TvSeriesListModel> responseCall = tvSeriesApi.getPopularSeries(ApiData.API_KEY);
+        Call<TvSeriesListModel> responseCall = tvSeriesApi.getPopularSeries(ApiData.API_KEY,1);
         responseCall.enqueue(new Callback<TvSeriesListModel>() {
             @Override
             public void onResponse(Call<TvSeriesListModel> call, Response<TvSeriesListModel> response) {
@@ -84,7 +84,7 @@ public class TvSeriesFragment extends Fragment {
 
     private void loadTrendingSeries() {
         TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
-        Call<TvSeriesListModel> responseCall = tvSeriesApi.getTrendingSeries(ApiData.API_KEY);
+        Call<TvSeriesListModel> responseCall = tvSeriesApi.getTrendingSeries(ApiData.API_KEY,1);
         responseCall.enqueue(new Callback<TvSeriesListModel>() {
             @Override
             public void onResponse(Call<TvSeriesListModel> call, Response<TvSeriesListModel> response) {
@@ -104,7 +104,7 @@ public class TvSeriesFragment extends Fragment {
 
     private void loadTopRatedSeries() {
         TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
-        Call<TvSeriesListModel> responseCall = tvSeriesApi.getTopRatedSeries(ApiData.API_KEY);
+        Call<TvSeriesListModel> responseCall = tvSeriesApi.getTopRatedSeries(ApiData.API_KEY,1);
         responseCall.enqueue(new Callback<TvSeriesListModel>() {
             @Override
             public void onResponse(Call<TvSeriesListModel> call, Response<TvSeriesListModel> response) {
@@ -124,7 +124,7 @@ public class TvSeriesFragment extends Fragment {
 
     private void loadArrivingTodaySeries() {
         TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
-        Call<TvSeriesListModel> responseCall = tvSeriesApi.getAiringTodaySeries(ApiData.API_KEY);
+        Call<TvSeriesListModel> responseCall = tvSeriesApi.getAiringTodaySeries(ApiData.API_KEY,1);
         responseCall.enqueue(new Callback<TvSeriesListModel>() {
             @Override
             public void onResponse(Call<TvSeriesListModel> call, Response<TvSeriesListModel> response) {

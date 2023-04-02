@@ -1,16 +1,20 @@
 package com.rkbapps.neetflix.fragments.person;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rkbapps.neetflix.R;
+import com.rkbapps.neetflix.adapter.person.PersonMoviesAdapter;
 import com.rkbapps.neetflix.adapter.person.PersonSeriesAdapter;
 import com.rkbapps.neetflix.models.person.tvseries.WorkForSeries;
 import com.rkbapps.neetflix.services.ApiData;
@@ -25,6 +29,7 @@ import retrofit2.Response;
 public class PersonSeriesFragment extends Fragment {
 
     private RecyclerView cast, crew;
+    private TextView asACast, asACrew;
 
     public PersonSeriesFragment() {
         // Required empty public constructor
@@ -39,6 +44,8 @@ public class PersonSeriesFragment extends Fragment {
         int id = getArguments().getInt("id");
         cast = view.findViewById(R.id.recyclerPersonSeriesAsCast);
         crew = view.findViewById(R.id.recyclerPersonSeriesAsCrew);
+        asACast = view.findViewById(R.id.txtPersonAsCastSeries);
+        asACrew = view.findViewById(R.id.txtPersonAsCrewSeries);
 
         cast.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         crew.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
@@ -50,14 +57,30 @@ public class PersonSeriesFragment extends Fragment {
             @Override
             public void onResponse(Call<WorkForSeries> call, Response<WorkForSeries> response) {
                 if (response.isSuccessful()) {
-                    cast.setAdapter(new PersonSeriesAdapter(PersonSeriesAdapter.AS_CAST, getContext(), response.body().getCast(), 1));
-                    crew.setAdapter(new PersonSeriesAdapter(PersonSeriesAdapter.AS_CREW, getContext(), response.body().getCrew()));
+                    if (response.body() != null) {
+                        if (response.body().getCast().size() != 0 && response.body().getCast()!=null) {
+                            cast.setAdapter(new PersonSeriesAdapter(PersonSeriesAdapter.AS_CAST, getContext(), response.body().getCast(), 1));
+                        } else {
+                            cast.setVisibility(View.GONE);
+                            asACast.setVisibility(View.GONE);
+                        }
+                        if (response.body().getCrew().size() != 0 && response.body().getCrew()!=null) {
+                            crew.setAdapter(new PersonSeriesAdapter(PersonSeriesAdapter.AS_CREW, getContext(), response.body().getCrew()));
+                        } else {
+                            crew.setVisibility(View.GONE);
+                            asACrew.setVisibility(View.GONE);
+                        }
+
+                    } else {
+                        Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<WorkForSeries> call, Throwable t) {
-
+                asACast.setText("Error : " + t.getMessage());
+                asACast.setTextColor(Color.WHITE);
             }
         });
 

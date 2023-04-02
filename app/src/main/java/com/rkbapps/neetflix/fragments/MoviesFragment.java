@@ -63,7 +63,7 @@ public class MoviesFragment extends Fragment {
 
     private void loadPopularMovies() {
         MovieApi movieApi = RetrofitInstance.getMovieApi();
-        Call<MovieListModel> responseCall = movieApi.getPopularMovies(ApiData.API_KEY);
+        Call<MovieListModel> responseCall = movieApi.getPopularMovies(ApiData.API_KEY,1);
         responseCall.enqueue(new Callback<MovieListModel>() {
             @Override
             public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
@@ -82,7 +82,7 @@ public class MoviesFragment extends Fragment {
 
     private void loadTrendingMovies() {
         MovieApi movieApi = RetrofitInstance.getMovieApi();
-        Call<MovieListModel> responseCall = movieApi.getTrendingMovies(ApiData.API_KEY);
+        Call<MovieListModel> responseCall = movieApi.getTrendingMovies(ApiData.API_KEY,1);
         responseCall.enqueue(new Callback<MovieListModel>() {
             @Override
             public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
@@ -102,7 +102,7 @@ public class MoviesFragment extends Fragment {
     private void loadTopRatedMovies() {
         //topRatedMovieList.clear();
         MovieApi movieApi = RetrofitInstance.getMovieApi();
-        Call<MovieListModel> responseCall = movieApi.getTopRatedMovies(ApiData.API_KEY);
+        Call<MovieListModel> responseCall = movieApi.getTopRatedMovies(ApiData.API_KEY,1);
         responseCall.enqueue(new Callback<MovieListModel>() {
             @Override
             public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
@@ -126,7 +126,7 @@ public class MoviesFragment extends Fragment {
     private void loadLatestMovies() {
         //latestMovieList.clear();
         MovieApi movieApi = RetrofitInstance.getMovieApi();
-        Call<MovieListModel> responseCall = movieApi.getLatestMovies(ApiData.API_KEY);
+        Call<MovieListModel> responseCall = movieApi.getLatestMovies(ApiData.API_KEY,1);
         responseCall.enqueue(new Callback<MovieListModel>() {
             @Override
             public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
@@ -149,7 +149,7 @@ public class MoviesFragment extends Fragment {
     private void loadUpComingMovies() {
         //upComingMovieList.clear();
         MovieApi movieApi = RetrofitInstance.getMovieApi();
-        Call<MovieListModel> responseCall = movieApi.getUpcomingMovies(ApiData.API_KEY);
+        Call<MovieListModel> responseCall = movieApi.getUpcomingMovies(ApiData.API_KEY,1);
         responseCall.enqueue(new Callback<MovieListModel>() {
             @Override
             public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {

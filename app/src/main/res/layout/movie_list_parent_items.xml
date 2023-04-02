@@ -21,7 +21,7 @@
             android:layout_centerVertical="true"
             android:text="Popular"
             android:textColor="@color/rose"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txtSeeMore"
@@ -32,7 +32,7 @@
             android:padding="10dp"
             android:text="See more"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
     </RelativeLayout>
 
 
