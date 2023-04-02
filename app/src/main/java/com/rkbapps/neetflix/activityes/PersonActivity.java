@@ -85,21 +85,6 @@ public class PersonActivity extends AppCompatActivity {
 
         }
 
-        PersonApi personApi = RetrofitInstance.getPersonApi();
-        Call<PersonDetails> responseCall = personApi.getPersonDetails(id, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<PersonDetails>() {
-            @Override
-            public void onResponse(Call<PersonDetails> call, Response<PersonDetails> response) {
-                //if(response.isSuccessful())
-                //biography.setText(response.body().getBiography());
-            }
-
-            @Override
-            public void onFailure(Call<PersonDetails> call, Throwable t) {
-
-            }
-        });
-
 
         personName.setText(name);
 
@@ -110,6 +95,8 @@ public class PersonActivity extends AppCompatActivity {
 
         viewPager.setAdapter(new TabLayoutPersonAdapter(getSupportFragmentManager(), id, tabLayout.getTabCount(), getApplicationContext()));
         tabLayout.setupWithViewPager(viewPager);
+
+
 
     }
 

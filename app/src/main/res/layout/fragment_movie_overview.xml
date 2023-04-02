@@ -23,7 +23,7 @@
                 android:padding="5dp"
                 android:text="Overview"
                 android:textColor="@color/rose"
-                android:textSize="25sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/txtMovieOverview"
@@ -36,6 +36,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/txtCastMovieOverview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -43,7 +44,7 @@
                 android:padding="5dp"
                 android:text="Cast"
                 android:textColor="@color/rose"
-                android:textSize="25sp" />
+                android:textSize="20sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerCastMovie"
@@ -51,17 +52,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/txtNoCrewDataMovies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No data available"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-
-            <TextView
+                android:id="@+id/txtCrewMovieOverview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -69,7 +60,7 @@
                 android:padding="5dp"
                 android:text="Crew"
                 android:textColor="@color/rose"
-                android:textSize="25sp" />
+                android:textSize="20sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerCrewMovie"
@@ -77,16 +68,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/txtNoCastDataMovies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No data available"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-            <TextView
+                android:id="@+id/txtProductionCompanyMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -94,7 +76,7 @@
                 android:padding="5dp"
                 android:text="Production Companies"
                 android:textColor="@color/rose"
-                android:textSize="25sp" />
+                android:textSize="20sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerProductionCompanyMovie"
@@ -102,16 +84,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/txtNoProductionCoMovies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No data available"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-            <TextView
+                android:id="@+id/txtSimilarMovies"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -119,22 +92,13 @@
                 android:padding="5dp"
                 android:text="Similar Movies"
                 android:textColor="@color/rose"
-                android:textSize="25sp" />
+                android:textSize="20sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerSimilarMovies"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/txtNoSimilarMovies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No data available"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:visibility="gone" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

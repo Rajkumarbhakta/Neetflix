@@ -32,7 +32,7 @@ public class MovieOverviewFragment extends Fragment {
     private final MovieApi movieApi = RetrofitInstance.getMovieApi();
     private TextView overview;
     private RecyclerView productionCompany, cast, similarMovies, crew;
-    private TextView noCast, noCrew, noProductionCo, noSimilarMovies;
+    private TextView txtCast, txtCrew, txtProductionCompany, txtSimilarMovies;
 
     public MovieOverviewFragment() {
         // Required empty public constructor
@@ -46,33 +46,25 @@ public class MovieOverviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movie_overview, container, false);
         int id = getArguments().getInt("id");
 
-
         overview = view.findViewById(R.id.txtMovieOverview);
         cast = view.findViewById(R.id.recyclerCastMovie);
         crew = view.findViewById(R.id.recyclerCrewMovie);
         productionCompany = view.findViewById(R.id.recyclerProductionCompanyMovie);
         similarMovies = view.findViewById(R.id.recyclerSimilarMovies);
 
-        noCast = view.findViewById(R.id.txtNoCastDataMovies);
-        noCrew = view.findViewById(R.id.txtNoCrewDataMovies);
-        noProductionCo = view.findViewById(R.id.txtNoProductionCoMovies);
-        noSimilarMovies = view.findViewById(R.id.txtNoSimilarMovies);
-
-        noCast.setVisibility(View.GONE);
-        noCrew.setVisibility(View.GONE);
-        noProductionCo.setVisibility(View.GONE);
-        noSimilarMovies.setVisibility(View.GONE);
+        txtCast = view.findViewById(R.id.txtCastMovieOverview);
+        txtCrew = view.findViewById(R.id.txtCrewMovieOverview);
+        txtProductionCompany = view.findViewById(R.id.txtProductionCompanyMovie);
+        txtSimilarMovies = view.findViewById(R.id.txtSimilarMovies);
 
         crew.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         productionCompany.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         cast.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         similarMovies.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
 
-
         loadMovieDetails(id);
         loadCredits(id);
         loadSimilarMovies(id);
-
 
         return view;
     }
@@ -81,15 +73,21 @@ public class MovieOverviewFragment extends Fragment {
     private void loadMovieDetails(int id) {
         Call<MovieModel> responseCall = movieApi.getMovieDetails(id, ApiData.API_KEY);
         responseCall.enqueue(new Callback<MovieModel>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        overview.setText(response.body().getOverview());
-                        if (response.body().getProductionCompanies() == null || response.body().getProductionCompanies().size() == 0) {
-                            noProductionCo.setVisibility(View.VISIBLE);
+                        if (response.body().getOverview().isEmpty()) {
+                            overview.setText("Not Available");
                         } else {
+                            overview.setText(response.body().getOverview());
+                        }
+                        if (response.body().getProductionCompanies() != null && response.body().getProductionCompanies().size() != 0) {
                             productionCompany.setAdapter(new ProductionCompanyAdapter(getContext(), response.body().getProductionCompanies()));
+                        } else {
+                            productionCompany.setVisibility(View.GONE);
+                            txtProductionCompany.setVisibility(View.GONE);
                         }
                     } else {
                         Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
@@ -114,15 +112,17 @@ public class MovieOverviewFragment extends Fragment {
             public void onResponse(Call<CreditsModel> call, Response<CreditsModel> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        if (response.body().getCast().size() == 0 || response.body().getCast() == null) {
-                            noCast.setVisibility(View.VISIBLE);
-                        } else {
+                        if (response.body().getCast().size() != 0 && response.body().getCast() != null) {
                             cast.setAdapter(new CastAdapter(getContext(), response.body().getCast()));
-                        }
-                        if (response.body().getCrew().size() == 0 || response.body().getCrew() == null) {
-                            noCrew.setVisibility(View.VISIBLE);
                         } else {
+                            cast.setVisibility(View.GONE);
+                            txtCast.setVisibility(View.GONE);
+                        }
+                        if (response.body().getCrew().size() != 0 && response.body().getCrew() != null) {
                             crew.setAdapter(new CrewAdapter(getContext(), response.body().getCrew()));
+                        } else {
+                            crew.setVisibility(View.GONE);
+                            txtCrew.setVisibility(View.GONE);
                         }
                     } else {
                         Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
@@ -147,10 +147,11 @@ public class MovieOverviewFragment extends Fragment {
             public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        if (response.body().getResults() == null || response.body().getResults().size() == 0) {
-                            noSimilarMovies.setVisibility(View.VISIBLE);
-                        } else {
+                        if (response.body().getResults() != null && response.body().getResults().size() != 0) {
                             similarMovies.setAdapter(new MovieListChildAdapter(response.body().getResults(), getContext()));
+                        } else {
+                            similarMovies.setVisibility(View.GONE);
+                            txtSimilarMovies.setVisibility(View.GONE);
                         }
                     } else {
                         Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();

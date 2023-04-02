@@ -12,7 +12,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface PersonApi {
-
     @GET("person/{person_id}/external_ids")
     Call<ExternalIds> getPersonExternalIds(@Path("person_id") int personId, @Query("api_key") String apiKey);
 
