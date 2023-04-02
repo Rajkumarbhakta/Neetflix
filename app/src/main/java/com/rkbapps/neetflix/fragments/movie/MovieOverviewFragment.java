@@ -57,6 +57,12 @@ public class MovieOverviewFragment extends Fragment {
         txtProductionCompany = view.findViewById(R.id.txtProductionCompanyMovie);
         txtSimilarMovies = view.findViewById(R.id.txtSimilarMovies);
 
+        txtCast.setVisibility(View.GONE);
+        txtCrew.setVisibility(View.GONE);
+        txtProductionCompany.setVisibility(View.GONE);
+        txtSimilarMovies.setVisibility(View.GONE);
+
+
         crew.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         productionCompany.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         cast.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
@@ -84,6 +90,7 @@ public class MovieOverviewFragment extends Fragment {
                             overview.setText(response.body().getOverview());
                         }
                         if (response.body().getProductionCompanies() != null && response.body().getProductionCompanies().size() != 0) {
+                            txtProductionCompany.setVisibility(View.VISIBLE);
                             productionCompany.setAdapter(new ProductionCompanyAdapter(getContext(), response.body().getProductionCompanies()));
                         } else {
                             productionCompany.setVisibility(View.GONE);
@@ -113,12 +120,14 @@ public class MovieOverviewFragment extends Fragment {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         if (response.body().getCast().size() != 0 && response.body().getCast() != null) {
+                            txtCast.setVisibility(View.VISIBLE);
                             cast.setAdapter(new CastAdapter(getContext(), response.body().getCast()));
                         } else {
                             cast.setVisibility(View.GONE);
                             txtCast.setVisibility(View.GONE);
                         }
                         if (response.body().getCrew().size() != 0 && response.body().getCrew() != null) {
+                            txtCrew.setVisibility(View.VISIBLE);
                             crew.setAdapter(new CrewAdapter(getContext(), response.body().getCrew()));
                         } else {
                             crew.setVisibility(View.GONE);
@@ -148,6 +157,7 @@ public class MovieOverviewFragment extends Fragment {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         if (response.body().getResults() != null && response.body().getResults().size() != 0) {
+                            txtSimilarMovies.setVisibility(View.VISIBLE);
                             similarMovies.setAdapter(new MovieListChildAdapter(response.body().getResults(), getContext()));
                         } else {
                             similarMovies.setVisibility(View.GONE);

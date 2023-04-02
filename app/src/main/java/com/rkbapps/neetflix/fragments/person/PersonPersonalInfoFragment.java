@@ -40,10 +40,17 @@ public class PersonPersonalInfoFragment extends Fragment {
         PersonApi personApi = RetrofitInstance.getPersonApi();
         Call<PersonDetails> responseCall = personApi.getPersonDetails(id, ApiData.API_KEY);
         responseCall.enqueue(new Callback<PersonDetails>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<PersonDetails> call, Response<PersonDetails> response) {
-                if (response.isSuccessful())
-                    biography.setText(response.body().getBiography());
+                if (response.isSuccessful()) {
+                    if (response.body().getBiography().isEmpty()) {
+                        biography.setText("Not Available");
+                    } else {
+                        biography.setText(response.body().getBiography());
+                    }
+                }
+
             }
 
             @Override

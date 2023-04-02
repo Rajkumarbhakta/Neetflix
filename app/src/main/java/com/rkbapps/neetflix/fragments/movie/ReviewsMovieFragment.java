@@ -74,21 +74,4 @@ public class ReviewsMovieFragment extends Fragment {
 
         return view;
     }
-
-    private void loadMovieReviews(int id) {
-        MovieApi movieApi = RetrofitInstance.getMovieApi();
-        Call<ReviewModel> responseCall = movieApi.getMovieReviews(id, ApiData.API_KEY, "en-US");
-
-        responseCall.enqueue(new Callback<ReviewModel>() {
-            @Override
-            public void onResponse(Call<ReviewModel> call, Response<ReviewModel> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<ReviewModel> call, Throwable t) {
-
-            }
-        });
-    }
 }
