@@ -5,6 +5,7 @@ import com.rkbapps.neetflix.models.castandcrew.CreditsModel;
 import com.rkbapps.neetflix.models.images.ImagesModel;
 import com.rkbapps.neetflix.models.movies.MovieListModel;
 import com.rkbapps.neetflix.models.movies.MovieModel;
+import com.rkbapps.neetflix.models.videos.VideoModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -45,7 +46,8 @@ public interface MovieApi {
     @GET("movie/{movie_id}/images")
     Call<ImagesModel> getMovieImages(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
 
-
+    @GET("movie/{movie_id}/videos")
+    Call<VideoModel> getMovieVideos(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
 
     @GET("search/movie")
     Call<MovieListModel> getMovieSearchResult(@Query("api_key") String apiKey, @Query("query") String query, @Query("page") int page, @Query("include_adult") boolean include_adult);
