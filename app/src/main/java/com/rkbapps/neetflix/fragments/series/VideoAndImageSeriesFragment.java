@@ -30,7 +30,7 @@ import retrofit2.Response;
 public class VideoAndImageSeriesFragment extends Fragment {
     TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
     private RecyclerView backdrops, videos, posters;
-    private TextView txtBackdrop,txtPoster,txtVideos;
+    private TextView txtBackdrop, txtPoster, txtVideos;
 
     public VideoAndImageSeriesFragment() {
         // Required empty public constructor
@@ -73,25 +73,25 @@ public class VideoAndImageSeriesFragment extends Fragment {
             @Override
             public void onResponse(Call<ImagesModel> call, Response<ImagesModel> response) {
                 if (response.isSuccessful()) {
-                    if(response.body()!=null){
-                        if(response.body()!=null){
-                            if(response.body().getPosters().size()!=0 && response.body().getPosters()!=null){
+                    if (response.body() != null) {
+                        if (response.body() != null) {
+                            if (response.body().getPosters().size() != 0 && response.body().getPosters() != null) {
                                 txtPoster.setVisibility(View.VISIBLE);
                                 posters.setAdapter(new PosterAdapter(getContext(), response.body().getPosters()));
-                            }else{
+                            } else {
                                 posters.setVisibility(View.GONE);
                                 txtPoster.setVisibility(View.GONE);
                             }
 
-                            if(response.body().getBackdrops().size()!=0 && response.body().getBackdrops()!=null){
+                            if (response.body().getBackdrops().size() != 0 && response.body().getBackdrops() != null) {
                                 txtBackdrop.setVisibility(View.VISIBLE);
                                 backdrops.setAdapter(new BackdropAdapter(getContext(), response.body().getBackdrops()));
-                            }else {
+                            } else {
                                 backdrops.setVisibility(View.GONE);
                                 txtBackdrop.setVisibility(View.GONE);
                             }
                         }
-                    }else {
+                    } else {
                         Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -113,12 +113,12 @@ public class VideoAndImageSeriesFragment extends Fragment {
                         if (response.body().getResults() != null && response.body().getResults().size() != 0) {
                             txtVideos.setVisibility(View.VISIBLE);
                             videos.setAdapter(new VideoAdapter(getContext(), response.body().getResults()));
-                        }else {
+                        } else {
                             videos.setVisibility(View.GONE);
                             txtVideos.setVisibility(View.GONE);
                         }
                     }
-                }else {
+                } else {
                     Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                 }
             }

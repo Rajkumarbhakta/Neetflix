@@ -16,16 +16,16 @@ import retrofit2.http.Query;
 public interface TvSeriesApi {
 
     @GET("trending/tv/day")
-    Call<TvSeriesListModel> getTrendingSeries(@Query("api_key") String apiKey,@Query("page") int page);
+    Call<TvSeriesListModel> getTrendingSeries(@Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("tv/popular")
-    Call<TvSeriesListModel> getPopularSeries(@Query("api_key") String apiKey,@Query("page") int page);
+    Call<TvSeriesListModel> getPopularSeries(@Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("tv/top_rated")
-    Call<TvSeriesListModel> getTopRatedSeries(@Query("api_key") String apiKey,@Query("page") int page);
+    Call<TvSeriesListModel> getTopRatedSeries(@Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("tv/airing_today")
-    Call<TvSeriesListModel> getAiringTodaySeries(@Query("api_key") String apiKey,@Query("page") int page);
+    Call<TvSeriesListModel> getAiringTodaySeries(@Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("tv/{tv_id}")
     Call<TvSeriesModel> getSeriesDetails(@Path("tv_id") int id, @Query("api_key") String apiKey);

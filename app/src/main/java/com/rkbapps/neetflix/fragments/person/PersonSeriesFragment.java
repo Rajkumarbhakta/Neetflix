@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.person.PersonMoviesAdapter;
 import com.rkbapps.neetflix.adapter.person.PersonSeriesAdapter;
 import com.rkbapps.neetflix.models.person.tvseries.WorkForSeries;
 import com.rkbapps.neetflix.services.ApiData;
@@ -58,13 +57,13 @@ public class PersonSeriesFragment extends Fragment {
             public void onResponse(Call<WorkForSeries> call, Response<WorkForSeries> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        if (response.body().getCast().size() != 0 && response.body().getCast()!=null) {
+                        if (response.body().getCast().size() != 0 && response.body().getCast() != null) {
                             cast.setAdapter(new PersonSeriesAdapter(PersonSeriesAdapter.AS_CAST, getContext(), response.body().getCast(), 1));
                         } else {
                             cast.setVisibility(View.GONE);
                             asACast.setVisibility(View.GONE);
                         }
-                        if (response.body().getCrew().size() != 0 && response.body().getCrew()!=null) {
+                        if (response.body().getCrew().size() != 0 && response.body().getCrew() != null) {
                             crew.setAdapter(new PersonSeriesAdapter(PersonSeriesAdapter.AS_CREW, getContext(), response.body().getCrew()));
                         } else {
                             crew.setVisibility(View.GONE);

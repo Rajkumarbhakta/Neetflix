@@ -13,14 +13,6 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.rkbapps.neetflix.R;
 import com.rkbapps.neetflix.adapter.tab.TabLayoutPersonAdapter;
-import com.rkbapps.neetflix.models.person.PersonDetails;
-import com.rkbapps.neetflix.services.ApiData;
-import com.rkbapps.neetflix.services.PersonApi;
-import com.rkbapps.neetflix.services.RetrofitInstance;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class PersonActivity extends AppCompatActivity {
 
@@ -95,7 +87,6 @@ public class PersonActivity extends AppCompatActivity {
 
         viewPager.setAdapter(new TabLayoutPersonAdapter(getSupportFragmentManager(), id, tabLayout.getTabCount(), getApplicationContext()));
         tabLayout.setupWithViewPager(viewPager);
-
 
 
     }

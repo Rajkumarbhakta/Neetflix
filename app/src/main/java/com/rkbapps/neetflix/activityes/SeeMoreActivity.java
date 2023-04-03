@@ -34,18 +34,16 @@ import retrofit2.Response;
 
 public class SeeMoreActivity extends AppCompatActivity {
 
+    private final MovieApi movieApi = RetrofitInstance.getMovieApi();
+    private final TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
+    private final List<MovieResult> movieResults = new ArrayList<>();
+    private final List<TvSeriesResult> tvSeriesResults = new ArrayList<>();
     String type = "";
     int contentType = -1;
     private RecyclerView recyclerView;
     private MaterialToolbar toolbar;
-    private final MovieApi movieApi = RetrofitInstance.getMovieApi();
-    private final TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
-
-    private final List<MovieResult> movieResults = new ArrayList<>();
     private MovieListModel movieList = new MovieListModel();
     private MovieListChildAdapter movieAdapter;
-
-    private final List<TvSeriesResult> tvSeriesResults = new ArrayList<>();
     private TvSeriesListModel tvSeriesList = new TvSeriesListModel();
     private TvSeriesListChildAdapter tvSeriesAdapter;
 
@@ -105,7 +103,7 @@ public class SeeMoreActivity extends AppCompatActivity {
         if (contentType == MovieList.TV_SERIES) {
             getSupportActionBar().setTitle(type + " Series");
             recyclerView.setAdapter(tvSeriesAdapter);
-            loadSeries(type,page);
+            loadSeries(type, page);
 
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -336,7 +334,6 @@ public class SeeMoreActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
     private void loadSeries(String type, int page) {

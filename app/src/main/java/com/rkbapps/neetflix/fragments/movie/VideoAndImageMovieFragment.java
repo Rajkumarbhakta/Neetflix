@@ -30,9 +30,9 @@ import retrofit2.Response;
 
 public class VideoAndImageMovieFragment extends Fragment {
 
-    private MovieApi movieApi = RetrofitInstance.getMovieApi();
+    private final MovieApi movieApi = RetrofitInstance.getMovieApi();
     private RecyclerView backdrops, videos, posters;
-    private TextView txtBackdrop,txtPoster,txtVideos;
+    private TextView txtBackdrop, txtPoster, txtVideos;
 
     public VideoAndImageMovieFragment() {
 
@@ -59,7 +59,7 @@ public class VideoAndImageMovieFragment extends Fragment {
 
         backdrops.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         posters.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        videos.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
+        videos.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
 
         loadImages(id);
         loadVideos(id);
@@ -72,25 +72,25 @@ public class VideoAndImageMovieFragment extends Fragment {
             @Override
             public void onResponse(Call<ImagesModel> call, Response<ImagesModel> response) {
                 if (response.isSuccessful()) {
-                    if(response.body()!=null){
+                    if (response.body() != null) {
 
-                        if(response.body().getPosters().size()!=0 && response.body().getPosters()!=null){
+                        if (response.body().getPosters().size() != 0 && response.body().getPosters() != null) {
                             txtPoster.setVisibility(View.VISIBLE);
                             posters.setAdapter(new PosterAdapter(getContext(), response.body().getPosters()));
-                        }else{
+                        } else {
                             posters.setVisibility(View.GONE);
                             txtPoster.setVisibility(View.GONE);
                         }
 
-                        if(response.body().getBackdrops().size()!=0 && response.body().getBackdrops()!=null){
+                        if (response.body().getBackdrops().size() != 0 && response.body().getBackdrops() != null) {
                             txtBackdrop.setVisibility(View.VISIBLE);
                             backdrops.setAdapter(new BackdropAdapter(getContext(), response.body().getBackdrops()));
-                        }else {
+                        } else {
                             backdrops.setVisibility(View.GONE);
                             txtBackdrop.setVisibility(View.GONE);
                         }
                     }
-                }else {
+                } else {
                     Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -104,32 +104,32 @@ public class VideoAndImageMovieFragment extends Fragment {
         });
     }
 
-    private void loadVideos(int id){
-        movieApi.getMovieVideos(id,ApiData.API_KEY)
+    private void loadVideos(int id) {
+        movieApi.getMovieVideos(id, ApiData.API_KEY)
                 .enqueue(new Callback<VideoModel>() {
-            @Override
-            public void onResponse(Call<VideoModel> call, Response<VideoModel> response) {
-                if(response.isSuccessful()){
-                    if(response.body()!=null){
-                        if(response.body().getResults().size()!=0 && response.body().getResults()!=null){
-                            txtVideos.setVisibility(View.VISIBLE);
-                            videos.setAdapter(new VideoAdapter(getContext(),response.body().getResults()));
-                        }else{
-                            txtVideos.setVisibility(View.GONE);
-                            videos.setVisibility(View.GONE);
+                    @Override
+                    public void onResponse(Call<VideoModel> call, Response<VideoModel> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body() != null) {
+                                if (response.body().getResults().size() != 0 && response.body().getResults() != null) {
+                                    txtVideos.setVisibility(View.VISIBLE);
+                                    videos.setAdapter(new VideoAdapter(getContext(), response.body().getResults()));
+                                } else {
+                                    txtVideos.setVisibility(View.GONE);
+                                    videos.setVisibility(View.GONE);
+                                }
+                            }
+
                         }
+
+
                     }
 
-                }
+                    @Override
+                    public void onFailure(Call<VideoModel> call, Throwable t) {
 
-
-            }
-
-            @Override
-            public void onFailure(Call<VideoModel> call, Throwable t) {
-
-            }
-        });
+                    }
+                });
     }
 
 

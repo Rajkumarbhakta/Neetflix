@@ -57,13 +57,13 @@ public class PersonMoviesFragment extends Fragment {
             public void onResponse(Call<WorkForMovies> call, Response<WorkForMovies> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        if (response.body().getCast().size() != 0 && response.body().getCast()!=null) {
+                        if (response.body().getCast().size() != 0 && response.body().getCast() != null) {
                             cast.setAdapter(new PersonMoviesAdapter(PersonMoviesAdapter.AS_CAST, getContext(), response.body().getCast(), 0));
                         } else {
                             cast.setVisibility(View.GONE);
                             asACast.setVisibility(View.GONE);
                         }
-                        if (response.body().getCrew().size() != 0 && response.body().getCrew()!=null) {
+                        if (response.body().getCrew().size() != 0 && response.body().getCrew() != null) {
                             crew.setAdapter(new PersonMoviesAdapter(PersonMoviesAdapter.AS_CREW, getContext(), response.body().getCrew()));
                         } else {
                             crew.setVisibility(View.GONE);

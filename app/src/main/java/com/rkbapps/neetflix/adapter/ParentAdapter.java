@@ -50,9 +50,9 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ParentView
         holder.seeMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context,SeeMoreActivity.class);
-                i.putExtra("Type",discoverRecycler.get(position).getType());
-                i.putExtra("contentType",discoverRecycler.get(position).getViewType());
+                Intent i = new Intent(context, SeeMoreActivity.class);
+                i.putExtra("Type", discoverRecycler.get(position).getType());
+                i.putExtra("contentType", discoverRecycler.get(position).getViewType());
                 context.startActivity(i);
             }
         });
@@ -75,7 +75,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ParentView
 
     public static class ParentViewHolder extends RecyclerView.ViewHolder {
 
-        TextView type,seeMore;
+        TextView type, seeMore;
         RecyclerView recyclerViewMovieList;
 
         public ParentViewHolder(@NonNull View itemView) {

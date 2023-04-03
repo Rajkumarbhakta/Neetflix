@@ -22,24 +22,35 @@ import java.util.List;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
-    private Context context;
-    private List<Result> videos;
+    private final Context context;
+    private final List<Result> videos;
 
     public VideoAdapter(Context context, List<Result> videos) {
         this.context = context;
         this.videos = videos;
     }
 
+    public static void watchYoutubeVideo(Context context, String id) {
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=" + id));
+        try {
+            context.startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            context.startActivity(webIntent);
+        }
+    }
+
     @NonNull
     @Override
     public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new VideoViewHolder(LayoutInflater.from(context).inflate(R.layout.video_item_layout,parent,false));
+        return new VideoViewHolder(LayoutInflater.from(context).inflate(R.layout.video_item_layout, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull VideoViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
-        Glide.with(context).load("https://i.ytimg.com/vi/"+videos.get(position).getKey()+"/sddefault.jpg").into(holder.videoPoster);
+        Glide.with(context).load("https://i.ytimg.com/vi/" + videos.get(position).getKey() + "/sddefault.jpg").into(holder.videoPoster);
         holder.videoName.setText(videos.get(position).getName());
         holder.videoSource.setText(videos.get(position).getSite());
         holder.videoType.setText(videos.get(position).getType());
@@ -47,10 +58,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         holder.videoPoster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                watchYoutubeVideo(context,videos.get(position).getKey());
+                watchYoutubeVideo(context, videos.get(position).getKey());
             }
         });
-
 
 
     }
@@ -62,7 +72,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     public class VideoViewHolder extends RecyclerView.ViewHolder {
         ImageView videoPoster;
-        TextView videoName, videoSource,videoType;
+        TextView videoName, videoSource, videoType;
 
         public VideoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,18 +81,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             videoName = itemView.findViewById(R.id.txtVideoName);
             videoSource = itemView.findViewById(R.id.txtVideoSource);
             videoType = itemView.findViewById(R.id.txtVideoType);
-        }
-    }
-
-
-    public static void watchYoutubeVideo(Context context, String id){
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.youtube.com/watch?v=" + id));
-        try {
-            context.startActivity(appIntent);
-        } catch (ActivityNotFoundException ex) {
-            context.startActivity(webIntent);
         }
     }
 
