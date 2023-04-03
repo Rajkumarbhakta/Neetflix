@@ -6,6 +6,7 @@ import com.rkbapps.neetflix.models.images.ImagesModel;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesListModel;
 import com.rkbapps.neetflix.models.tvseries.TvSeriesModel;
 import com.rkbapps.neetflix.models.tvseries.seasons.SeasonsDetails;
+import com.rkbapps.neetflix.models.videos.VideoModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -40,6 +41,9 @@ public interface TvSeriesApi {
 
     @GET("tv/{tv_id}/images")
     Call<ImagesModel> getSeriesImages(@Path("tv_id") int id, @Query("api_key") String apiKey);
+
+    @GET("tv/{tv_id}/videos")
+    Call<VideoModel> getSeriesVideos(@Path("tv_id") int id, @Query("api_key") String apiKey);
 
     @GET("search/tv")
     Call<TvSeriesListModel> getSeriesSearchResult(@Query("api_key") String apiKey, @Query("query") String query, @Query("page") int page, @Query("include_adult") boolean include_adult);

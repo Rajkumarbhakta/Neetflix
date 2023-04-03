@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rkbapps.neetflix.R;
 import com.rkbapps.neetflix.adapter.BackdropAdapter;
 import com.rkbapps.neetflix.adapter.PosterAdapter;
+import com.rkbapps.neetflix.adapter.VideoAdapter;
 import com.rkbapps.neetflix.models.images.ImagesModel;
+import com.rkbapps.neetflix.models.videos.VideoModel;
 import com.rkbapps.neetflix.services.ApiData;
 import com.rkbapps.neetflix.services.MovieApi;
 import com.rkbapps.neetflix.services.RetrofitInstance;
@@ -31,9 +33,6 @@ public class VideoAndImageMovieFragment extends Fragment {
     private MovieApi movieApi = RetrofitInstance.getMovieApi();
     private RecyclerView backdrops, videos, posters;
     private TextView txtBackdrop,txtPoster,txtVideos;
-
-
-
 
     public VideoAndImageMovieFragment() {
 
@@ -60,8 +59,10 @@ public class VideoAndImageMovieFragment extends Fragment {
 
         backdrops.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         posters.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        videos.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
 
         loadImages(id);
+        loadVideos(id);
         return view;
     }
 
@@ -102,4 +103,34 @@ public class VideoAndImageMovieFragment extends Fragment {
             }
         });
     }
+
+    private void loadVideos(int id){
+        movieApi.getMovieVideos(id,ApiData.API_KEY)
+                .enqueue(new Callback<VideoModel>() {
+            @Override
+            public void onResponse(Call<VideoModel> call, Response<VideoModel> response) {
+                if(response.isSuccessful()){
+                    if(response.body()!=null){
+                        if(response.body().getResults().size()!=0 && response.body().getResults()!=null){
+                            txtVideos.setVisibility(View.VISIBLE);
+                            videos.setAdapter(new VideoAdapter(getContext(),response.body().getResults()));
+                        }else{
+                            txtVideos.setVisibility(View.GONE);
+                            videos.setVisibility(View.GONE);
+                        }
+                    }
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<VideoModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+
 }
