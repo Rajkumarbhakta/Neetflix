@@ -87,6 +87,7 @@
                 app:textMode="line" />
 
             <TextView
+                android:id="@+id/txtGuestStar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

@@ -132,6 +132,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txtSeasons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -146,17 +147,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/txtNoSeasonData"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No data available"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:visibility="gone" />
 
             <TextView
+                android:id="@+id/txtCastSeriesOverview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -171,17 +164,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/txtNoCastDataSeries"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No data available"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:visibility="gone" />
 
             <TextView
+                android:id="@+id/txtCrewSeriesOverview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -197,16 +182,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/txtNoCrewDataSeries"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No data available"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-            <TextView
+                android:id="@+id/txtNetworkSeriesOverview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -222,16 +198,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/txtNoNetworkDataSeries"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No data available"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-            <TextView
+                android:id="@+id/txtProductionCompanySeriesOverview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -247,16 +214,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/txtNoProductionCoDataSeries"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No data available"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-            <TextView
+                android:id="@+id/txtSimilarSeries"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -270,16 +228,6 @@
                 android:id="@+id/recyclerSimilarSeries"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/txtNoSimilarSeries"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No similar series available"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:visibility="gone" />
 
 
         </LinearLayout>

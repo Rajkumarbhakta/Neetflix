@@ -35,7 +35,7 @@ public class SeriesOverviewFragment extends Fragment {
     private final TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
     private TextView overview, status, type, firstAirDate, lastAirDate;
     private RecyclerView cast, crew, productionCompanies, similarSeries, network, seasons;
-    private TextView noCast, noCrew, noProductionCo, noSimilarSeries, noNetwork, noSeason;
+    private TextView txtCast, txtCrew, txtProductionCo, txtSimilarSeries, txtNetwork, txtSeason;
 
     public SeriesOverviewFragment() {
         // Required empty public constructor
@@ -60,19 +60,21 @@ public class SeriesOverviewFragment extends Fragment {
         similarSeries = view.findViewById(R.id.recyclerSimilarSeries);
         network = view.findViewById(R.id.recyclerNetwork);
 
-        noCast = view.findViewById(R.id.txtNoCastDataSeries);
-        noCrew = view.findViewById(R.id.txtNoCrewDataSeries);
-        noProductionCo = view.findViewById(R.id.txtNoProductionCoDataSeries);
-        noSimilarSeries = view.findViewById(R.id.txtNoSimilarSeries);
-        noNetwork = view.findViewById(R.id.txtNoNetworkDataSeries);
-        noSeason = view.findViewById(R.id.txtNoSeasonData);
 
-        noCast.setVisibility(View.GONE);
-        noCrew.setVisibility(View.GONE);
-        noProductionCo.setVisibility(View.GONE);
-        noNetwork.setVisibility(View.GONE);
-        noSeason.setVisibility(View.GONE);
-        noSimilarSeries.setVisibility(View.GONE);
+        txtCast = view.findViewById(R.id.txtCastSeriesOverview);
+        txtCrew = view.findViewById(R.id.txtCrewSeriesOverview);
+        txtNetwork = view.findViewById(R.id.txtNetworkSeriesOverview);
+        txtProductionCo = view.findViewById(R.id.txtProductionCompanySeriesOverview);
+        txtSeason = view.findViewById(R.id.txtSeasons);
+        txtSimilarSeries = view.findViewById(R.id.txtSimilarSeries);
+
+
+        txtCast.setVisibility(View.GONE);
+        txtCrew.setVisibility(View.GONE);
+        txtNetwork.setVisibility(View.GONE);
+        txtProductionCo.setVisibility(View.GONE);
+        txtSeason.setVisibility(View.GONE);
+        txtSimilarSeries.setVisibility(View.GONE);
 
 
         seasons.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
@@ -104,22 +106,25 @@ public class SeriesOverviewFragment extends Fragment {
                         type.setText(tvSeriesModel.getType());
                         firstAirDate.setText(tvSeriesModel.getFirstAirDate());
                         lastAirDate.setText(tvSeriesModel.getLastAirDate());
-                        if (tvSeriesModel.getSeasons().size() == 0 || tvSeriesModel.getSeasons() == null) {
-                            noSeason.setVisibility(View.VISIBLE);
-                        } else {
+                        if (tvSeriesModel.getSeasons().size() != 0 && tvSeriesModel.getSeasons() != null) {
+                            txtSeason.setVisibility(View.VISIBLE);
                             seasons.setAdapter(new SeasonAdapter(getContext(), tvSeriesModel.getSeasons(), id));
+                        } else {
+                            seasons.setVisibility(View.GONE);
                         }
 
-                        if (tvSeriesModel.getNetworks().size() == 0 || tvSeriesModel.getNetworks() == null) {
-                            noNetwork.setVisibility(View.VISIBLE);
-                        } else {
+                        if (tvSeriesModel.getNetworks().size() != 0 && tvSeriesModel.getNetworks() != null) {
+                            txtNetwork.setVisibility(View.VISIBLE);
                             network.setAdapter(new ProductionCompanyAdapter(getContext(), tvSeriesModel.getNetworks()));
+                        } else {
+                            network.setVisibility(View.GONE);
                         }
 
-                        if (tvSeriesModel.getProductionCompanies().size() == 0 || tvSeriesModel.getProductionCompanies() == null) {
-                            noProductionCo.setVisibility(View.VISIBLE);
-                        } else {
+                        if (tvSeriesModel.getProductionCompanies().size() != 0 && tvSeriesModel.getProductionCompanies() != null) {
+                            txtProductionCo.setVisibility(View.VISIBLE);
                             productionCompanies.setAdapter(new ProductionCompanyAdapter(getContext(), tvSeriesModel.getProductionCompanies()));
+                        } else {
+                            productionCompanies.setVisibility(View.GONE);
                         }
                     }
                 } else {
@@ -141,18 +146,20 @@ public class SeriesOverviewFragment extends Fragment {
             public void onResponse(Call<CreditsModel> call, Response<CreditsModel> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        if (response.body().getCast().size() == 0 || response.body().getCast() == null) {
-                            noCast.setVisibility(View.VISIBLE);
-                        } else {
+                        if (response.body().getCast().size() != 0 && response.body().getCast() != null) {
+                            txtCast.setVisibility(View.VISIBLE);
                             cast.setAdapter(new CastAdapter(getContext(), response.body().getCast()));
-                        }
-                        if (response.body().getCrew().size() == 0 || response.body().getCrew() == null) {
-                            noCrew.setVisibility(View.VISIBLE);
                         } else {
-                            crew.setAdapter(new CrewAdapter(getContext(), response.body().getCrew()));
+                            txtCast.setVisibility(View.GONE);
+                            cast.setVisibility(View.GONE);
                         }
-                    } else {
-                        Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                        if (response.body().getCrew().size() != 0 && response.body().getCrew() != null) {
+                            txtCrew.setVisibility(View.VISIBLE);
+                            crew.setAdapter(new CrewAdapter(getContext(), response.body().getCrew()));
+                        } else {
+                            crew.setVisibility(View.GONE);
+                            txtCrew.setVisibility(View.GONE);
+                        }
                     }
                 } else {
                     Toast.makeText(getContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
@@ -173,16 +180,14 @@ public class SeriesOverviewFragment extends Fragment {
             public void onResponse(Call<TvSeriesListModel> call, Response<TvSeriesListModel> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        if (response.body().getResults() == null || response.body().getResults().size() == 0) {
-                            noSimilarSeries.setVisibility(View.VISIBLE);
-                        } else {
+                        if (response.body().getResults() != null && response.body().getResults().size() != 0) {
+                            txtSimilarSeries.setVisibility(View.VISIBLE);
                             similarSeries.setAdapter(new TvSeriesListChildAdapter(response.body().getResults(), getContext()));
+                        } else {
+                            similarSeries.setVisibility(View.GONE);
+                            txtSimilarSeries.setVisibility(View.GONE);
                         }
-
-                    } else {
-                        Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
                     Toast.makeText(getContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
                 }

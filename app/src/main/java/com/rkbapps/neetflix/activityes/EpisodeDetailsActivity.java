@@ -3,6 +3,7 @@ package com.rkbapps.neetflix.activityes;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,9 @@ public class EpisodeDetailsActivity extends AppCompatActivity {
         TextView overview = findViewById(R.id.txtEpisodeOverview);
         RecyclerView recyclerGuest = findViewById(R.id.recyclerEpisodeGuestStars);
         MaterialToolbar toolbar = findViewById(R.id.toolbarEpisodePreview);
+        TextView guestStar = findViewById(R.id.txtGuestStar);
+
+        guestStar.setVisibility(View.GONE);
 
         EpisodeDetails episodeDetails = (EpisodeDetails) getIntent().getSerializableExtra("episodeDetails");
 
@@ -42,7 +46,6 @@ public class EpisodeDetailsActivity extends AppCompatActivity {
         recyclerGuest.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
         if (episodeDetails != null) {
-
             if (episodeDetails.getStillPath() == null) {
                 Glide.with(this).load(R.drawable.general_backdrop).into(episodePoster);
             } else {
@@ -51,9 +54,21 @@ public class EpisodeDetailsActivity extends AppCompatActivity {
 
             episodeName.setText(episodeDetails.getName());
 
-            overview.setText(episodeDetails.getOverview());
+            if(episodeDetails.getOverview().isEmpty()){
+                overview.setText("Not available");
+            }else {
+                overview.setText(episodeDetails.getOverview());
+            }
 
-            recyclerGuest.setAdapter(new CastAdapter(this, episodeDetails.getGuestStars()));
+
+            if(episodeDetails.getGuestStars()!=null && episodeDetails.getGuestStars().size()!=0){
+                guestStar.setVisibility(View.VISIBLE);
+                recyclerGuest.setAdapter(new CastAdapter(this, episodeDetails.getGuestStars()));
+            }else{
+                guestStar.setVisibility(View.GONE);
+                recyclerGuest.setVisibility(View.GONE);
+            }
+
 
             episodeNumber.setText("Season " + episodeDetails.getSeasonNumber() + "  Episode " + episodeDetails.getEpisodeNumber());
 
