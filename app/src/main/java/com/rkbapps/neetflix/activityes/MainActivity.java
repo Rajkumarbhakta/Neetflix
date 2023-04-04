@@ -61,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         int selectedItem = bNav.getSelectedItemId();
-        if(selectedItem!=R.id.discover){
+        if (selectedItem != R.id.discover) {
             loadFragment(new DiscoverFragment(), R.id.containerMain);
             bNav.setSelectedItemId(R.id.discover);
-        }else {
+        } else {
             super.onBackPressed();
         }
     }

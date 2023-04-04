@@ -89,7 +89,5 @@ public class BookmarkActivity extends AppCompatActivity {
         onResumeCalled++;
         if (onResumeCalled > 1)
             loadBookmarkData();
-
-
     }
 }
