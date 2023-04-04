@@ -54,17 +54,17 @@ public class EpisodeDetailsActivity extends AppCompatActivity {
 
             episodeName.setText(episodeDetails.getName());
 
-            if(episodeDetails.getOverview().isEmpty()){
+            if (episodeDetails.getOverview().isEmpty()) {
                 overview.setText("Not available");
-            }else {
+            } else {
                 overview.setText(episodeDetails.getOverview());
             }
 
 
-            if(episodeDetails.getGuestStars()!=null && episodeDetails.getGuestStars().size()!=0){
+            if (episodeDetails.getGuestStars() != null && episodeDetails.getGuestStars().size() != 0) {
                 guestStar.setVisibility(View.VISIBLE);
                 recyclerGuest.setAdapter(new CastAdapter(this, episodeDetails.getGuestStars()));
-            }else{
+            } else {
                 guestStar.setVisibility(View.GONE);
                 recyclerGuest.setVisibility(View.GONE);
             }
