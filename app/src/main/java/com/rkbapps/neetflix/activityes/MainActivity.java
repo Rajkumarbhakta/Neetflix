@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         loadFragment(new DiscoverFragment(), container);
         bNav.setSelected(true);
+        bNav.setSelectedItemId(R.id.discover);
 
         bNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -55,5 +56,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadFragment(Fragment fragment, int container) {
         getSupportFragmentManager().beginTransaction().replace(container, fragment).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        int selectedItem = bNav.getSelectedItemId();
+        if(selectedItem!=R.id.discover){
+            loadFragment(new DiscoverFragment(), R.id.containerMain);
+            bNav.setSelectedItemId(R.id.discover);
+        }else {
+            super.onBackPressed();
+        }
     }
 }
