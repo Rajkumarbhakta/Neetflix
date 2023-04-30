@@ -18,7 +18,7 @@ public class MovieModel {
     private Object belongsToCollection;
     @SerializedName("budget")
     @Expose
-    private Integer budget;
+    private Long budget;
     @SerializedName("genres")
     @Expose
     private List<Genre> genres;
@@ -57,7 +57,7 @@ public class MovieModel {
     private String releaseDate;
     @SerializedName("revenue")
     @Expose
-    private Integer revenue;
+    private Long revenue;
     @SerializedName("runtime")
     @Expose
     private Integer runtime;
@@ -107,11 +107,11 @@ public class MovieModel {
         this.belongsToCollection = belongsToCollection;
     }
 
-    public Integer getBudget() {
+    public Long getBudget() {
         return budget;
     }
 
-    public void setBudget(Integer budget) {
+    public void setBudget(Long budget) {
         this.budget = budget;
     }
 
@@ -211,11 +211,11 @@ public class MovieModel {
         this.releaseDate = releaseDate;
     }
 
-    public Integer getRevenue() {
+    public Long getRevenue() {
         return revenue;
     }
 
-    public void setRevenue(Integer revenue) {
+    public void setRevenue(Long revenue) {
         this.revenue = revenue;
     }
 
