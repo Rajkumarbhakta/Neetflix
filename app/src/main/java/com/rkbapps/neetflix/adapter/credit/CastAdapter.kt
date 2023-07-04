@@ -1,88 +1,50 @@
-package com.rkbapps.neetflix.adapter.credit;
+package com.rkbapps.neetflix.adapter.credit
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.rkbapps.neetflix.activityes.PersonActivity
+import com.rkbapps.neetflix.adapter.credit.CastAdapter.CastViewHolder
+import com.rkbapps.neetflix.databinding.CastItemViewBinding
+import com.rkbapps.neetflix.models.castandcrew.Cast
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class CastAdapter(private val context: Context, private val casts: List<Cast>) :
+    RecyclerView.Adapter<CastViewHolder>() {
 
-import com.bumptech.glide.Glide;
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.activityes.PersonActivity;
-import com.rkbapps.neetflix.models.castandcrew.Cast;
-
-import java.util.List;
-
-public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder> {
-
-    private final Context context;
-    private final List<Cast> casts;
-
-    public CastAdapter(Context context, List<Cast> casts) {
-        this.context = context;
-        this.casts = casts;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder {
+        return CastViewHolder(
+            CastItemViewBinding.inflate(LayoutInflater.from(context), parent, false)
+        )
     }
 
-    @NonNull
-    @Override
-    public CastViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new CastViewHolder(LayoutInflater.from(context).inflate(R.layout.cast_item_view, parent, false));
+    override fun onBindViewHolder(
+        holder: CastViewHolder,
+        @SuppressLint("RecyclerView") position: Int
+    ) {
+        holder.binding.cast = casts[position]
+
+        holder.itemView.setOnClickListener(View.OnClickListener {
+            val i = Intent(context, PersonActivity::class.java)
+            i.putExtra("id", casts[position].id)
+            i.putExtra("name", casts[position].name)
+            i.putExtra("image", casts[position].profilePath)
+            i.putExtra("gender", casts[position].gender)
+            i.putExtra("popularity", casts[position].popularity)
+            i.putExtra("department", casts[position].knownForDepartment)
+            context.startActivity(i)
+        })
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull CastViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.castName.setText(casts.get(position).getName());
-        if (casts.get(position).getCharacter() != null)
-            holder.character.setText(casts.get(position).getCharacter());
-        else
-            holder.character.setText("");
-
-        if (casts.get(position).getProfilePath() != null)
-            Glide.with(context).load("https://image.tmdb.org/t/p/w500/" + casts.get(position).getProfilePath()).into(holder.cast);
-        else {
-            if (casts.get(position).getGender() == 1)
-                Glide.with(context).load(R.drawable.female_placeholder).into(holder.cast);
-            else if (casts.get(position).getGender() == 2)
-                Glide.with(context).load(R.drawable.male_placeholder).into(holder.cast);
-            else
-                Glide.with(context).load(R.drawable.male_placeholder).into(holder.cast);
-        }
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, PersonActivity.class);
-                i.putExtra("id", casts.get(position).getId());
-                i.putExtra("name", casts.get(position).getName());
-                i.putExtra("image", casts.get(position).getProfilePath());
-                i.putExtra("gender", casts.get(position).getGender());
-                i.putExtra("popularity", casts.get(position).getPopularity());
-                i.putExtra("department", casts.get(position).getKnownForDepartment());
-                context.startActivity(i);
-            }
-        });
+    override fun getItemCount(): Int {
+        return casts.size
     }
 
-    @Override
-    public int getItemCount() {
-        return casts.size();
-    }
-
-    public class CastViewHolder extends RecyclerView.ViewHolder {
-        ImageView cast;
-        TextView castName, character;
-
-        public CastViewHolder(@NonNull View itemView) {
-            super(itemView);
-            cast = itemView.findViewById(R.id.imgCast);
-            castName = itemView.findViewById(R.id.txtCastName);
-            character = itemView.findViewById(R.id.txtField);
-        }
+    inner class CastViewHolder(itemView: CastItemViewBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
+        val binding: CastItemViewBinding = itemView
     }
 }
