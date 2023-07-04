@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation.xml"
+    app:startDestination="@id/navDiscover">
+
+    <fragment
+        android:id="@+id/navDiscover"
+        android:name="com.rkbapps.neetflix.fragments.DiscoverFragment"
+        android:label="DiscoverFragment" >
+        <action
+            android:id="@+id/action_discoverFragment_to_searchFeagment"
+            app:destination="@id/navSearch" />
+        <action
+            android:id="@+id/action_discoverFragment_to_accountFragment"
+            app:destination="@id/navAccount" />
+    </fragment>
+    <fragment
+        android:id="@+id/navAccount"
+        android:name="com.rkbapps.neetflix.fragments.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/navSearch"
+        android:name="com.rkbapps.neetflix.fragments.SearchFeagment"
+        android:label="fragment_search_feagment"
+        tools:layout="@layout/fragment_search_feagment" />
+</navigation>

@@ -1,29 +1,19 @@
-package com.rkbapps.neetflix;
+package com.rkbapps.neetflix
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
+import android.content.Intent
+import android.os.Bundle
+import android.os.Handler
+import androidx.appcompat.app.AppCompatActivity
+import com.rkbapps.neetflix.activityes.MainActivity
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.rkbapps.neetflix.activityes.MainActivity;
-
-public class SplashActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent i = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(i);
-                finish();
-            }
-        }, 3000);
-
+class SplashActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
+        Handler().postDelayed({
+            val i = Intent(this@SplashActivity, MainActivity::class.java)
+            startActivity(i)
+            finish()
+        }, 3000)
     }
 }

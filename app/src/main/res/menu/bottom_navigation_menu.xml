@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/discover"
+        android:id="@+id/navDiscover"
         android:icon="@drawable/film"
         android:title="Discover"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/search"
+        android:id="@+id/navSearch"
         android:icon="@drawable/search"
         android:title="Search"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/account"
+        android:id="@+id/navAccount"
         android:icon="@drawable/user"
         android:title="Account"
         app:showAsAction="ifRoom" />
