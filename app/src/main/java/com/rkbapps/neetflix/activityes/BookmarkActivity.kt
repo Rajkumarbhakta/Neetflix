@@ -1,93 +1,76 @@
-package com.rkbapps.neetflix.activityes;
+package com.rkbapps.neetflix.activityes
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.View;
-import android.widget.TextView;
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.databinding.ActivityBookmarkBinding
+import com.rkbapps.neetflix.db.BookmarkAdapter
+import com.rkbapps.neetflix.db.DatabaseReference.getDatabase
+import com.rkbapps.neetflix.db.EntityModel
+import kotlinx.coroutines.DelicateCoroutinesApi
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class BookmarkActivity : AppCompatActivity() {
+    private lateinit var entityModel: MutableList<EntityModel>
+    private lateinit var adapter: BookmarkAdapter
+    private var onResumeCalled = 0
+    private lateinit var binding: ActivityBookmarkBinding
 
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.db.BookmarkAdapter;
-import com.rkbapps.neetflix.db.Database;
-import com.rkbapps.neetflix.db.DatabaseReference;
-import com.rkbapps.neetflix.db.EntityModel;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-public class BookmarkActivity extends AppCompatActivity {
-
-    private final List<EntityModel> entityModel = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private BookmarkAdapter adapter;
-    private TextView noBookmark;
-    private Database mDatabase;
-    private int onResumeCalled = 0;
-
+    @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("MissingInflatedId")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bookmark);
-        noBookmark = findViewById(R.id.txtNoBookmark);
-
-        recyclerView = findViewById(R.id.recyclerBookmark);
-
-        noBookmark.setVisibility(View.GONE);
-
-        mDatabase = DatabaseReference.INSTANCE.getDatabase(this);
-
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-
-        adapter = new BookmarkAdapter(this, entityModel);
-
-        loadBookmarkData();
-
-        recyclerView.setAdapter(adapter);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_bookmark)
 
 
+        binding.txtNoBookmark.visibility = View.GONE
+
+        entityModel = ArrayList()
+
+        binding.recyclerBookmark.layoutManager = GridLayoutManager(this, 3)
+        adapter = BookmarkAdapter(this, entityModel)
+        loadBookmarkData()
+        binding.recyclerBookmark.adapter = adapter
     }
 
-    private void loadBookmarkData() {
-        entityModel.clear();
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.myLooper());
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                if (mDatabase.getContentDao().getAllMyBookmarks().size() != 0)
-                    entityModel.addAll(mDatabase.getContentDao().getAllMyBookmarks());
-                else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            noBookmark.setVisibility(View.VISIBLE);
-                            recyclerView.setVisibility(View.GONE);
-                        }
-                    });
+    private fun loadBookmarkData() {
+        entityModel.clear()
+        getDatabase(this).contentDao.getAllMyBookmarks().observe(this, Observer {
+            if (it.isNotEmpty()) {
+                entityModel.addAll(it)
+                adapter.notifyDataSetChanged()
+            } else {
+                runOnUiThread {
+                    binding.txtNoBookmark.visibility = View.VISIBLE
+                    binding.recyclerBookmark.visibility = View.GONE
                 }
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
             }
-        });
+        })
+
+
+//        val executorService = Executors.newSingleThreadExecutor()
+//        val handler = Handler(Looper.myLooper()!!)
+//        executorService.execute {
+//            if (mDatabase!!.contentDao.getAllMyBookmarks().size != 0) entityModel.addAll(
+//                mDatabase!!.contentDao.getAllMyBookmarks()
+//            ) else {
+//                runOnUiThread {
+//                    noBookmark!!.visibility = View.VISIBLE
+//                    recyclerView!!.visibility = View.GONE
+//                }
+//            }
+//            handler.post { adapter!!.notifyDataSetChanged() }
+//        }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        onResumeCalled++;
-        if (onResumeCalled > 1)
-            loadBookmarkData();
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        onResumeCalled++
+//        if (onResumeCalled > 1) loadBookmarkData()
+//    }
 }

@@ -1,6 +1,7 @@
 package com.rkbapps.neetflix.activityes
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,31 +12,36 @@ import com.rkbapps.neetflix.R
 import com.rkbapps.neetflix.adapter.GenreAdapter
 import com.rkbapps.neetflix.adapter.tab.TabLayoutAdapter
 import com.rkbapps.neetflix.databinding.ActivityMoviePreviewBinding
+import com.rkbapps.neetflix.db.Database
 import com.rkbapps.neetflix.db.DatabaseReference.getDatabase
 import com.rkbapps.neetflix.db.EntityModel
-import com.rkbapps.neetflix.models.Genre
 import com.rkbapps.neetflix.models.movies.MovieModel
 import com.rkbapps.neetflix.services.ApiData
 import com.rkbapps.neetflix.services.RetrofitInstance
 import com.rkbapps.neetflix.utils.ContentType
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MoviePreviewActivity : AppCompatActivity() {
-    private val genreList: List<Genre> = ArrayList()
     private lateinit var movieModel: MovieModel
     private lateinit var binding: ActivityMoviePreviewBinding
+    private lateinit var mDatabase: Database
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_preview)
+        mDatabase = getDatabase(this)
 
         val id = intent.getIntExtra("id", -1)
         val tittle = intent.getStringExtra("tittle")
         val tabLayout = binding.tabLayout
         val viewPager = binding.pager
+
+        Log.d("database", mDatabase.toString())
 
         binding.bookmarkMovie.isEnabled = false
 
@@ -44,6 +50,7 @@ class MoviePreviewActivity : AppCompatActivity() {
         } else {
             binding.bookmarkMovie.setImageResource(R.drawable.bookmark_border)
         }
+
 
 
         setSupportActionBar(binding.toolbarMovie)
@@ -71,8 +78,11 @@ class MoviePreviewActivity : AppCompatActivity() {
 
 
         binding.bookmarkMovie.setOnClickListener {
-            if (getDatabase(this).contentDao.isBookmarked(id)) {
-                getDatabase(this).contentDao.removeBookmark(id)
+
+            if (mDatabase.contentDao.isBookmarked(id)) {
+                MainScope().launch {
+                    mDatabase.contentDao.removeBookmark(id)
+                }
                 Toast.makeText(
                     this@MoviePreviewActivity,
                     "Removed from bookmark",
@@ -83,11 +93,13 @@ class MoviePreviewActivity : AppCompatActivity() {
                 try {
                     addToBookmark(movieModel)
                 } catch (e: Exception) {
-                    Toast.makeText(
-                        this@MoviePreviewActivity,
-                        "Something went wrong",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@MoviePreviewActivity,
+                            "Something went wrong",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
@@ -133,36 +145,27 @@ class MoviePreviewActivity : AppCompatActivity() {
             title = movieModel.title,
             voteAverage = movieModel.voteAverage
         )
-        getDatabase(this).contentDao.addToBookmark(entityModel)
+        MainScope().launch {
+            mDatabase.contentDao.addToBookmark(entityModel)
+        }
+
         binding.bookmarkMovie.setImageResource(R.drawable.bookmark)
         Toast.makeText(
             this@MoviePreviewActivity,
             "Added to bookmark",
             Toast.LENGTH_SHORT
         ).show()
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 
 
 }
 
-
-//                    recyclerView.setAdapter(GenreAdapter(applicationContext, movieModel!!.genres))
-//                    if (movieModel!!.backdropPath != null) Glide.with(applicationContext)
-//                        .load("https://image.tmdb.org/t/p/w500" + movieModel!!.backdropPath)
-//                        .into(backdrop) else Glide.with(
-//                        applicationContext
-//                    ).load(R.drawable.general_backdrop).into(backdrop)
-//                    rating.setText("" + movieModel!!.voteAverage)
-//                    releaseDate.setText("" + movieModel!!.releaseDate)
-//                    budget.setText("" + movieModel!!.budget / 1000000 + "M")
-//                    revenue.setText("" + ((movieModel!!.revenue / 1000000).toString() + "M"))
-//                    runtime.setText("" + movieModel!!.runtime / 60 + "h" + movieModel!!.runtime % 60 + "m")
-//                    tagLine.setText(movieModel!!.tagline)
 
 
 

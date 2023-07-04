@@ -1,5 +1,6 @@
 package com.rkbapps.neetflix.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -10,19 +11,19 @@ import androidx.room.Query
 interface ContentDao {
     //For inserting new data in database;
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addToBookmark(entityModel: EntityModel?): Long
+    suspend fun addToBookmark(entityModel: EntityModel?): Long
 
     //for deleting a data from database;
     @Delete
-    fun deleteBookmark(entityModel: EntityModel?)
+    suspend fun deleteBookmark(entityModel: EntityModel?)
 
     //get all bookmarked data from database
     @Query("select * from content")
-    fun getAllMyBookmarks(): List<EntityModel>
+    fun getAllMyBookmarks(): LiveData<List<EntityModel>>
 
     @Query("select id from content where id=:enterId")
     fun isBookmarked(enterId: Int): Boolean
 
     @Query("delete from content where id=:enterId")
-    fun removeBookmark(enterId: Int)
+    suspend fun removeBookmark(enterId: Int)
 }
