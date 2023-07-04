@@ -68,7 +68,7 @@ public class AccountFragment extends Fragment {
         switchNsfw = view.findViewById(R.id.switchNsfw);
         clearCache = view.findViewById(R.id.linerLayoutClearCache);
 
-        boolean isNsfw = SharedPreferanceValues.readNsfw(requireContext());
+        boolean isNsfw = SharedPreferanceValues.INSTANCE.readNsfw(requireContext());
 
 
         switchNsfw.setChecked(isNsfw);
@@ -86,7 +86,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                SharedPreferanceValues.writeNsfw(requireContext(), isChecked);
+                SharedPreferanceValues.INSTANCE.writeNsfw(requireContext(), isChecked);
 
             }
         });

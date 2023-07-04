@@ -1,175 +1,169 @@
-package com.rkbapps.neetflix.activityes;
+package com.rkbapps.neetflix.activityes
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.os.Bundle
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.adapter.GenreAdapter
+import com.rkbapps.neetflix.adapter.tab.TabLayoutAdapter
+import com.rkbapps.neetflix.databinding.ActivityMoviePreviewBinding
+import com.rkbapps.neetflix.db.DatabaseReference.getDatabase
+import com.rkbapps.neetflix.db.EntityModel
+import com.rkbapps.neetflix.models.Genre
+import com.rkbapps.neetflix.models.movies.MovieModel
+import com.rkbapps.neetflix.services.ApiData
+import com.rkbapps.neetflix.services.RetrofitInstance
+import com.rkbapps.neetflix.utils.ContentType
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
-import com.bumptech.glide.Glide;
-import com.google.android.material.tabs.TabLayout;
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.GenreAdapter;
-import com.rkbapps.neetflix.adapter.tab.TabLayoutAdapter;
-import com.rkbapps.neetflix.db.Database;
-import com.rkbapps.neetflix.db.DatabaseReference;
-import com.rkbapps.neetflix.db.EntityModel;
-import com.rkbapps.neetflix.models.Genre;
-import com.rkbapps.neetflix.models.movies.MovieModel;
-import com.rkbapps.neetflix.services.ApiData;
-import com.rkbapps.neetflix.services.MovieApi;
-import com.rkbapps.neetflix.services.RetrofitInstance;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class MoviePreviewActivity extends AppCompatActivity {
+class MoviePreviewActivity : AppCompatActivity() {
+    private val genreList: List<Genre> = ArrayList()
+    private lateinit var movieModel: MovieModel
+    private lateinit var binding: ActivityMoviePreviewBinding
 
 
-    private final List<Genre> genreList = new ArrayList<>();
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private MovieModel movieModel = new MovieModel();
-    private RecyclerView recyclerView;
-    private TextView rating, budget, revenue, releaseDate, runtime, tagLine;
-    private ImageView backdrop, bookmark;
-    private Toolbar toolbar;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_preview)
 
-    private Database mDatabase;
+        val id = intent.getIntExtra("id", -1)
+        val tittle = intent.getStringExtra("tittle")
+        val tabLayout = binding.tabLayout
+        val viewPager = binding.pager
 
+        binding.bookmarkMovie.isEnabled = false
 
-    @SuppressLint("MissingInflatedId")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_preview);
-
-        int id = getIntent().getIntExtra("id", -1);
-        String tittle = getIntent().getStringExtra("tittle");
-
-        tabLayout = findViewById(R.id.tabLayoutMovie);
-        viewPager = findViewById(R.id.pagerMovie);
-        recyclerView = findViewById(R.id.recyclerGenre);
-        rating = findViewById(R.id.txtRattingMovie);
-        budget = findViewById(R.id.txtBudgetMovie);
-        revenue = findViewById(R.id.txtRevenueMovie);
-        releaseDate = findViewById(R.id.txtReleaseDateMovie);
-        runtime = findViewById(R.id.txtRuntime);
-        backdrop = findViewById(R.id.imgBackdropMovie);
-        bookmark = findViewById(R.id.bookmarkMovie);
-        tagLine = findViewById(R.id.txtTagLine);
-        toolbar = findViewById(R.id.toolbarMovie);
-
-
-        mDatabase = DatabaseReference.getDatabase(getApplicationContext());
-
-        if (mDatabase.getContentDao().isBookmarked(id)) {
-            bookmark.setImageResource(R.drawable.bookmark);
+        if (getDatabase(this).contentDao.isBookmarked(id)) {
+            binding.bookmarkMovie.setImageResource(R.drawable.bookmark)
         } else {
-            bookmark.setImageResource(R.drawable.bookmark_border);
+            binding.bookmarkMovie.setImageResource(R.drawable.bookmark_border)
         }
 
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(tittle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(binding.toolbarMovie)
+        supportActionBar?.title = tittle
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        binding.recyclerGenre.layoutManager =
+            LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
 
 
-        MovieApi movieApi = RetrofitInstance.getMovieApi();
-        Call<MovieModel> responseCall = movieApi.getMovieDetails(id, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<MovieModel>() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
-                if (response.isSuccessful()) {
-                    movieModel = response.body();
-                    recyclerView.setAdapter(new GenreAdapter(getApplicationContext(), movieModel.getGenres()));
-                    if (movieModel.getBackdropPath() != null)
-                        Glide.with(getApplicationContext()).load("https://image.tmdb.org/t/p/w500" + movieModel.getBackdropPath()).into(backdrop);
-                    else
-                        Glide.with(getApplicationContext()).load(R.drawable.general_backdrop).into(backdrop);
+        loadMovieData(id)
 
-                    rating.setText("" + movieModel.getVoteAverage());
-                    releaseDate.setText("" + movieModel.getReleaseDate());
-                    budget.setText("" + (movieModel.getBudget() / 1000000) + "M");
-                    revenue.setText("" + (movieModel.getRevenue() / 1000000 + "M"));
-                    runtime.setText("" + (movieModel.getRuntime() / 60) + "h" + (movieModel.getRuntime() % 60) + "m");
-                    tagLine.setText(movieModel.getTagline());
-                } else {
-                    Toast.makeText(MoviePreviewActivity.this, "" + response.message(), Toast.LENGTH_SHORT).show();
+        tabLayout.addTab(tabLayout.newTab())
+        tabLayout.addTab(tabLayout.newTab())
+        tabLayout.addTab(tabLayout.newTab())
+        val tabLayoutAdapter = TabLayoutAdapter(
+            supportFragmentManager,
+            this,
+            tabLayout.tabCount,
+            id,
+            TabLayoutAdapter.MOVIE
+        )
+        viewPager.adapter = tabLayoutAdapter
+        tabLayout.setupWithViewPager(viewPager)
+
+
+        binding.bookmarkMovie.setOnClickListener {
+            if (getDatabase(this).contentDao.isBookmarked(id)) {
+                getDatabase(this).contentDao.removeBookmark(id)
+                Toast.makeText(
+                    this@MoviePreviewActivity,
+                    "Removed from bookmark",
+                    Toast.LENGTH_SHORT
+                ).show()
+                binding.bookmarkMovie.setImageResource(R.drawable.bookmark_border)
+            } else {
+                try {
+                    addToBookmark(movieModel)
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        this@MoviePreviewActivity,
+                        "Something went wrong",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-
-            @Override
-            public void onFailure(Call<MovieModel> call, Throwable t) {
-                Toast.makeText(MoviePreviewActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        }
+    }
 
 
-        tabLayout.addTab(tabLayout.newTab());
-        tabLayout.addTab(tabLayout.newTab());
-        tabLayout.addTab(tabLayout.newTab());
-
-        TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager(), this, tabLayout.getTabCount(), id, TabLayoutAdapter.MOVIE);
-        viewPager.setAdapter(tabLayoutAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-
-
-        bookmark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (mDatabase.getContentDao().isBookmarked(id)) {
-                    mDatabase.getContentDao().removeBookmark(id);
-                    Toast.makeText(MoviePreviewActivity.this, "Removed from bookmark", Toast.LENGTH_SHORT).show();
-                    bookmark.setImageResource(R.drawable.bookmark_border);
-
-                } else {
-                    responseCall.clone().enqueue(new Callback<MovieModel>() {
-                        @Override
-                        public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
-                            if (response.isSuccessful()) {
-                                EntityModel entityModel = new EntityModel(EntityModel.MOVIE, response.body().getAdult(), response.body().getId(), response.body().getPosterPath(), response.body().getReleaseDate(), response.body().getTitle(), response.body().getVoteAverage());
-                                mDatabase.getContentDao().addToBookmark(entityModel);
-                                bookmark.setImageResource(R.drawable.bookmark);
-                                Toast.makeText(MoviePreviewActivity.this, "Added to bookmark", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(MoviePreviewActivity.this, "" + response.message(), Toast.LENGTH_SHORT).show();
-                            }
+    private fun loadMovieData(id: Int) {
+        RetrofitInstance.getMovieApi().getMovieDetails(id, ApiData.API_KEY)
+            .enqueue(object : Callback<MovieModel?> {
+                override fun onResponse(call: Call<MovieModel?>, response: Response<MovieModel?>) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            movieModel = response.body()!!
+                            binding.recyclerGenre.adapter =
+                                GenreAdapter(this@MoviePreviewActivity, movieModel.genres)
+                            binding.movieModel = movieModel
+                            binding.bookmarkMovie.isEnabled = true
                         }
-
-                        @Override
-                        public void onFailure(Call<MovieModel> call, Throwable t) {
-                            Toast.makeText(MoviePreviewActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
+                    }
                 }
 
-            }
-        });
+                override fun onFailure(call: Call<MovieModel?>, t: Throwable) {
 
+                    Toast.makeText(
+                        this@MoviePreviewActivity,
+                        t.localizedMessage!!.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+            })
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        onBackPressed();
-        return true;
+
+    private fun addToBookmark(movieModel: MovieModel) {
+        val entityModel = EntityModel(
+            type = ContentType.MOVIE,
+            contentId = 0,
+            adult = movieModel.adult,
+            id = movieModel.id,
+            releaseDate = movieModel.releaseDate,
+            posterPath = movieModel.posterPath,
+            title = movieModel.title,
+            voteAverage = movieModel.voteAverage
+        )
+        getDatabase(this).contentDao.addToBookmark(entityModel)
+        binding.bookmarkMovie.setImageResource(R.drawable.bookmark)
+        Toast.makeText(
+            this@MoviePreviewActivity,
+            "Added to bookmark",
+            Toast.LENGTH_SHORT
+        ).show()
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        onBackPressed()
+        return true
+    }
+
+
 }
+
+
+//                    recyclerView.setAdapter(GenreAdapter(applicationContext, movieModel!!.genres))
+//                    if (movieModel!!.backdropPath != null) Glide.with(applicationContext)
+//                        .load("https://image.tmdb.org/t/p/w500" + movieModel!!.backdropPath)
+//                        .into(backdrop) else Glide.with(
+//                        applicationContext
+//                    ).load(R.drawable.general_backdrop).into(backdrop)
+//                    rating.setText("" + movieModel!!.voteAverage)
+//                    releaseDate.setText("" + movieModel!!.releaseDate)
+//                    budget.setText("" + movieModel!!.budget / 1000000 + "M")
+//                    revenue.setText("" + ((movieModel!!.revenue / 1000000).toString() + "M"))
+//                    runtime.setText("" + movieModel!!.runtime / 60 + "h" + movieModel!!.runtime % 60 + "m")
+//                    tagLine.setText(movieModel!!.tagline)
+
+
+
+

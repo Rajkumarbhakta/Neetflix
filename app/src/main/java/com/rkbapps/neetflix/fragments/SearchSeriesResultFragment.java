@@ -59,7 +59,7 @@ public class SearchSeriesResultFragment extends Fragment {
     private static void loadSeriesSearchResult(String query, int page) {
         isLoading = true;
         RetrofitInstance.getTvSeriesApi()
-                .getSeriesSearchResult(ApiData.API_KEY, query, page, SharedPreferanceValues.readNsfw(recyclerView.getContext()))
+                .getSeriesSearchResult(ApiData.API_KEY, query, page, SharedPreferanceValues.INSTANCE.readNsfw(recyclerView.getContext()))
                 .enqueue(new Callback<TvSeriesListModel>() {
                     @SuppressLint("SetTextI18n")
                     @Override

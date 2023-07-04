@@ -1,91 +1,56 @@
-package com.rkbapps.neetflix.adapter;
+package com.rkbapps.neetflix.adapter
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.rkbapps.neetflix.activityes.MoviePreviewActivity
+import com.rkbapps.neetflix.adapter.MovieListChildAdapter.MovieViewHolder
+import com.rkbapps.neetflix.databinding.MovieListChildItemsBinding
+import com.rkbapps.neetflix.models.movies.MovieResult
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class MovieListChildAdapter(
+    private val movieList: List<MovieResult>,
+    private val context: Context
+) :
+    RecyclerView.Adapter<MovieViewHolder>() {
 
-import com.bumptech.glide.Glide;
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.activityes.MoviePreviewActivity;
-import com.rkbapps.neetflix.models.movies.MovieResult;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MovieListChildAdapter extends RecyclerView.Adapter<MovieListChildAdapter.MovieViewHolder> {
-
-    private final Context context;
-    private List<MovieResult> movieList = new ArrayList<>();
-
-    public MovieListChildAdapter(List<MovieResult> movieList, Context context) {
-        this.movieList = movieList;
-        this.context = context;
-    }
-
-    @NonNull
-    @Override
-    public MovieListChildAdapter.MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MovieViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_list_child_items, parent, false));
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+        return MovieViewHolder(
+            MovieListChildItemsBinding.inflate(LayoutInflater.from(context), parent, false)
+        )
     }
 
     @SuppressLint("SetTextI18n")
-    @Override
-    public void onBindViewHolder(@NonNull MovieListChildAdapter.MovieViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        if (movieList.get(position).getPosterPath() != null) {
-            Glide.with(context).load("https://image.tmdb.org/t/p/w500" + movieList.get(position).getPosterPath()).into(holder.poster);
-        } else
-            Glide.with(context).load(R.drawable.default_poster).into(holder.poster);
+    override fun onBindViewHolder(
+        holder: MovieViewHolder,
+        position: Int
+    ) {
+        holder.binding.movieData = movieList[position]
 
-
-        holder.tittle.setText(movieList.get(position).getTitle());
-
-        holder.releaseYear.setText(movieList.get(position).getReleaseDate());
-
-        holder.ratting.setText("" + movieList.get(position).getVoteAverage());
-
-        if (movieList.get(position).getAdult()) {
-            holder.nsfw.setVisibility(View.VISIBLE);
+        if (movieList[position].adult) {
+            holder.binding.imgNsfw.visibility = View.VISIBLE
         } else {
-            holder.nsfw.setVisibility(View.INVISIBLE);
+            holder.binding.imgNsfw.visibility = View.INVISIBLE
         }
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, MoviePreviewActivity.class);
-                i.putExtra("id", movieList.get(position).getId());
-                i.putExtra("tittle", movieList.get(position).getTitle());
-                context.startActivity(i);
-            }
-        });
-
+        holder.itemView.setOnClickListener {
+            val i = Intent(context, MoviePreviewActivity::class.java)
+            i.putExtra("id", movieList[position].id)
+            i.putExtra("tittle", movieList[position].title)
+            context.startActivity(i)
+        }
     }
 
-    @Override
-    public int getItemCount() {
-        return movieList.size();
+    override fun getItemCount(): Int {
+        return movieList.size
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder {
-
-        ImageView poster, nsfw;
-        TextView tittle, releaseYear, ratting;
-
-        public MovieViewHolder(@NonNull View itemView) {
-            super(itemView);
-            poster = itemView.findViewById(R.id.imgMoviePoster);
-            tittle = itemView.findViewById(R.id.txtTittle);
-            releaseYear = itemView.findViewById(R.id.txtReleaseYear);
-            ratting = itemView.findViewById(R.id.txtRatting);
-            nsfw = itemView.findViewById(R.id.imgNsfw);
-        }
+    inner class MovieViewHolder(itemView: MovieListChildItemsBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
+        var binding: MovieListChildItemsBinding = itemView
     }
 }

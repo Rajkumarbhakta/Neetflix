@@ -48,7 +48,6 @@ public class MoviesFragment extends Fragment {
         loadTrendingMovies();
         loadPopularMovies();
         loadTopRatedMovies();
-        //loadLatestMovies();
         loadUpComingMovies();
 
         adapter = new ParentAdapter(movieLists, getContext());

@@ -283,34 +283,18 @@ public class MovieModel {
         this.voteCount = voteCount;
     }
 
-    @Override
-    public String toString() {
-        return "MovieModel{" +
-                "adult=" + adult +
-                ", backdropPath='" + backdropPath + '\'' +
-                ", belongsToCollection=" + belongsToCollection +
-                ", budget=" + budget +
-                ", genres=" + genres +
-                ", homepage='" + homepage + '\'' +
-                ", id=" + id +
-                ", imdbId='" + imdbId + '\'' +
-                ", originalLanguage='" + originalLanguage + '\'' +
-                ", originalTitle='" + originalTitle + '\'' +
-                ", overview='" + overview + '\'' +
-                ", popularity=" + popularity +
-                ", posterPath='" + posterPath + '\'' +
-                ", productionCompanies=" + productionCompanies +
-                ", productionCountries=" + productionCountries +
-                ", releaseDate='" + releaseDate + '\'' +
-                ", revenue=" + revenue +
-                ", runtime=" + runtime +
-                ", spokenLanguages=" + spokenLanguages +
-                ", status='" + status + '\'' +
-                ", tagline='" + tagline + '\'' +
-                ", title='" + title + '\'' +
-                ", video=" + video +
-                ", voteAverage=" + voteAverage +
-                ", voteCount=" + voteCount +
-                '}';
+
+    public String getMovieBudget() {
+
+        return "" + budget / 1000000 + "M";
     }
+
+    public String getMovieRevenue() {
+        return "" + (revenue / 1000000) + "M";
+    }
+
+    public String getMovieLength() {
+        return "" + runtime / 60 + "h" + runtime % 60 + "m";
+    }
+
 }

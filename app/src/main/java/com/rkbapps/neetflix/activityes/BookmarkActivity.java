@@ -42,7 +42,7 @@ public class BookmarkActivity extends AppCompatActivity {
 
         noBookmark.setVisibility(View.GONE);
 
-        mDatabase = DatabaseReference.getDatabase(this);
+        mDatabase = DatabaseReference.INSTANCE.getDatabase(this);
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
 
@@ -62,8 +62,8 @@ public class BookmarkActivity extends AppCompatActivity {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                if (mDatabase.getContentDao().getMyBookmarks().size() != 0)
-                    entityModel.addAll(mDatabase.getContentDao().getMyBookmarks());
+                if (mDatabase.getContentDao().getAllMyBookmarks().size() != 0)
+                    entityModel.addAll(mDatabase.getContentDao().getAllMyBookmarks());
                 else {
                     runOnUiThread(new Runnable() {
                         @Override

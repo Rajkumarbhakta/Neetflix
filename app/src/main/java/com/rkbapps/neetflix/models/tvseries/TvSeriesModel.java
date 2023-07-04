@@ -362,4 +362,14 @@ public class TvSeriesModel {
     public void setVoteCount(Integer voteCount) {
         this.voteCount = voteCount;
     }
+
+    public String getTotalEpisode() {
+        return numberOfEpisodes.toString() + "E";
+    }
+
+    public String getTotalSeasons() {
+        return numberOfSeasons.toString() + "S";
+    }
+
+
 }

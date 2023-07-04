@@ -1,19 +1,21 @@
-package com.rkbapps.neetflix.db;
+package com.rkbapps.neetflix.db
 
-import android.content.Context;
+import android.content.Context
+import androidx.room.Room.databaseBuilder
 
-import androidx.room.Room;
+object DatabaseReference {
+    @Volatile
+    private var database: Database? = null
 
-public class DatabaseReference {
-
-    private static Database database = null;
-
-    public static Database getDatabase(Context context) {
+    fun getDatabase(context: Context): Database {
         if (database == null) {
-            database = Room.databaseBuilder(context, Database.class, "my_bookmark")
-                    .allowMainThreadQueries()
-                    .build();
+            synchronized(this) {
+                database =
+                    databaseBuilder(context.applicationContext, Database::class.java, "bookmarks")
+                        .allowMainThreadQueries()
+                        .build()
+            }
         }
-        return database;
+        return database!!
     }
 }

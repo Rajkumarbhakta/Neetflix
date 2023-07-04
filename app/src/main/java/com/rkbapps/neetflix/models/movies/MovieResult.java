@@ -26,6 +26,15 @@ public class MovieResult {
     public MovieResult() {
     }
 
+    public MovieResult(Boolean adult, Integer id, String posterPath, String releaseDate, String title, Double voteAverage) {
+        this.adult = adult;
+        this.id = id;
+        this.posterPath = posterPath;
+        this.releaseDate = releaseDate;
+        this.title = title;
+        this.voteAverage = voteAverage;
+    }
+
     public Boolean getAdult() {
         return adult;
     }

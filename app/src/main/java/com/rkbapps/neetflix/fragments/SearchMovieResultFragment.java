@@ -61,7 +61,7 @@ public class SearchMovieResultFragment extends Fragment {
 
     private static void loadMovieSearchResult(String query, int page) {
         isLoading = true;
-        RetrofitInstance.getMovieApi().getMovieSearchResult(ApiData.API_KEY, query, page, SharedPreferanceValues.readNsfw(recyclerView.getContext()))
+        RetrofitInstance.getMovieApi().getMovieSearchResult(ApiData.API_KEY, query, page, SharedPreferanceValues.INSTANCE.readNsfw(recyclerView.getContext()))
                 .enqueue(new Callback<MovieListModel>() {
                     @Override
                     public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
