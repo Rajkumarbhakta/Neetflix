@@ -27,7 +27,7 @@ public class Crew {
     private Double popularity;
     @SerializedName("profile_path")
     @Expose
-    private Object profilePath;
+    private String profilePath;
     @SerializedName("credit_id")
     @Expose
     private String creditId;
@@ -94,11 +94,11 @@ public class Crew {
         this.popularity = popularity;
     }
 
-    public Object getProfilePath() {
+    public String getProfilePath() {
         return profilePath;
     }
 
-    public void setProfilePath(Object profilePath) {
+    public void setProfilePath(String profilePath) {
         this.profilePath = profilePath;
     }
 
@@ -126,20 +126,4 @@ public class Crew {
         this.job = job;
     }
 
-    @Override
-    public String toString() {
-        return "Crew{" +
-                "adult=" + adult +
-                ", gender=" + gender +
-                ", id=" + id +
-                ", knownForDepartment='" + knownForDepartment + '\'' +
-                ", name='" + name + '\'' +
-                ", originalName='" + originalName + '\'' +
-                ", popularity=" + popularity +
-                ", profilePath=" + profilePath +
-                ", creditId='" + creditId + '\'' +
-                ", department='" + department + '\'' +
-                ", job='" + job + '\'' +
-                '}';
-    }
 }
