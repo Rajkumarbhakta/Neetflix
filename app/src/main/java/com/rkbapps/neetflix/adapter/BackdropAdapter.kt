@@ -1,66 +1,43 @@
-package com.rkbapps.neetflix.adapter;
+package com.rkbapps.neetflix.adapter
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.content.Context
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.rkbapps.neetflix.activityes.ImagePreviewActivity
+import com.rkbapps.neetflix.adapter.BackdropAdapter.BackdropViewHolder
+import com.rkbapps.neetflix.databinding.BackdropItemsBinding
+import com.rkbapps.neetflix.models.images.Backdrop
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class BackdropAdapter(private val context: Context, private val backdrops: List<Backdrop>) :
+    RecyclerView.Adapter<BackdropViewHolder>() {
 
-import com.bumptech.glide.Glide;
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.activityes.ImagePreviewActivity;
-import com.rkbapps.neetflix.models.images.Backdrop;
-
-import java.util.List;
-
-public class BackdropAdapter extends RecyclerView.Adapter<BackdropAdapter.BackdropViewHolder> {
-
-    private final Context context;
-    private final List<Backdrop> backdrops;
-
-    public BackdropAdapter(Context context, List<Backdrop> backdrops) {
-        this.context = context;
-        this.backdrops = backdrops;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BackdropViewHolder {
+        return BackdropViewHolder(
+            BackdropItemsBinding.inflate(LayoutInflater.from(context), parent, false)
+        )
     }
 
-    @NonNull
-    @Override
-    public BackdropViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new BackdropViewHolder(LayoutInflater.from(context).inflate(R.layout.backdrop_items, parent, false));
-    }
+    override fun onBindViewHolder(
+        holder: BackdropViewHolder,
+        position: Int
+    ) {
+        holder.binding.backdrop = backdrops[position]
 
-    @Override
-    public void onBindViewHolder(@NonNull BackdropViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Glide.with(context).load("https://image.tmdb.org/t/p/w500" + backdrops.get(position).getFilePath()).into(holder.backdropImg);
-
-        holder.backdropImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, ImagePreviewActivity.class);
-                i.putExtra("imageKey", backdrops.get(position).getFilePath());
-                context.startActivity(i);
-
-            }
-        });
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return backdrops.size();
-    }
-
-    public class BackdropViewHolder extends RecyclerView.ViewHolder {
-        ImageView backdropImg;
-
-        public BackdropViewHolder(@NonNull View itemView) {
-            super(itemView);
-            backdropImg = itemView.findViewById(R.id.imgBackdropItemImage);
+        holder.itemView.setOnClickListener {
+            val i = Intent(context, ImagePreviewActivity::class.java)
+            i.putExtra("imageKey", backdrops[position].filePath)
+            context.startActivity(i)
         }
+    }
+
+    override fun getItemCount(): Int {
+        return backdrops.size
+    }
+
+    inner class BackdropViewHolder(itemView: BackdropItemsBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
+        val binding = itemView
     }
 }

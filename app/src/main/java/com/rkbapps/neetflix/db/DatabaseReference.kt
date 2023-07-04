@@ -2,7 +2,6 @@ package com.rkbapps.neetflix.db
 
 import android.content.Context
 import androidx.room.Room.databaseBuilder
-import kotlinx.coroutines.CoroutineScope
 
 object DatabaseReference {
     @Volatile

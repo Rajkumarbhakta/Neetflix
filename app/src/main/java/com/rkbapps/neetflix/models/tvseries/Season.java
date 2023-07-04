@@ -83,7 +83,7 @@ public class Season {
     }
 
 
-    public String getTotalEpisodeCount(){
-        return episodeCount+" E";
+    public String getTotalEpisodeCount() {
+        return episodeCount + " E";
     }
 }

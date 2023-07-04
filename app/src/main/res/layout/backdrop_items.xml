@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    app:cardCornerRadius="10dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/imgBackdropItemImage"
-        android:layout_width="300dp"
-        android:layout_height="170dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/backdrop" />
-</androidx.cardview.widget.CardView>
+    <data>
+<variable
+    name="backdrop"
+    type="com.rkbapps.neetflix.models.images.Backdrop" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="10dp">
+
+        <ImageView
+            android:id="@+id/imgBackdropItemImage"
+            android:layout_width="300dp"
+            android:layout_height="170dp"
+            android:scaleType="centerCrop"
+            imageBackdropUrl="@{backdrop.filePath}"
+            android:src="@drawable/backdrop" />
+    </androidx.cardview.widget.CardView>
+</layout>
