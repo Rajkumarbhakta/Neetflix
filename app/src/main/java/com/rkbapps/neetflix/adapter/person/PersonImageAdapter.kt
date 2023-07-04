@@ -1,63 +1,44 @@
-package com.rkbapps.neetflix.adapter.person;
+package com.rkbapps.neetflix.adapter.person
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.content.Context
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.rkbapps.neetflix.activityes.ImagePreviewActivity
+import com.rkbapps.neetflix.adapter.person.PersonImageAdapter.PersonImageViewHolder
+import com.rkbapps.neetflix.databinding.PersonImageItemBinding
+import com.rkbapps.neetflix.models.person.images.Profile
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class PersonImageAdapter(private val context: Context, private val profileList: List<Profile>) :
+    RecyclerView.Adapter<PersonImageViewHolder>() {
 
-import com.bumptech.glide.Glide;
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.activityes.ImagePreviewActivity;
-import com.rkbapps.neetflix.models.person.images.Profile;
-
-import java.util.List;
-
-public class PersonImageAdapter extends RecyclerView.Adapter<PersonImageAdapter.PersonImageViewHolder> {
-
-    private final Context context;
-    private final List<Profile> profileList;
-
-    public PersonImageAdapter(Context context, List<Profile> profileList) {
-        this.context = context;
-        this.profileList = profileList;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonImageViewHolder {
+        return PersonImageViewHolder(
+            PersonImageItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        )
     }
 
-    @NonNull
-    @Override
-    public PersonImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PersonImageViewHolder(LayoutInflater.from(context).inflate(R.layout.person_image_item, parent, false));
-    }
+    override fun onBindViewHolder(
+        holder: PersonImageViewHolder,
+        position: Int
+    ) {
 
-    @Override
-    public void onBindViewHolder(@NonNull PersonImageViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Glide.with(context).load("https://image.tmdb.org/t/p/w500/" + profileList.get(position).getFilePath()).into(holder.imgPersonImage);
-        holder.imgPersonImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, ImagePreviewActivity.class);
-                i.putExtra("imageKey", profileList.get(position).getFilePath());
-                context.startActivity(i);
-            }
-        });
-    }
+        holder.binding.person = profileList[position]
 
-    @Override
-    public int getItemCount() {
-        return profileList.size();
-    }
-
-    public class PersonImageViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgPersonImage;
-
-        public PersonImageViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imgPersonImage = itemView.findViewById(R.id.imgPersonImages);
+        holder.itemView.setOnClickListener {
+            val i = Intent(context, ImagePreviewActivity::class.java)
+            i.putExtra("imageKey", profileList[position].filePath)
+            context.startActivity(i)
         }
+    }
+
+    override fun getItemCount(): Int {
+        return profileList.size
+    }
+
+    inner class PersonImageViewHolder(itemView: PersonImageItemBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
+        val binding: PersonImageItemBinding = itemView
     }
 }

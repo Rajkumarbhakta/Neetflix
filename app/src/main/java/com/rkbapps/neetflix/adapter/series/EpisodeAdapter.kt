@@ -1,97 +1,67 @@
-package com.rkbapps.neetflix.adapter.series;
+package com.rkbapps.neetflix.adapter.series
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.activityes.EpisodeDetailsActivity
+import com.rkbapps.neetflix.adapter.series.EpisodeAdapter.SeasonsDetailsViewHolder
+import com.rkbapps.neetflix.databinding.EpisodeItemViewBinding
+import com.rkbapps.neetflix.models.tvseries.seasons.EpisodeDetails
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class EpisodeAdapter(
+    private val context: Context,
+    private val episodeDetails: List<EpisodeDetails>
+) : RecyclerView.Adapter<SeasonsDetailsViewHolder>() {
 
-import com.bumptech.glide.Glide;
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.activityes.EpisodeDetailsActivity;
-import com.rkbapps.neetflix.models.tvseries.seasons.EpisodeDetails;
-
-import java.util.List;
-
-public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.SeasonsDetailsViewHolder> {
-
-    private final Context context;
-    private final List<EpisodeDetails> episodeDetails;
-
-    public EpisodeAdapter(Context context, List<EpisodeDetails> episodeDetails) {
-        this.context = context;
-        this.episodeDetails = episodeDetails;
-    }
-
-    @NonNull
-    @Override
-    public SeasonsDetailsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new SeasonsDetailsViewHolder(LayoutInflater.from(context).inflate(R.layout.episode_item_view, parent, false));
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeasonsDetailsViewHolder {
+        return SeasonsDetailsViewHolder(
+            EpisodeItemViewBinding.inflate(LayoutInflater.from(context), parent, false)
+        )
     }
 
     @SuppressLint("SetTextI18n")
-    @Override
-    public void onBindViewHolder(@NonNull SeasonsDetailsViewHolder holder, @SuppressLint("RecyclerView") int position) {
-
-        if (episodeDetails.get(position).getStillPath() == null) {
-            Glide.with(context).load(R.drawable.general_backdrop).into(holder.stillImage);
+    override fun onBindViewHolder(
+        holder: SeasonsDetailsViewHolder,
+        @SuppressLint("RecyclerView") position: Int
+    ) {
+        if (episodeDetails[position].stillPath == null) {
+            Glide.with(context).load(R.drawable.general_backdrop).into(holder.binding.imgStillImage)
         } else {
-            Glide.with(context).load("https://image.tmdb.org/t/p/original/" + episodeDetails.get(position).getStillPath()).into(holder.stillImage);
+            Glide.with(context)
+                .load("https://image.tmdb.org/t/p/original/" + episodeDetails[position].stillPath)
+                .into(holder.binding.imgStillImage)
         }
-
-        holder.episodeNumber.setText("Episode " + episodeDetails.get(position).getEpisodeNumber());
-
+        holder.binding.txtEpisodeNumber.text = "Episode " + episodeDetails[position].episodeNumber
         try {
-            if (episodeDetails.get(position).getRuntime() / 60 == 0) {
-                holder.runtime.setText(episodeDetails.get(position).getRuntime() + "M");
+            if (episodeDetails[position].runtime / 60 == 0) {
+                holder.binding.txtEpisodeRuntime.text =
+                    episodeDetails[position].runtime.toString() + "M"
             } else {
-                holder.runtime.setText(episodeDetails.get(position).getRuntime() / 60 + "H" + episodeDetails.get(position).getRuntime() % 60 + "M");
+                holder.binding.txtEpisodeRuntime.text =
+                    (episodeDetails[position].runtime / 60).toString() + "H" + episodeDetails[position].runtime % 60 + "M"
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+        holder.binding.txtEpisodeRatting.text = "" + episodeDetails[position].voteAverage
+        holder.binding.txtEpisodeName.text = episodeDetails[position].name
 
-
-        holder.ratting.setText("" + episodeDetails.get(position).getVoteAverage());
-
-        holder.episodeName.setText(episodeDetails.get(position).getName());
-
-        Intent i = new Intent(context, EpisodeDetailsActivity.class);
-        i.putExtra("episodeDetails", episodeDetails.get(position));
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(i);
-            }
-        });
-
-
+        val i = Intent(context, EpisodeDetailsActivity::class.java)
+        i.putExtra("episodeDetails", episodeDetails[position])
+        holder.itemView.setOnClickListener { context.startActivity(i) }
     }
 
-    @Override
-    public int getItemCount() {
-        return episodeDetails.size();
+    override fun getItemCount(): Int {
+        return episodeDetails.size
     }
 
-    public static class SeasonsDetailsViewHolder extends RecyclerView.ViewHolder {
-        ImageView stillImage;
-        TextView episodeNumber, runtime, ratting, episodeName;
-
-        public SeasonsDetailsViewHolder(@NonNull View itemView) {
-            super(itemView);
-            stillImage = itemView.findViewById(R.id.imgStillImage);
-            episodeName = itemView.findViewById(R.id.txtEpisodeName);
-            episodeNumber = itemView.findViewById(R.id.txtEpisodeNumber);
-            runtime = itemView.findViewById(R.id.txtEpisodeRuntime);
-            ratting = itemView.findViewById(R.id.txtEpisodeRatting);
-
-        }
+    class SeasonsDetailsViewHolder(itemView: EpisodeItemViewBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
+        val binding: EpisodeItemViewBinding = itemView
     }
 }

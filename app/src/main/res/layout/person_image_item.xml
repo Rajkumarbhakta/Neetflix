@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="5dp"
-    app:cardCornerRadius="10dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/imgPersonImages"
-        android:layout_width="160dp"
-        android:layout_height="230dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/personimage" />
+    <data>
 
-</androidx.cardview.widget.CardView>
+        <variable
+            name="person"
+            type="com.rkbapps.neetflix.models.person.images.Profile" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        app:cardCornerRadius="10dp">
+
+        <ImageView
+            android:id="@+id/imgPersonImages"
+            imageUrl="@{person.filePath}"
+            android:layout_width="160dp"
+            android:layout_height="230dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/personimage" />
+
+    </androidx.cardview.widget.CardView>
+</layout>

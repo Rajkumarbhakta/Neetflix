@@ -81,4 +81,9 @@ public class Season {
     public void setSeasonNumber(Integer seasonNumber) {
         this.seasonNumber = seasonNumber;
     }
+
+
+    public String getTotalEpisodeCount(){
+        return episodeCount+" E";
+    }
 }
