@@ -1,51 +1,30 @@
-package com.rkbapps.neetflix.adapter;
+package com.rkbapps.neetflix.adapter
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.rkbapps.neetflix.adapter.GenreAdapter.GenreViewHolder
+import com.rkbapps.neetflix.databinding.GenreItemBinding
+import com.rkbapps.neetflix.models.Genre
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.models.Genre;
-
-import java.util.List;
-
-public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHolder> {
-
-    Context context;
-    List<Genre> genres;
-
-    public GenreAdapter(Context context, List<Genre> genres) {
-        this.context = context;
-        this.genres = genres;
+class GenreAdapter(var context: Context, var genres: List<Genre>) :
+    RecyclerView.Adapter<GenreViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreViewHolder {
+        return GenreViewHolder(
+            GenreItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        )
     }
 
-    @NonNull
-    @Override
-    public GenreAdapter.GenreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new GenreViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.genre_item, parent, false));
+    override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
+        holder.binding.genre = genres[position]
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull GenreAdapter.GenreViewHolder holder, int position) {
-        holder.genre.setText(genres.get(position).getName());
+    override fun getItemCount(): Int {
+        return genres.size
     }
 
-    @Override
-    public int getItemCount() {
-        return genres.size();
-    }
-
-    public static class GenreViewHolder extends RecyclerView.ViewHolder {
-        TextView genre;
-
-        public GenreViewHolder(@NonNull View itemView) {
-            super(itemView);
-            genre = itemView.findViewById(R.id.txtGenre);
-        }
+    class GenreViewHolder(itemView: GenreItemBinding) : RecyclerView.ViewHolder(itemView.root) {
+        val binding = itemView
     }
 }
