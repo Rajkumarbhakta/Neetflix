@@ -1,11 +1,12 @@
 package com.rkbapps.neetflix.activityes
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rkbapps.neetflix.R
@@ -16,19 +17,19 @@ import com.rkbapps.neetflix.db.Database
 import com.rkbapps.neetflix.db.DatabaseReference.getDatabase
 import com.rkbapps.neetflix.db.EntityModel
 import com.rkbapps.neetflix.models.movies.MovieModel
-import com.rkbapps.neetflix.services.ApiData
-import com.rkbapps.neetflix.services.RetrofitInstance
+import com.rkbapps.neetflix.repository.movies.MoviePreviewRepository
 import com.rkbapps.neetflix.utils.ContentType
+import com.rkbapps.neetflix.utils.Resource
+import com.rkbapps.neetflix.viewmodelfactories.movies.MoviePreviewViewModelFactory
+import com.rkbapps.neetflix.viewmodels.movies.MoviePreviewViewModel
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MoviePreviewActivity : AppCompatActivity() {
     private lateinit var movieModel: MovieModel
     private lateinit var binding: ActivityMoviePreviewBinding
     private lateinit var mDatabase: Database
+    private lateinit var viewModel: MoviePreviewViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +42,11 @@ class MoviePreviewActivity : AppCompatActivity() {
         val tabLayout = binding.tabLayout
         val viewPager = binding.pager
 
-        Log.d("database", mDatabase.toString())
+        val repository = MoviePreviewRepository()
+        viewModel = ViewModelProvider(
+            this,
+            MoviePreviewViewModelFactory(repository, id)
+        )[MoviePreviewViewModel::class.java]
 
         binding.bookmarkMovie.isEnabled = false
 
@@ -78,7 +83,6 @@ class MoviePreviewActivity : AppCompatActivity() {
 
 
         binding.bookmarkMovie.setOnClickListener {
-
             if (mDatabase.contentDao.isBookmarked(id)) {
                 MainScope().launch {
                     mDatabase.contentDao.removeBookmark(id)
@@ -107,6 +111,37 @@ class MoviePreviewActivity : AppCompatActivity() {
 
 
     private fun loadMovieData(id: Int) {
+
+        viewModel.movieData.observe(this, Observer {
+
+            when (it) {
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+
+                    if (it.data?.body() != null) {
+                        movieModel = it.data.body()!!
+                        binding.recyclerGenre.adapter =
+                            GenreAdapter(this@MoviePreviewActivity, movieModel.genres)
+                        binding.movieModel = movieModel
+                        binding.bookmarkMovie.isEnabled = true
+                    }
+                }
+
+                is Resource.Error -> {
+                    Toast.makeText(
+                        this@MoviePreviewActivity,
+                        "${it.data!!.code()} : ${it.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
+        })
+
+
 //        val response = RetrofitInstance.getMovieApi().getMovieDetails(id, ApiData.API_KEY)
 //
 //        if (response.isSuccessful) {
@@ -131,30 +166,30 @@ class MoviePreviewActivity : AppCompatActivity() {
 //            ).show()
 //        }
 
-        RetrofitInstance.getMovieApi().getMovieDetails(id, ApiData.API_KEY).enqueue(object :
-            Callback<MovieModel?> {
-            override fun onResponse(call: Call<MovieModel?>, response: Response<MovieModel?>) {
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        movieModel = response.body()!!
-                        binding.recyclerGenre.adapter =
-                            GenreAdapter(this@MoviePreviewActivity, movieModel.genres)
-                        binding.movieModel = movieModel
-                        binding.bookmarkMovie.isEnabled = true
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<MovieModel?>, t: Throwable) {
-
-                Toast.makeText(
-                    this@MoviePreviewActivity,
-                    t.localizedMessage!!.toString(),
-                    Toast.LENGTH_SHORT
-                ).show()
-
-            }
-        })
+//        RetrofitInstance.getMovieApi().getMovieDetails(id, ApiData.API_KEY).enqueue(object :
+//            Callback<MovieModel?> {
+//            override fun onResponse(call: Call<MovieModel?>, response: Response<MovieModel?>) {
+//                if (response.isSuccessful) {
+//                    if (response.body() != null) {
+//                        movieModel = response.body()!!
+//                        binding.recyclerGenre.adapter =
+//                            GenreAdapter(this@MoviePreviewActivity, movieModel.genres)
+//                        binding.movieModel = movieModel
+//                        binding.bookmarkMovie.isEnabled = true
+//                    }
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<MovieModel?>, t: Throwable) {
+//
+//                Toast.makeText(
+//                    this@MoviePreviewActivity,
+//                    t.localizedMessage!!.toString(),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//
+//            }
+//        })
     }
 
 
@@ -172,7 +207,6 @@ class MoviePreviewActivity : AppCompatActivity() {
         MainScope().launch {
             mDatabase.contentDao.addToBookmark(entityModel)
         }
-
         binding.bookmarkMovie.setImageResource(R.drawable.bookmark)
         Toast.makeText(
             this@MoviePreviewActivity,

@@ -46,41 +46,41 @@ interface MovieApi {
     ): Response<MovieListModel>
 
     @GET("movie/{movie_id}")
-    fun getMovieDetails(
+    suspend fun getMovieDetails(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
-    ): Call<MovieModel>
+    ): Response<MovieModel>
 
     @GET("movie/{movie_id}/credits")
-    fun getMovieCredits(
+    suspend fun getMovieCredits(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
-    ): Call<CreditsModel>
+    ): Response<CreditsModel>
 
     @GET("movie/{movie_id}/similar")
-    fun getSimilarMovies(
+    suspend fun getSimilarMovies(
         @Path("movie_id") movieId: Int,
-        @Query("api_key") apiKey: String?
-    ): Call<MovieListModel>
+        @Query("api_key") apiKey: String
+    ): Response<MovieListModel>
 
     @GET("movie/{movie_id}/reviews")
-    fun getMovieReviews(
+    suspend fun getMovieReviews(
         @Path("movie_id") movieId: Int,
-        @Query("api_key") apiKey: String?,
-        @Query("language") language: String?
-    ): Call<ReviewModel>
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ): Response<ReviewModel>
 
     @GET("movie/{movie_id}/images")
-    fun getMovieImages(
+    suspend fun getMovieImages(
         @Path("movie_id") movieId: Int,
-        @Query("api_key") apiKey: String?
-    ): Call<ImagesModel>
+        @Query("api_key") apiKey: String
+    ): Response<ImagesModel>
 
     @GET("movie/{movie_id}/videos")
-    fun getMovieVideos(
+    suspend fun getMovieVideos(
         @Path("movie_id") movieId: Int,
-        @Query("api_key") apiKey: String?
-    ): Call<VideoModel>
+        @Query("api_key") apiKey: String
+    ): Response<VideoModel>
 
     @GET("search/movie")
     fun getMovieSearchResult(

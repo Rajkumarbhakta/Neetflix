@@ -1,4 +1,4 @@
-package com.rkbapps.neetflix.repository
+package com.rkbapps.neetflix.repository.movies
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

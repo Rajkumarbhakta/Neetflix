@@ -1,10 +1,10 @@
-package com.rkbapps.neetflix.viewmodels
+package com.rkbapps.neetflix.viewmodels.movies
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rkbapps.neetflix.models.movies.MovieListModel
-import com.rkbapps.neetflix.repository.MovieFragmentRepository
+import com.rkbapps.neetflix.repository.movies.MovieFragmentRepository
 import com.rkbapps.neetflix.utils.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response

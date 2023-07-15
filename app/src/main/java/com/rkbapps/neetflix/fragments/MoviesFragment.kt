@@ -15,10 +15,10 @@ import com.rkbapps.neetflix.R
 import com.rkbapps.neetflix.adapter.ParentAdapter
 import com.rkbapps.neetflix.databinding.FragmentMoviesBinding
 import com.rkbapps.neetflix.models.MovieList
-import com.rkbapps.neetflix.repository.MovieFragmentRepository
+import com.rkbapps.neetflix.repository.movies.MovieFragmentRepository
 import com.rkbapps.neetflix.utils.Resource
-import com.rkbapps.neetflix.viewmodelfactories.MovieFragmentViewModelFactory
-import com.rkbapps.neetflix.viewmodels.MovieFragmentViewModel
+import com.rkbapps.neetflix.viewmodelfactories.movies.MovieFragmentViewModelFactory
+import com.rkbapps.neetflix.viewmodels.movies.MovieFragmentViewModel
 
 class MoviesFragment : Fragment() {
     private val movieLists: MutableList<MovieList> = ArrayList()

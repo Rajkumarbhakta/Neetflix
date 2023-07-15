@@ -1,136 +1,196 @@
-package com.rkbapps.neetflix.fragments.movie;
+package com.rkbapps.neetflix.fragments.movie
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.graphics.Color
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.adapter.BackdropAdapter
+import com.rkbapps.neetflix.adapter.PosterAdapter
+import com.rkbapps.neetflix.adapter.VideoAdapter
+import com.rkbapps.neetflix.databinding.FragmentVideoAndImageMovieBinding
+import com.rkbapps.neetflix.models.images.ImagesModel
+import com.rkbapps.neetflix.repository.movies.VideoAndImageRepository
+import com.rkbapps.neetflix.services.ApiData
+import com.rkbapps.neetflix.utils.Resource
+import com.rkbapps.neetflix.viewmodelfactories.movies.VideoAndImagesViewModelFactory
+import com.rkbapps.neetflix.viewmodels.movies.VideoAndImageViewModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class VideoAndImageMovieFragment : Fragment() {
+    private lateinit var binding: FragmentVideoAndImageMovieBinding
+    private lateinit var viewModel: VideoAndImageViewModel
 
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.BackdropAdapter;
-import com.rkbapps.neetflix.adapter.PosterAdapter;
-import com.rkbapps.neetflix.adapter.VideoAdapter;
-import com.rkbapps.neetflix.models.images.ImagesModel;
-import com.rkbapps.neetflix.models.videos.VideoModel;
-import com.rkbapps.neetflix.services.ApiData;
-import com.rkbapps.neetflix.services.MovieApi;
-import com.rkbapps.neetflix.services.RetrofitInstance;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-
-public class VideoAndImageMovieFragment extends Fragment {
-
-    private final MovieApi movieApi = RetrofitInstance.getMovieApi();
-    private RecyclerView backdrops, videos, posters;
-    private TextView txtBackdrop, txtPoster, txtVideos;
-
-    public VideoAndImageMovieFragment() {
-
-    }
-
-    @SuppressLint("MissingInflatedId")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_video_and_image_movie, container, false);
-        int id = getArguments().getInt("id");
-        backdrops = view.findViewById(R.id.recyclerMovieBackdrops);
-        videos = view.findViewById(R.id.recyclerMovieVideos);
-        posters = view.findViewById(R.id.recyclerMoviePosters);
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_video_and_image_movie,
+            container,
+            false
+        )
+        val id = requireArguments().getInt("id")
+        val repository = VideoAndImageRepository()
 
-        txtBackdrop = view.findViewById(R.id.txtBackdropMovie);
-        txtPoster = view.findViewById(R.id.txtPosterMovie);
-        txtVideos = view.findViewById(R.id.txtVideosMovie);
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            VideoAndImagesViewModelFactory(repository, id)
+        )[VideoAndImageViewModel::class.java]
 
-        txtBackdrop.setVisibility(View.GONE);
-        txtPoster.setVisibility(View.GONE);
-        txtVideos.setVisibility(View.GONE);
+        binding.txtBackdropMovie.visibility = View.GONE
+        binding.txtPosterMovie.visibility = View.GONE
+        binding.txtVideosMovie.visibility = View.GONE
 
-        backdrops.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        posters.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        videos.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        binding.recyclerMovieBackdrops.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        binding.recyclerMoviePosters.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        binding.recyclerMovieVideos.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
 
-        loadImages(id);
-        loadVideos(id);
-        return view;
+        loadImages(id)
+        loadVideos(id)
+        return binding.root
     }
 
-    private void loadImages(int id) {
-        Call<ImagesModel> responseCall = movieApi.getMovieImages(id, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<ImagesModel>() {
-            @Override
-            public void onResponse(Call<ImagesModel> call, Response<ImagesModel> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
+    private fun loadImages(id: Int) {
 
-                        if (response.body().getPosters().size() != 0 && response.body().getPosters() != null) {
-                            txtPoster.setVisibility(View.VISIBLE);
-                            posters.setAdapter(new PosterAdapter(getContext(), response.body().getPosters()));
+        viewModel.images.observe(viewLifecycleOwner, Observer {
+
+            when (it) {
+
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data?.body() != null) {
+                        if (it.data.body()!!.posters.size != 0 && it.data.body()!!.posters != null) {
+                            binding.txtPosterMovie.visibility = View.VISIBLE
+                            binding.recyclerMoviePosters.adapter =
+                                PosterAdapter(context, it.data.body()!!.posters)
                         } else {
-                            posters.setVisibility(View.GONE);
-                            txtPoster.setVisibility(View.GONE);
+                            binding.recyclerMoviePosters.visibility = View.GONE
+                            binding.txtPosterMovie.visibility = View.GONE
                         }
-
-                        if (response.body().getBackdrops().size() != 0 && response.body().getBackdrops() != null) {
-                            txtBackdrop.setVisibility(View.VISIBLE);
-                            backdrops.setAdapter(new BackdropAdapter(getContext(), response.body().getBackdrops()));
+                        if (it.data.body()!!.backdrops.size != 0 && it.data.body()!!.backdrops != null) {
+                            binding.txtBackdropMovie.visibility = View.VISIBLE
+                            binding.recyclerMovieBackdrops.adapter = BackdropAdapter(
+                                requireContext(), it.data.body()!!.backdrops
+                            )
                         } else {
-                            backdrops.setVisibility(View.GONE);
-                            txtBackdrop.setVisibility(View.GONE);
+                            binding.recyclerMovieBackdrops.visibility = View.GONE
+                            binding.txtBackdropMovie.visibility = View.GONE
                         }
                     }
-                } else {
-                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                }
+
+                is Resource.Error -> {
+
+                }
+
+
+            }
+
+
+        })
+
+
+//        val responseCall = movieApi.getMovieImages(id, ApiData.API_KEY)
+//        responseCall.enqueue(object : Callback<ImagesModel?> {
+//            override fun onResponse(call: Call<ImagesModel>, response: Response<ImagesModel>) {
+//                if (response.isSuccessful) {
+//                    if (response.body() != null) {
+//                        if (response.body()!!.posters.size != 0 && response.body()!!.posters != null) {
+//                            txtPoster!!.visibility = View.VISIBLE
+//                            posters!!.adapter = PosterAdapter(context, response.body()!!.posters)
+//                        } else {
+//                            posters!!.visibility = View.GONE
+//                            txtPoster!!.visibility = View.GONE
+//                        }
+//                        if (response.body()!!.backdrops.size != 0 && response.body()!!.backdrops != null) {
+//                            txtBackdrop!!.visibility = View.VISIBLE
+//                            backdrops!!.adapter = BackdropAdapter(
+//                                context!!, response.body()!!.backdrops
+//                            )
+//                        } else {
+//                            backdrops!!.visibility = View.GONE
+//                            txtBackdrop!!.visibility = View.GONE
+//                        }
+//                    }
+//                } else {
+//                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<ImagesModel>, t: Throwable) {
+//                txtPoster!!.visibility = View.VISIBLE
+//                txtPoster!!.setTextColor(Color.WHITE)
+//                txtPoster!!.text = t.message
+//            }
+//        })
+    }
+
+    private fun loadVideos(id: Int) {
+
+        viewModel.videos.observe(viewLifecycleOwner, Observer {
+
+            when (it) {
+
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data?.body() != null) {
+                        if (it.data.body()!!.results.size != 0 && it.data.body()!!.results != null) {
+                            binding.txtVideosMovie.visibility = View.VISIBLE
+                            binding.recyclerMovieVideos.adapter =
+                                VideoAdapter(context, it.data.body()!!.results)
+                        } else {
+                            binding.txtVideosMovie.visibility = View.GONE
+                            binding.recyclerMovieVideos.visibility = View.GONE
+                        }
+                    }
+                }
+
+                is Resource.Error -> {
+
                 }
             }
+        })
 
-            @Override
-            public void onFailure(Call<ImagesModel> call, Throwable t) {
-                txtPoster.setVisibility(View.VISIBLE);
-                txtPoster.setTextColor(Color.WHITE);
-                txtPoster.setText(t.getMessage());
-            }
-        });
+
+//        movieApi.getMovieVideos(id, ApiData.API_KEY)
+//            .enqueue(object : Callback<VideoModel?> {
+//                override fun onResponse(call: Call<VideoModel>, response: Response<VideoModel>) {
+//                    if (response.isSuccessful) {
+//                        if (response.body() != null) {
+//                            if (response.body()!!.results.size != 0 && response.body()!!.results != null) {
+//                                txtVideos!!.visibility = View.VISIBLE
+//                                videos!!.adapter = VideoAdapter(context, response.body()!!.results)
+//                            } else {
+//                                txtVideos!!.visibility = View.GONE
+//                                videos!!.visibility = View.GONE
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<VideoModel>, t: Throwable) {}
+//            })
     }
-
-    private void loadVideos(int id) {
-        movieApi.getMovieVideos(id, ApiData.API_KEY)
-                .enqueue(new Callback<VideoModel>() {
-                    @Override
-                    public void onResponse(Call<VideoModel> call, Response<VideoModel> response) {
-                        if (response.isSuccessful()) {
-                            if (response.body() != null) {
-                                if (response.body().getResults().size() != 0 && response.body().getResults() != null) {
-                                    txtVideos.setVisibility(View.VISIBLE);
-                                    videos.setAdapter(new VideoAdapter(getContext(), response.body().getResults()));
-                                } else {
-                                    txtVideos.setVisibility(View.GONE);
-                                    videos.setVisibility(View.GONE);
-                                }
-                            }
-
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<VideoModel> call, Throwable t) {
-
-                    }
-                });
-    }
-
-
 }

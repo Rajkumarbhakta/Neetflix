@@ -1,182 +1,269 @@
-package com.rkbapps.neetflix.fragments.movie;
+package com.rkbapps.neetflix.fragments.movie
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.adapter.MovieListChildAdapter
+import com.rkbapps.neetflix.adapter.ProductionCompanyAdapter
+import com.rkbapps.neetflix.adapter.credit.CastAdapter
+import com.rkbapps.neetflix.adapter.credit.CrewAdapter
+import com.rkbapps.neetflix.databinding.FragmentMovieOverviewBinding
+import com.rkbapps.neetflix.repository.movies.MovieOverviewFragmentRepository
+import com.rkbapps.neetflix.utils.Resource
+import com.rkbapps.neetflix.viewmodelfactories.movies.MovieOverviewFragmentViewModelFactory
+import com.rkbapps.neetflix.viewmodels.movies.MovieOverviewFragmentViewModel
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class MovieOverviewFragment : Fragment() {
+    private lateinit var binding: FragmentMovieOverviewBinding
+    private lateinit var viewModel: MovieOverviewFragmentViewModel
 
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.MovieListChildAdapter;
-import com.rkbapps.neetflix.adapter.ProductionCompanyAdapter;
-import com.rkbapps.neetflix.adapter.credit.CastAdapter;
-import com.rkbapps.neetflix.adapter.credit.CrewAdapter;
-import com.rkbapps.neetflix.models.castandcrew.CreditsModel;
-import com.rkbapps.neetflix.models.movies.MovieListModel;
-import com.rkbapps.neetflix.models.movies.MovieModel;
-import com.rkbapps.neetflix.services.ApiData;
-import com.rkbapps.neetflix.services.MovieApi;
-import com.rkbapps.neetflix.services.RetrofitInstance;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class MovieOverviewFragment extends Fragment {
-    private final MovieApi movieApi = RetrofitInstance.getMovieApi();
-    private TextView overview;
-    private RecyclerView productionCompany, cast, similarMovies, crew;
-    private TextView txtCast, txtCrew, txtProductionCompany, txtSimilarMovies;
-
-    public MovieOverviewFragment() {
-        // Required empty public constructor
-    }
-
-    @SuppressLint("MissingInflatedId")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_movie_overview, container, false);
-        int id = getArguments().getInt("id");
-
-        overview = view.findViewById(R.id.txtMovieOverview);
-        cast = view.findViewById(R.id.recyclerCastMovie);
-        crew = view.findViewById(R.id.recyclerCrewMovie);
-        productionCompany = view.findViewById(R.id.recyclerProductionCompanyMovie);
-        similarMovies = view.findViewById(R.id.recyclerSimilarMovies);
-
-        txtCast = view.findViewById(R.id.txtCastMovieOverview);
-        txtCrew = view.findViewById(R.id.txtCrewMovieOverview);
-        txtProductionCompany = view.findViewById(R.id.txtProductionCompanyMovie);
-        txtSimilarMovies = view.findViewById(R.id.txtSimilarMovies);
-
-        txtCast.setVisibility(View.GONE);
-        txtCrew.setVisibility(View.GONE);
-        txtProductionCompany.setVisibility(View.GONE);
-        txtSimilarMovies.setVisibility(View.GONE);
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_movie_overview, container, false)
+        val id = requireArguments().getInt("id")
+        val repository = MovieOverviewFragmentRepository()
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            MovieOverviewFragmentViewModelFactory(repository, id)
+        )[MovieOverviewFragmentViewModel::class.java]
 
 
-        crew.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        productionCompany.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        cast.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        similarMovies.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        binding.txtCastMovieOverview.visibility = View.GONE
+        binding.txtCrewMovieOverview.visibility = View.GONE
+        binding.txtProductionCompanyMovie.visibility = View.GONE
+        binding.txtSimilarMovies.visibility = View.GONE
 
-        loadMovieDetails(id);
-        loadCredits(id);
-        loadSimilarMovies(id);
+        binding.recyclerCrewMovie.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        binding.recyclerProductionCompanyMovie.layoutManager = LinearLayoutManager(
+            context,
+            RecyclerView.HORIZONTAL,
+            false
+        )
+        binding.recyclerCastMovie.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        binding.recyclerSimilarMovies.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
 
-        return view;
+
+
+        loadMovieDetails(id)
+        loadCredits(id)
+        loadSimilarMovies(id)
+
+        return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun loadMovieDetails(id: Int) {
+        viewModel.movieDetails.observe(viewLifecycleOwner, Observer {
+            when (it) {
 
-    private void loadMovieDetails(int id) {
-        Call<MovieModel> responseCall = movieApi.getMovieDetails(id, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<MovieModel>() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if (response.body().getOverview().isEmpty()) {
-                            overview.setText("Not Available");
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data?.body() != null) {
+                        if (it.data.body()!!.overview.isEmpty()) {
+                            binding.txtMovieOverview.text = "Not Available"
                         } else {
-                            overview.setText(response.body().getOverview());
+                            binding.txtMovieOverview.text = it.data.body()!!.overview
                         }
-                        if (response.body().getProductionCompanies() != null && response.body().getProductionCompanies().size() != 0) {
-                            txtProductionCompany.setVisibility(View.VISIBLE);
-                            productionCompany.setAdapter(new ProductionCompanyAdapter(getContext(), response.body().getProductionCompanies()));
+                        if (it.data.body()!!.productionCompanies.isNotEmpty()) {
+                            binding.txtProductionCompanyMovie.visibility = View.VISIBLE
+                            binding.recyclerProductionCompanyMovie.adapter =
+                                ProductionCompanyAdapter(
+                                    context,
+                                    it.data.body()!!.productionCompanies
+                                )
                         } else {
-                            productionCompany.setVisibility(View.GONE);
-                            txtProductionCompany.setVisibility(View.GONE);
+                            binding.txtProductionCompanyMovie.visibility = View.GONE
+                            binding.recyclerProductionCompanyMovie.visibility = View.GONE
                         }
-                    } else {
-                        Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(getContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
+                }
+
+                is Resource.Error -> {
+
+                }
+
+
+            }
+        })
+//        val responseCall: Call<MovieModel> = movieApi.getMovieDetails(id, ApiData.API_KEY)
+//        responseCall.enqueue(object : Callback<MovieModel?> {
+//            @SuppressLint("SetTextI18n")
+//            override fun onResponse(call: Call<MovieModel>, response: Response<MovieModel>) {
+//                if (response.isSuccessful) {
+//                    if (response.body() != null) {
+//                        if (response.body()!!.overview.isEmpty()) {
+//                            binding.txtMovieOverview.text = "Not Available"
+//                        } else {
+//                            overview!!.text = response.body()!!.overview
+//                        }
+//                        if (response.body()!!.productionCompanies != null && response.body()!!.productionCompanies.size != 0) {
+//                            txtProductionCompany!!.visibility = View.VISIBLE
+//                            productionCompany!!.adapter = ProductionCompanyAdapter(
+//                                context,
+//                                response.body()!!.productionCompanies
+//                            )
+//                        } else {
+//                            productionCompany!!.visibility = View.GONE
+//                            txtProductionCompany!!.visibility = View.GONE
+//                        }
+//                    } else {
+//                        Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show()
+//                    }
+//                } else {
+//                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<MovieModel>, t: Throwable) {
+//                Toast.makeText(context, "" + t.message, Toast.LENGTH_SHORT).show()
+//            }
+//        })
+    }
+
+    private fun loadCredits(id: Int) {
+
+        viewModel.creditsData.observe(viewLifecycleOwner, Observer {
+            when (it) {
+
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data?.body() != null) {
+                        if (it.data.body()!!.cast.size != 0 && it.data.body()!!.cast != null) {
+                            binding.txtCastMovieOverview.visibility = View.VISIBLE
+                            binding.recyclerCastMovie.adapter =
+                                CastAdapter(requireContext(), it.data.body()!!.cast)
+                        } else {
+                            binding.txtCastMovieOverview.visibility = View.GONE
+                            binding.recyclerCastMovie.visibility = View.GONE
+                        }
+                        if (it.data.body()!!.crew.size != 0 && it.data.body()!!.crew != null) {
+                            binding.txtCrewMovieOverview.visibility = View.VISIBLE
+                            binding.recyclerCrewMovie.adapter =
+                                CrewAdapter(requireContext(), it.data.body()!!.crew)
+                        } else {
+                            binding.txtCrewMovieOverview.visibility = View.GONE
+                            binding.recyclerCrewMovie.visibility = View.GONE
+                        }
+                    }
+                }
+
+                is Resource.Error -> {
+
+                }
+
+
+            }
+        })
+
+//        val responseCall = movieApi.getMovieCredits(id, ApiData.API_KEY)
+//        responseCall.enqueue(object : Callback<CreditsModel?> {
+//            override fun onResponse(call: Call<CreditsModel>, response: Response<CreditsModel>) {
+//                if (response.isSuccessful) {
+//                    if (response.body() != null) {
+//                        if (response.body()!!.cast.size != 0 && response.body()!!.cast != null) {
+//                            txtCast!!.visibility = View.VISIBLE
+//                            cast!!.adapter = CastAdapter(context!!, response.body()!!.cast)
+//                        } else {
+//                            cast!!.visibility = View.GONE
+//                            txtCast!!.visibility = View.GONE
+//                        }
+//                        if (response.body()!!.crew.size != 0 && response.body()!!.crew != null) {
+//                            txtCrew!!.visibility = View.VISIBLE
+//                            crew!!.adapter = CrewAdapter(context!!, response.body()!!.crew)
+//                        } else {
+//                            crew!!.visibility = View.GONE
+//                            txtCrew!!.visibility = View.GONE
+//                        }
+//                    } else {
+//                        Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show()
+//                    }
+//                } else {
+//                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<CreditsModel>, t: Throwable) {
+//                Toast.makeText(context, "" + t.message, Toast.LENGTH_SHORT).show()
+//            }
+//        })
+    }
+
+    private fun loadSimilarMovies(id: Int) {
+        viewModel.similarMoviesData.observe(viewLifecycleOwner, Observer {
+            when (it) {
+
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data?.body() != null) {
+                        if (it.data.body()!!.results != null && it.data.body()!!.results.isNotEmpty()) {
+                            binding.txtSimilarMovies.visibility = View.VISIBLE
+                            binding.recyclerSimilarMovies.adapter =
+                                MovieListChildAdapter(it.data.body()!!.results, requireContext())
+                        } else {
+                            binding.txtSimilarMovies.visibility = View.GONE
+                            binding.recyclerSimilarMovies.visibility = View.GONE
+                        }
+                    }
+                }
+
+                is Resource.Error -> {
+
                 }
             }
+        })
 
-            @Override
-            public void onFailure(Call<MovieModel> call, Throwable t) {
-                Toast.makeText(getContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        val responseCall = movieApi.getSimilarMovies(id, ApiData.API_KEY)
+//        responseCall.enqueue(object : Callback<MovieListModel?> {
+//            override fun onResponse(
+//                call: Call<MovieListModel>,
+//                response: Response<MovieListModel>
+//            ) {
+//                if (response.isSuccessful) {
+//                    if (response.body() != null) {
+//                        if (response.body()!!.results != null && response.body()!!.results.size != 0) {
+//                            txtSimilarMovies!!.visibility = View.VISIBLE
+//                            similarMovies!!.adapter =
+//                                MovieListChildAdapter(response.body()!!.results, context!!)
+//                        } else {
+//                            similarMovies!!.visibility = View.GONE
+//                            txtSimilarMovies!!.visibility = View.GONE
+//                        }
+//                    } else {
+//                        Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show()
+//                    }
+//                } else {
+//                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<MovieListModel>, t: Throwable) {
+//                Toast.makeText(context, "" + t.message, Toast.LENGTH_SHORT).show()
+//            }
+//        })
     }
-
-
-    private void loadCredits(int id) {
-        Call<CreditsModel> responseCall = movieApi.getMovieCredits(id, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<CreditsModel>() {
-            @Override
-            public void onResponse(Call<CreditsModel> call, Response<CreditsModel> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if (response.body().getCast().size() != 0 && response.body().getCast() != null) {
-                            txtCast.setVisibility(View.VISIBLE);
-                            cast.setAdapter(new CastAdapter(getContext(), response.body().getCast()));
-                        } else {
-                            cast.setVisibility(View.GONE);
-                            txtCast.setVisibility(View.GONE);
-                        }
-                        if (response.body().getCrew().size() != 0 && response.body().getCrew() != null) {
-                            txtCrew.setVisibility(View.VISIBLE);
-                            crew.setAdapter(new CrewAdapter(getContext(), response.body().getCrew()));
-                        } else {
-                            crew.setVisibility(View.GONE);
-                            txtCrew.setVisibility(View.GONE);
-                        }
-                    } else {
-                        Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CreditsModel> call, Throwable t) {
-                Toast.makeText(getContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void loadSimilarMovies(int id) {
-        Call<MovieListModel> responseCall = movieApi.getSimilarMovies(id, ApiData.API_KEY);
-
-        responseCall.enqueue(new Callback<MovieListModel>() {
-            @Override
-            public void onResponse(Call<MovieListModel> call, Response<MovieListModel> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if (response.body().getResults() != null && response.body().getResults().size() != 0) {
-                            txtSimilarMovies.setVisibility(View.VISIBLE);
-                            similarMovies.setAdapter(new MovieListChildAdapter(response.body().getResults(), getContext()));
-                        } else {
-                            similarMovies.setVisibility(View.GONE);
-                            txtSimilarMovies.setVisibility(View.GONE);
-                        }
-                    } else {
-                        Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieListModel> call, Throwable t) {
-                Toast.makeText(getContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
 }
