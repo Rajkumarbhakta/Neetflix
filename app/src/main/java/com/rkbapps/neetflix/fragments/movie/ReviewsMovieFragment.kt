@@ -26,7 +26,7 @@ class ReviewsMovieFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_reviews_movie, container, false)
@@ -45,29 +45,6 @@ class ReviewsMovieFragment : Fragment() {
 
         loadReviews()
 
-//        val movieApi = RetrofitInstance.getMovieApi()
-//        val responseCall = movieApi.getMovieReviews(id, ApiData.API_KEY, "en-US")
-//        responseCall.enqueue(object : Callback<ReviewModel?> {
-//            override fun onResponse(call: Call<ReviewModel?>, response: Response<ReviewModel?>) {
-//                if (response.isSuccessful) {
-//                    if (response.body() != null) {
-//                        if (response.body()!!.results == null || response.body()!!.results.size == 0) {
-//                            noReview.visibility = View.VISIBLE
-//                        } else {
-//                            recyclerView.adapter = ReviewAdapter(context, response.body()!!.results)
-//                        }
-//                    } else {
-//                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
-//                    }
-//                } else {
-//                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<ReviewModel?>, t: Throwable) {
-//                Toast.makeText(context, "" + t.message, Toast.LENGTH_SHORT).show()
-//            }
-//        })
         return binding.root
     }
 

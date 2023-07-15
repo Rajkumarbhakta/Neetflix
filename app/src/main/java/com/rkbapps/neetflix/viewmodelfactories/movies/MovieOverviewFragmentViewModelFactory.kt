@@ -11,10 +11,8 @@ class MovieOverviewFragmentViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return MovieOverviewFragmentViewModel(repository,id) as T
+        return MovieOverviewFragmentViewModel(repository, id) as T
     }
-
-
 
 
 }

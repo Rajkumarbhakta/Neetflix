@@ -1,11 +1,9 @@
 package com.rkbapps.neetflix.fragments.movie
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,15 +15,10 @@ import com.rkbapps.neetflix.adapter.BackdropAdapter
 import com.rkbapps.neetflix.adapter.PosterAdapter
 import com.rkbapps.neetflix.adapter.VideoAdapter
 import com.rkbapps.neetflix.databinding.FragmentVideoAndImageMovieBinding
-import com.rkbapps.neetflix.models.images.ImagesModel
 import com.rkbapps.neetflix.repository.movies.VideoAndImageRepository
-import com.rkbapps.neetflix.services.ApiData
 import com.rkbapps.neetflix.utils.Resource
 import com.rkbapps.neetflix.viewmodelfactories.movies.VideoAndImagesViewModelFactory
 import com.rkbapps.neetflix.viewmodels.movies.VideoAndImageViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class VideoAndImageMovieFragment : Fragment() {
     private lateinit var binding: FragmentVideoAndImageMovieBinding
@@ -107,41 +100,6 @@ class VideoAndImageMovieFragment : Fragment() {
 
 
         })
-
-
-//        val responseCall = movieApi.getMovieImages(id, ApiData.API_KEY)
-//        responseCall.enqueue(object : Callback<ImagesModel?> {
-//            override fun onResponse(call: Call<ImagesModel>, response: Response<ImagesModel>) {
-//                if (response.isSuccessful) {
-//                    if (response.body() != null) {
-//                        if (response.body()!!.posters.size != 0 && response.body()!!.posters != null) {
-//                            txtPoster!!.visibility = View.VISIBLE
-//                            posters!!.adapter = PosterAdapter(context, response.body()!!.posters)
-//                        } else {
-//                            posters!!.visibility = View.GONE
-//                            txtPoster!!.visibility = View.GONE
-//                        }
-//                        if (response.body()!!.backdrops.size != 0 && response.body()!!.backdrops != null) {
-//                            txtBackdrop!!.visibility = View.VISIBLE
-//                            backdrops!!.adapter = BackdropAdapter(
-//                                context!!, response.body()!!.backdrops
-//                            )
-//                        } else {
-//                            backdrops!!.visibility = View.GONE
-//                            txtBackdrop!!.visibility = View.GONE
-//                        }
-//                    }
-//                } else {
-//                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<ImagesModel>, t: Throwable) {
-//                txtPoster!!.visibility = View.VISIBLE
-//                txtPoster!!.setTextColor(Color.WHITE)
-//                txtPoster!!.text = t.message
-//            }
-//        })
     }
 
     private fun loadVideos(id: Int) {
@@ -172,25 +130,5 @@ class VideoAndImageMovieFragment : Fragment() {
                 }
             }
         })
-
-
-//        movieApi.getMovieVideos(id, ApiData.API_KEY)
-//            .enqueue(object : Callback<VideoModel?> {
-//                override fun onResponse(call: Call<VideoModel>, response: Response<VideoModel>) {
-//                    if (response.isSuccessful) {
-//                        if (response.body() != null) {
-//                            if (response.body()!!.results.size != 0 && response.body()!!.results != null) {
-//                                txtVideos!!.visibility = View.VISIBLE
-//                                videos!!.adapter = VideoAdapter(context, response.body()!!.results)
-//                            } else {
-//                                txtVideos!!.visibility = View.GONE
-//                                videos!!.visibility = View.GONE
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<VideoModel>, t: Throwable) {}
-//            })
     }
 }

@@ -140,56 +140,6 @@ class MoviePreviewActivity : AppCompatActivity() {
 
             }
         })
-
-
-//        val response = RetrofitInstance.getMovieApi().getMovieDetails(id, ApiData.API_KEY)
-//
-//        if (response.isSuccessful) {
-//            if (response.body() != null) {
-//                movieModel = response.body()!!
-//                binding.recyclerGenre.adapter =
-//                    GenreAdapter(this@MoviePreviewActivity, movieModel.genres)
-//                binding.movieModel = movieModel
-//                binding.bookmarkMovie.isEnabled = true
-//            } else {
-//                Toast.makeText(
-//                    this@MoviePreviewActivity,
-//                    " ${response.code()} : ${response.message()}",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
-//        } else {
-//            Toast.makeText(
-//                this@MoviePreviewActivity,
-//                " ${response.code()} : ${response.message()}",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//        }
-
-//        RetrofitInstance.getMovieApi().getMovieDetails(id, ApiData.API_KEY).enqueue(object :
-//            Callback<MovieModel?> {
-//            override fun onResponse(call: Call<MovieModel?>, response: Response<MovieModel?>) {
-//                if (response.isSuccessful) {
-//                    if (response.body() != null) {
-//                        movieModel = response.body()!!
-//                        binding.recyclerGenre.adapter =
-//                            GenreAdapter(this@MoviePreviewActivity, movieModel.genres)
-//                        binding.movieModel = movieModel
-//                        binding.bookmarkMovie.isEnabled = true
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<MovieModel?>, t: Throwable) {
-//
-//                Toast.makeText(
-//                    this@MoviePreviewActivity,
-//                    t.localizedMessage!!.toString(),
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//
-//            }
-//        })
     }
 
 

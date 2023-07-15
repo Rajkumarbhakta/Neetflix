@@ -16,6 +16,7 @@ class ReviewsMovieFragmentViewModel(
 
     val reviews: LiveData<Resource<Response<ReviewModel>>>
         get() = repository.reviews
+
     init {
         viewModelScope.launch {
             repository.loadMovieReviews(id)

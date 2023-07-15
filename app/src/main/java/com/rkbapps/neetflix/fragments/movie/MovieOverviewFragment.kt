@@ -104,39 +104,6 @@ class MovieOverviewFragment : Fragment() {
 
             }
         })
-//        val responseCall: Call<MovieModel> = movieApi.getMovieDetails(id, ApiData.API_KEY)
-//        responseCall.enqueue(object : Callback<MovieModel?> {
-//            @SuppressLint("SetTextI18n")
-//            override fun onResponse(call: Call<MovieModel>, response: Response<MovieModel>) {
-//                if (response.isSuccessful) {
-//                    if (response.body() != null) {
-//                        if (response.body()!!.overview.isEmpty()) {
-//                            binding.txtMovieOverview.text = "Not Available"
-//                        } else {
-//                            overview!!.text = response.body()!!.overview
-//                        }
-//                        if (response.body()!!.productionCompanies != null && response.body()!!.productionCompanies.size != 0) {
-//                            txtProductionCompany!!.visibility = View.VISIBLE
-//                            productionCompany!!.adapter = ProductionCompanyAdapter(
-//                                context,
-//                                response.body()!!.productionCompanies
-//                            )
-//                        } else {
-//                            productionCompany!!.visibility = View.GONE
-//                            txtProductionCompany!!.visibility = View.GONE
-//                        }
-//                    } else {
-//                        Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show()
-//                    }
-//                } else {
-//                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<MovieModel>, t: Throwable) {
-//                Toast.makeText(context, "" + t.message, Toast.LENGTH_SHORT).show()
-//            }
-//        })
     }
 
     private fun loadCredits(id: Int) {
@@ -176,38 +143,6 @@ class MovieOverviewFragment : Fragment() {
 
             }
         })
-
-//        val responseCall = movieApi.getMovieCredits(id, ApiData.API_KEY)
-//        responseCall.enqueue(object : Callback<CreditsModel?> {
-//            override fun onResponse(call: Call<CreditsModel>, response: Response<CreditsModel>) {
-//                if (response.isSuccessful) {
-//                    if (response.body() != null) {
-//                        if (response.body()!!.cast.size != 0 && response.body()!!.cast != null) {
-//                            txtCast!!.visibility = View.VISIBLE
-//                            cast!!.adapter = CastAdapter(context!!, response.body()!!.cast)
-//                        } else {
-//                            cast!!.visibility = View.GONE
-//                            txtCast!!.visibility = View.GONE
-//                        }
-//                        if (response.body()!!.crew.size != 0 && response.body()!!.crew != null) {
-//                            txtCrew!!.visibility = View.VISIBLE
-//                            crew!!.adapter = CrewAdapter(context!!, response.body()!!.crew)
-//                        } else {
-//                            crew!!.visibility = View.GONE
-//                            txtCrew!!.visibility = View.GONE
-//                        }
-//                    } else {
-//                        Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show()
-//                    }
-//                } else {
-//                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<CreditsModel>, t: Throwable) {
-//                Toast.makeText(context, "" + t.message, Toast.LENGTH_SHORT).show()
-//            }
-//        })
     }
 
     private fun loadSimilarMovies(id: Int) {
@@ -236,34 +171,5 @@ class MovieOverviewFragment : Fragment() {
                 }
             }
         })
-
-//        val responseCall = movieApi.getSimilarMovies(id, ApiData.API_KEY)
-//        responseCall.enqueue(object : Callback<MovieListModel?> {
-//            override fun onResponse(
-//                call: Call<MovieListModel>,
-//                response: Response<MovieListModel>
-//            ) {
-//                if (response.isSuccessful) {
-//                    if (response.body() != null) {
-//                        if (response.body()!!.results != null && response.body()!!.results.size != 0) {
-//                            txtSimilarMovies!!.visibility = View.VISIBLE
-//                            similarMovies!!.adapter =
-//                                MovieListChildAdapter(response.body()!!.results, context!!)
-//                        } else {
-//                            similarMovies!!.visibility = View.GONE
-//                            txtSimilarMovies!!.visibility = View.GONE
-//                        }
-//                    } else {
-//                        Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show()
-//                    }
-//                } else {
-//                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<MovieListModel>, t: Throwable) {
-//                Toast.makeText(context, "" + t.message, Toast.LENGTH_SHORT).show()
-//            }
-//        })
     }
 }
