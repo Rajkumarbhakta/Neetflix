@@ -1,65 +1,50 @@
-package com.rkbapps.neetflix.fragments;
+package com.rkbapps.neetflix.fragments
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.databinding.FragmentDiscoverBinding
 
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
+class DiscoverFragment : Fragment() {
+    private lateinit var binding: FragmentDiscoverBinding
 
-import com.rkbapps.neetflix.R;
-
-
-public class DiscoverFragment extends Fragment {
-
-    private TextView movies, tvSeries;
-
-
-    public DiscoverFragment() {
-        // Required empty public constructor
-    }
-
-    @SuppressLint("MissingInflatedId")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_discover, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_discover, container, false)
+        val movies = binding.navMovies
+        val tvSeries = binding.navTvSeries
 
-        movies = view.findViewById(R.id.navMovies);
-        tvSeries = view.findViewById(R.id.navTvSeries);
-        int containerFragment = R.id.containerFrag;
+        loadFragment(MoviesFragment())
 
-        loadFragment(new MoviesFragment(), containerFragment);
-
-
-        movies.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                movies.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.selected_type_background));
-                tvSeries.setBackground(null);
-                loadFragment(new MoviesFragment(), containerFragment);
-            }
-        });
-
-        tvSeries.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvSeries.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.selected_type_background));
-                movies.setBackground(null);
-                loadFragment(new TvSeriesFragment(), containerFragment);
-            }
-        });
-
-
-        return view;
+        movies.setOnClickListener {
+            movies.background = ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.selected_type_background
+            )
+            tvSeries.background = null
+            loadFragment(MoviesFragment())
+        }
+        tvSeries.setOnClickListener {
+            tvSeries.background = ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.selected_type_background
+            )
+            movies.background = null
+            loadFragment(TvSeriesFragment())
+        }
+        return binding.root
     }
 
-    public void loadFragment(Fragment fragment, int container) {
-        getChildFragmentManager().beginTransaction().replace(container, fragment).commit();
+    private fun loadFragment(fragment: Fragment?) {
+        childFragmentManager.beginTransaction().replace(binding.containerFrag.id, fragment!!)
+            .commit()
     }
-
 }

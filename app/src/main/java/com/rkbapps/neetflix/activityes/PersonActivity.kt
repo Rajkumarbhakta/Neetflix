@@ -1,101 +1,92 @@
-package com.rkbapps.neetflix.activityes;
+package com.rkbapps.neetflix.activityes
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.adapter.tab.TabLayoutPersonAdapter
+import com.rkbapps.neetflix.databinding.ActivityPersonBinding
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
+class PersonActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityPersonBinding
 
-import com.bumptech.glide.Glide;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.tabs.TabLayout;
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.tab.TabLayoutPersonAdapter;
+    @SuppressLint("SetTextI18n")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_person)
 
-public class PersonActivity extends AppCompatActivity {
+        val id = intent.getIntExtra("id", -1)
+        val gender = intent.getIntExtra("gender", -1)
+        val name = intent.getStringExtra("name")
+        val image = intent.getStringExtra("image")
+        val department = intent.getStringExtra("department")
+        val popularity = intent.getDoubleExtra("popularity", 0.0)
 
-    private TextView personName, popularityTxt, knownForDepartment, genderText, biography;
-    private ImageView personImage;
-    private MaterialToolbar toolbar;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+        val personImage = binding.imgPerson
+        val genderText = binding.txtGender
+        val tabLayout = binding.tabLayoutPerson
+        val viewPager = binding.pagerPerson
 
-    @SuppressLint({"MissingInflatedId", "SetTextI18n"})
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_person);
-        int id = getIntent().getIntExtra("id", -1);
+        setSupportActionBar(binding.toolbarPerson)
+        supportActionBar!!.title = ""
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        int gender = getIntent().getIntExtra("gender", -1);
-        String name = getIntent().getStringExtra("name");
-        String image = getIntent().getStringExtra("image");
-        String department = getIntent().getStringExtra("department");
-        Double popularity = getIntent().getDoubleExtra("popularity", 0.0);
-
-
-        personImage = findViewById(R.id.imgPerson);
-        personName = findViewById(R.id.txtPersonName);
-        popularityTxt = findViewById(R.id.txtPopularity);
-        knownForDepartment = findViewById(R.id.txtKnownForDepartment);
-        //biography = findViewById(R.id.txtBiography);
-        genderText = findViewById(R.id.txtGender);
-        toolbar = findViewById(R.id.toolbarPerson);
-        tabLayout = findViewById(R.id.tabLayoutPerson);
-        viewPager = findViewById(R.id.pagerPerson);
-
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        if (gender == 1) {
-            genderText.setText("Female");
-        } else if (gender == 2) {
-            genderText.setText("Male");
-        } else {
-            genderText.setText("-");
-        }
-
-        knownForDepartment.setText(department);
-        popularityTxt.setText(popularity + "");
-
-
-        if (image != null)
-            Glide.with(this).load("https://image.tmdb.org/t/p/w500/" + image).into(personImage);
-        else {
-            if (gender == 1) {
-                Glide.with(this).load(R.drawable.female_placeholder).into(personImage);
-            } else if (gender == 2) {
-                Glide.with(this).load(R.drawable.male_placeholder).into(personImage);
-            } else {
-                Glide.with(this).load(R.drawable.male_placeholder).into(personImage);
+        when (gender) {
+            1 -> {
+                genderText.text = "Female"
             }
 
+            2 -> {
+                genderText.text = "Male"
+            }
+
+            else -> {
+                genderText.text = "-"
+            }
         }
 
+        binding.txtKnownForDepartment.text = department
+        binding.txtPopularity.text = popularity.toString() + ""
 
-        personName.setText(name);
+        if (image != null) {
+            Glide.with(this).load("https://image.tmdb.org/t/p/w500/$image")
+                .into(personImage)
+        } else {
 
-        tabLayout.addTab(tabLayout.newTab());
-        tabLayout.addTab(tabLayout.newTab());
-        tabLayout.addTab(tabLayout.newTab());
-        tabLayout.addTab(tabLayout.newTab());
+            when (gender) {
+                1 -> {
+                    Glide.with(this).load(R.drawable.female_placeholder).into(personImage)
+                }
 
-        viewPager.setAdapter(new TabLayoutPersonAdapter(getSupportFragmentManager(), id, tabLayout.getTabCount(), getApplicationContext()));
-        tabLayout.setupWithViewPager(viewPager);
+                2 -> {
+                    Glide.with(this).load(R.drawable.male_placeholder).into(personImage)
+                }
 
+                else -> {
+                    Glide.with(this).load(R.drawable.male_placeholder).into(personImage)
+                }
+            }
+        }
+        binding.txtPersonName.text = name
 
+        tabLayout.addTab(tabLayout.newTab())
+        tabLayout.addTab(tabLayout.newTab())
+        tabLayout.addTab(tabLayout.newTab())
+        tabLayout.addTab(tabLayout.newTab())
+        viewPager.adapter = TabLayoutPersonAdapter(
+            supportFragmentManager,
+            id,
+            tabLayout.tabCount,
+            applicationContext
+        )
+        tabLayout.setupWithViewPager(viewPager)
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        onBackPressed();
-        return true;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 }

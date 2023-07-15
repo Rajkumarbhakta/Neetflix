@@ -1,86 +1,84 @@
-package com.rkbapps.neetflix.activityes;
+package com.rkbapps.neetflix.activityes
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Toast;
+import android.content.Context
+import android.os.Bundle
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.adapter.series.EpisodeAdapter
+import com.rkbapps.neetflix.databinding.ActivitySeasonsDetailsBinding
+import com.rkbapps.neetflix.models.tvseries.seasons.SeasonsDetails
+import com.rkbapps.neetflix.services.ApiData
+import com.rkbapps.neetflix.services.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class SeasonsDetailsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySeasonsDetailsBinding
 
-import com.google.android.material.appbar.MaterialToolbar;
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.series.EpisodeAdapter;
-import com.rkbapps.neetflix.models.tvseries.seasons.SeasonsDetails;
-import com.rkbapps.neetflix.services.ApiData;
-import com.rkbapps.neetflix.services.RetrofitInstance;
-import com.rkbapps.neetflix.services.TvSeriesApi;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_seasons_details)
 
-import java.util.Objects;
+        val tvID = intent.getIntExtra("tvID", -1)
+        val seasonsNumber = intent.getIntExtra("seasonsNumber", -1)
+        val seasonsName = intent.getStringExtra("seasonsName")
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class SeasonsDetailsActivity extends AppCompatActivity {
+        val context: Context = this
 
-    private RecyclerView recyclerEpisode;
-    private MaterialToolbar toolbar;
 
-    @SuppressLint("MissingInflatedId")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_seasons_details);
-        int tvID = getIntent().getIntExtra("tvID", -1);
-        int seasonsNumber = getIntent().getIntExtra("seasonsNumber", -1);
-        String seasonsName = getIntent().getStringExtra("seasonsName");
-        recyclerEpisode = findViewById(R.id.recyclerEpisode);
-        toolbar = findViewById(R.id.toolbarSeasonsPreview);
+        setSupportActionBar(binding.toolbarSeasonsPreview)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.title = seasonsName
 
-        Context context = this;
+        binding.recyclerEpisode.layoutManager = LinearLayoutManager(this)
 
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(seasonsName);
-
-        recyclerEpisode.setLayoutManager(new LinearLayoutManager(this));
-        if (tvID != -1 && seasonsNumber != -1)
-            loadSeasonsDetails(tvID, seasonsNumber, context);
-        else
-            Toast.makeText(this, "Something went wrong.", Toast.LENGTH_SHORT).show();
-
+        if (tvID != -1 && seasonsNumber != -1) loadSeasonsDetails(
+            tvID,
+            seasonsNumber,
+            context
+        ) else {
+            Toast.makeText(this, "Something went wrong.", Toast.LENGTH_SHORT).show()
+        }
     }
 
-
-    private void loadSeasonsDetails(int tvId, int seasonsNumber, Context context) {
-        TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
-        Call<SeasonsDetails> responseCall = tvSeriesApi.getSeasonsDetails(tvId, seasonsNumber, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<SeasonsDetails>() {
-            @Override
-            public void onResponse(Call<SeasonsDetails> call, Response<SeasonsDetails> response) {
-                if (response.isSuccessful()) {
+    private fun loadSeasonsDetails(tvId: Int, seasonsNumber: Int, context: Context) {
+        val tvSeriesApi = RetrofitInstance.getTvSeriesApi()
+        val responseCall = tvSeriesApi.getSeasonsDetails(tvId, seasonsNumber, ApiData.API_KEY)
+        responseCall.enqueue(object : Callback<SeasonsDetails?> {
+            override fun onResponse(
+                call: Call<SeasonsDetails?>,
+                response: Response<SeasonsDetails?>
+            ) {
+                if (response.isSuccessful) {
                     if (response.body() != null) {
-                        recyclerEpisode.setAdapter(new EpisodeAdapter(context, response.body().getEpisodes()));
-                    } else
-                        Toast.makeText(SeasonsDetailsActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(SeasonsDetailsActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                        binding.recyclerEpisode.adapter =
+                            EpisodeAdapter(context, response.body()!!.episodes)
+                    } else Toast.makeText(
+                        this@SeasonsDetailsActivity,
+                        "Something went wrong.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else Toast.makeText(
+                    this@SeasonsDetailsActivity,
+                    response.message(),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
-            @Override
-            public void onFailure(Call<SeasonsDetails> call, Throwable t) {
-                Toast.makeText(SeasonsDetailsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            override fun onFailure(call: Call<SeasonsDetails?>, t: Throwable) {
+                Toast.makeText(this@SeasonsDetailsActivity, t.message, Toast.LENGTH_SHORT).show()
             }
-        });
+        })
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        onBackPressed();
-        return true;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 }

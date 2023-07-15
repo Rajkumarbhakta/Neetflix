@@ -1,12 +1,119 @@
-package com.rkbapps.neetflix.models.movies;
+package com.rkbapps.neetflix.models.movies
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-import com.rkbapps.neetflix.models.Genre;
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+import com.rkbapps.neetflix.models.Genre
 
-import java.util.List;
+data class MovieModel(
+    @SerializedName("adult")
+    @Expose
+    var adult: Boolean,
 
-public class MovieModel {
+    @SerializedName("backdrop_path")
+    @Expose
+    var backdropPath: String,
+
+    @SerializedName("belongs_to_collection")
+    @Expose
+    var belongsToCollection: Any,
+
+    @SerializedName("budget")
+    @Expose
+    var budget: Long,
+
+    @SerializedName("genres")
+    @Expose
+    var genres: List<Genre>,
+
+    @SerializedName("homepage")
+    @Expose
+    var homepage: String,
+
+    @SerializedName("id")
+    @Expose
+    var id: Int,
+
+    @SerializedName("imdb_id")
+    @Expose
+    var imdbId: String,
+
+    @SerializedName("original_language")
+    @Expose
+    var originalLanguage: String,
+
+    @SerializedName("original_title")
+    @Expose
+    var originalTitle: String,
+
+    @SerializedName("overview")
+    @Expose
+    var overview: String,
+    @SerializedName("popularity")
+    @Expose
+    var popularity: Double,
+
+    @SerializedName("poster_path")
+    @Expose
+    var posterPath: String,
+
+    @SerializedName("production_companies")
+    @Expose
+    var productionCompanies: List<ProductionCompany>,
+
+    @SerializedName("production_countries")
+    @Expose
+    var productionCountries: List<ProductionCountry>,
+
+    @SerializedName("release_date")
+    @Expose
+    var releaseDate: String,
+
+    @SerializedName("revenue")
+    @Expose
+    var revenue: Long,
+
+    @SerializedName("runtime")
+    @Expose
+    var runtime: Int,
+
+    @SerializedName("spoken_languages")
+    @Expose
+    var spokenLanguages: List<SpokenLanguage>,
+
+    @SerializedName("status")
+    @Expose
+    var status: String,
+
+    @SerializedName("tagline")
+    @Expose
+    var tagline: String,
+
+    @SerializedName("title")
+    @Expose
+    var title: String,
+
+    @SerializedName("video")
+    @Expose
+    var video: Boolean,
+
+    @SerializedName("vote_average")
+    @Expose
+    var voteAverage: Double,
+
+    @SerializedName("vote_count")
+    @Expose
+    var voteCount: Int,
+) {
+    val movieBudget: String
+        get() = "" + budget / 1000000 + "M"
+    val movieRevenue: String
+        get() = "" + revenue / 1000000 + "M"
+    val movieLength: String
+        get() = "" + runtime / 60 + "h" + runtime % 60 + "m"
+}
+
+
+/*
     @SerializedName("adult")
     @Expose
     private Boolean adult;
@@ -82,219 +189,4 @@ public class MovieModel {
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
-
-    public Boolean getAdult() {
-        return adult;
-    }
-
-    public void setAdult(Boolean adult) {
-        this.adult = adult;
-    }
-
-    public String getBackdropPath() {
-        return backdropPath;
-    }
-
-    public void setBackdropPath(String backdropPath) {
-        this.backdropPath = backdropPath;
-    }
-
-    public Object getBelongsToCollection() {
-        return belongsToCollection;
-    }
-
-    public void setBelongsToCollection(Object belongsToCollection) {
-        this.belongsToCollection = belongsToCollection;
-    }
-
-    public Long getBudget() {
-        return budget;
-    }
-
-    public void setBudget(Long budget) {
-        this.budget = budget;
-    }
-
-    public List<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
-    }
-
-    public String getHomepage() {
-        return homepage;
-    }
-
-    public void setHomepage(String homepage) {
-        this.homepage = homepage;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getImdbId() {
-        return imdbId;
-    }
-
-    public void setImdbId(String imdbId) {
-        this.imdbId = imdbId;
-    }
-
-    public String getOriginalLanguage() {
-        return originalLanguage;
-    }
-
-    public void setOriginalLanguage(String originalLanguage) {
-        this.originalLanguage = originalLanguage;
-    }
-
-    public String getOriginalTitle() {
-        return originalTitle;
-    }
-
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
-    }
-
-    public String getOverview() {
-        return overview;
-    }
-
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
-
-    public Double getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(Double popularity) {
-        this.popularity = popularity;
-    }
-
-    public String getPosterPath() {
-        return posterPath;
-    }
-
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
-    }
-
-    public List<ProductionCompany> getProductionCompanies() {
-        return productionCompanies;
-    }
-
-    public void setProductionCompanies(List<ProductionCompany> productionCompanies) {
-        this.productionCompanies = productionCompanies;
-    }
-
-    public List<ProductionCountry> getProductionCountries() {
-        return productionCountries;
-    }
-
-    public void setProductionCountries(List<ProductionCountry> productionCountries) {
-        this.productionCountries = productionCountries;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public Long getRevenue() {
-        return revenue;
-    }
-
-    public void setRevenue(Long revenue) {
-        this.revenue = revenue;
-    }
-
-    public Integer getRuntime() {
-        return runtime;
-    }
-
-    public void setRuntime(Integer runtime) {
-        this.runtime = runtime;
-    }
-
-    public List<SpokenLanguage> getSpokenLanguages() {
-        return spokenLanguages;
-    }
-
-    public void setSpokenLanguages(List<SpokenLanguage> spokenLanguages) {
-        this.spokenLanguages = spokenLanguages;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getTagline() {
-        return tagline;
-    }
-
-    public void setTagline(String tagline) {
-        this.tagline = tagline;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Boolean getVideo() {
-        return video;
-    }
-
-    public void setVideo(Boolean video) {
-        this.video = video;
-    }
-
-    public Double getVoteAverage() {
-        return voteAverage;
-    }
-
-    public void setVoteAverage(Double voteAverage) {
-        this.voteAverage = voteAverage;
-    }
-
-    public Integer getVoteCount() {
-        return voteCount;
-    }
-
-    public void setVoteCount(Integer voteCount) {
-        this.voteCount = voteCount;
-    }
-
-
-    public String getMovieBudget() {
-
-        return "" + budget / 1000000 + "M";
-    }
-
-    public String getMovieRevenue() {
-        return "" + (revenue / 1000000) + "M";
-    }
-
-    public String getMovieLength() {
-        return "" + runtime / 60 + "h" + runtime % 60 + "m";
-    }
-
-}
+ */

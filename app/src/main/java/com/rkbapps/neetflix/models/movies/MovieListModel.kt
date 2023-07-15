@@ -1,11 +1,51 @@
-package com.rkbapps.neetflix.models.movies;
+package com.rkbapps.neetflix.models.movies
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
-import java.util.List;
+data class MovieListModel(
+    @SerializedName("page")
+    @Expose
+    var page: Int,
 
-public class MovieListModel {
+    @SerializedName("results")
+    @Expose
+    var results: List<MovieResult>,
+
+    @SerializedName("total_pages")
+    @Expose
+    var totalPages: Int,
+
+    @SerializedName("total_results")
+    @Expose
+    var totalResults: Int
+
+) {
+    constructor() : this(0, ArrayList(), 0, 0)
+}
+
+
+/*
+{
+//    @SerializedName("page")
+//    @Expose
+//    var page: Int? = null
+//
+//    @SerializedName("results")
+//    @Expose
+//    var results: List<MovieResult>? = null
+//
+//    @SerializedName("total_pages")
+//    @Expose
+//    var totalPages: Int? = null
+//
+//    @SerializedName("total_results")
+//    @Expose
+//    var totalResults: Int? = null
+}
+ */
+
+/*
     @SerializedName("page")
     @Expose
     private Integer page;
@@ -18,36 +58,4 @@ public class MovieListModel {
     @SerializedName("total_results")
     @Expose
     private Integer totalResults;
-
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
-    }
-
-    public List<MovieResult> getResults() {
-        return movieResults;
-    }
-
-    public void setResults(List<MovieResult> movieResults) {
-        this.movieResults = movieResults;
-    }
-
-    public Integer getTotalPages() {
-        return totalPages;
-    }
-
-    public void setTotalPages(Integer totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    public Integer getTotalResults() {
-        return totalResults;
-    }
-
-    public void setTotalResults(Integer totalResults) {
-        this.totalResults = totalResults;
-    }
-}
+ */

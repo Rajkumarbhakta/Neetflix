@@ -1,56 +1,92 @@
-package com.rkbapps.neetflix.services;
+package com.rkbapps.neetflix.services
 
-import com.rkbapps.neetflix.models.Review.ReviewModel;
-import com.rkbapps.neetflix.models.castandcrew.CreditsModel;
-import com.rkbapps.neetflix.models.images.ImagesModel;
-import com.rkbapps.neetflix.models.movies.MovieListModel;
-import com.rkbapps.neetflix.models.movies.MovieModel;
-import com.rkbapps.neetflix.models.videos.VideoModel;
+import com.rkbapps.neetflix.models.Review.ReviewModel
+import com.rkbapps.neetflix.models.castandcrew.CreditsModel
+import com.rkbapps.neetflix.models.images.ImagesModel
+import com.rkbapps.neetflix.models.movies.MovieListModel
+import com.rkbapps.neetflix.models.movies.MovieModel
+import com.rkbapps.neetflix.models.videos.VideoModel
+import retrofit2.Call
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-
-public interface MovieApi {
+interface MovieApi {
     // to get popular movies
     @GET("movie/popular")
-    Call<MovieListModel> getPopularMovies(@Query("api_key") String apiKey, @Query("page") int page);
+    suspend fun getPopularMovies(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Response<MovieListModel>
 
     //to get trending movies
     @GET("trending/movie/day")
-    Call<MovieListModel> getTrendingMovies(@Query("api_key") String apiKey, @Query("page") int page);
+    suspend fun getTrendingMovies(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Response<MovieListModel>
 
     @GET("movie/top_rated")
-    Call<MovieListModel> getTopRatedMovies(@Query("api_key") String apiKey, @Query("page") int page);
+    suspend fun getTopRatedMovies(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Response<MovieListModel>
 
     @GET("movie/latest")
-    Call<MovieListModel> getLatestMovies(@Query("api_key") String apiKey, @Query("page") int page);
+    suspend fun getLatestMovies(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Response<MovieListModel>
 
     @GET("movie/upcoming")
-    Call<MovieListModel> getUpcomingMovies(@Query("api_key") String apiKey, @Query("page") int page);
+    suspend fun getUpcomingMovies(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Response<MovieListModel>
 
     @GET("movie/{movie_id}")
-    Call<MovieModel> getMovieDetails(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
+    fun getMovieDetails(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): Call<MovieModel>
 
     @GET("movie/{movie_id}/credits")
-    Call<CreditsModel> getMovieCredits(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
-
+    fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): Call<CreditsModel>
 
     @GET("movie/{movie_id}/similar")
-    Call<MovieListModel> getSimilarMovies(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
+    fun getSimilarMovies(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String?
+    ): Call<MovieListModel>
 
     @GET("movie/{movie_id}/reviews")
-    Call<ReviewModel> getMovieReviews(@Path("movie_id") int movieId, @Query("api_key") String apiKey, @Query("language") String language);
+    fun getMovieReviews(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String?,
+        @Query("language") language: String?
+    ): Call<ReviewModel>
 
     @GET("movie/{movie_id}/images")
-    Call<ImagesModel> getMovieImages(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
+    fun getMovieImages(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String?
+    ): Call<ImagesModel>
 
     @GET("movie/{movie_id}/videos")
-    Call<VideoModel> getMovieVideos(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
+    fun getMovieVideos(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String?
+    ): Call<VideoModel>
 
     @GET("search/movie")
-    Call<MovieListModel> getMovieSearchResult(@Query("api_key") String apiKey, @Query("query") String query, @Query("page") int page, @Query("include_adult") boolean include_adult);
-
-
+    fun getMovieSearchResult(
+        @Query("api_key") apiKey: String?,
+        @Query("query") query: String?,
+        @Query("page") page: Int,
+        @Query("include_adult") include_adult: Boolean
+    ): Call<MovieListModel>
 }
