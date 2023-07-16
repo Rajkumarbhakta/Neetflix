@@ -38,11 +38,6 @@ class PersonMoviesFragment : Fragment() {
             PersonMoviesViewModelFactory(repository, id)
         )[PersonMoviesViewModel::class.java]
 
-//        cast = view.findViewById(R.id.recyclerPersonMoviesAsCast)
-//        crew = view.findViewById(R.id.recyclerPersonMoviesAsCrew)
-//        asACast = view.findViewById(R.id.txtPersonAsCastMovie)
-//        asACrew = view.findViewById(R.id.txtPersonAsCrewMovie)
-
         binding.recyclerPersonMoviesAsCast.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         binding.recyclerPersonMoviesAsCrew.layoutManager =
@@ -60,7 +55,6 @@ class PersonMoviesFragment : Fragment() {
                 is Resource.Loading -> {
 
                 }
-
                 is Resource.Success -> {
                     if (it.data?.body() != null) {
                         if (it.data.body()!!.cast.isNotEmpty() && it.data.body()!!.cast != null) {
@@ -86,64 +80,11 @@ class PersonMoviesFragment : Fragment() {
                         }
                     }
                 }
-
                 is Resource.Error -> {
                     binding.txtPersonAsCastMovie.text = "${it.data?.code()} : ${it.message}"
                     binding.txtPersonAsCastMovie.setTextColor(Color.WHITE)
                 }
             }
         })
-
-
-        /*
-
-        val responseCall: Call<WorkForMovies> = personApi.getPersonMovieCredits(id, ApiData.API_KEY)
-        responseCall.enqueue(object : Callback<WorkForMovies?> {
-            override fun onResponse(
-                call: Call<WorkForMovies?>,
-                response: Response<WorkForMovies?>
-            ) {
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        if (response.body()!!.cast.size != 0 && response.body()!!.cast != null) {
-                            cast.setAdapter(
-                                PersonMoviesAdapter(
-                                    PersonMoviesAdapter.AS_CAST,
-                                    context,
-                                    response.body()!!.cast,
-                                    0
-                                )
-                            )
-                        } else {
-                            cast.setVisibility(View.GONE)
-                            asACast.setVisibility(View.GONE)
-                        }
-                        if (response.body()!!.crew.size != 0 && response.body()!!.crew != null) {
-                            crew.setAdapter(
-                                PersonMoviesAdapter(
-                                    PersonMoviesAdapter.AS_CREW,
-                                    context,
-                                    response.body()!!.crew
-                                )
-                            )
-                        } else {
-                            crew.setVisibility(View.GONE)
-                            asACrew.setVisibility(View.GONE)
-                        }
-                    } else {
-                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-
-            @SuppressLint("SetTextI18n")
-            override fun onFailure(call: Call<WorkForMovies?>, t: Throwable) {
-                asACast.setText("Error : " + t.message)
-                asACast.setTextColor(Color.WHITE)
-            }
-        })
-         */
-
-
     }
 }
