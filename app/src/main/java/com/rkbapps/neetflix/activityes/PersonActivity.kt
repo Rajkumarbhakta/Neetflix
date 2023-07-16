@@ -51,11 +51,10 @@ class PersonActivity : AppCompatActivity() {
         binding.txtKnownForDepartment.text = department
         binding.txtPopularity.text = popularity.toString() + ""
 
-        if (image != null) {
+        if (!image.isNullOrEmpty()) {
             Glide.with(this).load("https://image.tmdb.org/t/p/w500/$image")
                 .into(personImage)
         } else {
-
             when (gender) {
                 1 -> {
                     Glide.with(this).load(R.drawable.female_placeholder).into(personImage)

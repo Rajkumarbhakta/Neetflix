@@ -1,89 +1,149 @@
-package com.rkbapps.neetflix.fragments.person;
+package com.rkbapps.neetflix.fragments.person
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.graphics.Color
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.adapter.person.PersonMoviesAdapter
+import com.rkbapps.neetflix.databinding.FragmentPersonMoviesBinding
+import com.rkbapps.neetflix.repository.person.PersonMoviesRepository
+import com.rkbapps.neetflix.utils.Resource
+import com.rkbapps.neetflix.viewmodelfactories.person.PersonMoviesViewModelFactory
+import com.rkbapps.neetflix.viewmodels.person.PersonMoviesViewModel
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class PersonMoviesFragment : Fragment() {
 
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.person.PersonMoviesAdapter;
-import com.rkbapps.neetflix.models.person.movie.WorkForMovies;
-import com.rkbapps.neetflix.services.ApiData;
-import com.rkbapps.neetflix.services.PersonApi;
-import com.rkbapps.neetflix.services.RetrofitInstance;
+    private lateinit var binding: FragmentPersonMoviesBinding
+    private lateinit var viewModel: PersonMoviesViewModel
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Inflate the layout for this fragment
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_person_movies, container, false)
+        val id = requireArguments().getInt("id")
+        val repository = PersonMoviesRepository()
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            PersonMoviesViewModelFactory(repository, id)
+        )[PersonMoviesViewModel::class.java]
 
-public class PersonMoviesFragment extends Fragment {
+//        cast = view.findViewById(R.id.recyclerPersonMoviesAsCast)
+//        crew = view.findViewById(R.id.recyclerPersonMoviesAsCrew)
+//        asACast = view.findViewById(R.id.txtPersonAsCastMovie)
+//        asACrew = view.findViewById(R.id.txtPersonAsCrewMovie)
 
-    private RecyclerView cast, crew;
-    private TextView asACast, asACrew;
+        binding.recyclerPersonMoviesAsCast.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        binding.recyclerPersonMoviesAsCrew.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        loadMovieCredits()
 
-    public PersonMoviesFragment() {
-        // Required empty public constructor
+        return binding.root
     }
 
-    @SuppressLint("MissingInflatedId")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_person_movies, container, false);
-        int id = getArguments().getInt("id");
-        cast = view.findViewById(R.id.recyclerPersonMoviesAsCast);
-        crew = view.findViewById(R.id.recyclerPersonMoviesAsCrew);
-        asACast = view.findViewById(R.id.txtPersonAsCastMovie);
-        asACrew = view.findViewById(R.id.txtPersonAsCrewMovie);
+    private fun loadMovieCredits() {
+
+        viewModel.personMovies.observe(viewLifecycleOwner, Observer {
+            when (it) {
+
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data?.body() != null) {
+                        if (it.data.body()!!.cast.isNotEmpty() && it.data.body()!!.cast != null) {
+                            binding.recyclerPersonMoviesAsCast.adapter = PersonMoviesAdapter(
+                                PersonMoviesAdapter.AS_CAST,
+                                context,
+                                it.data.body()!!.cast,
+                                0
+                            )
+                        } else {
+                            binding.recyclerPersonMoviesAsCast.visibility = View.GONE
+                            binding.txtPersonAsCastMovie.visibility = View.GONE
+                        }
+                        if (it.data.body()!!.crew.isNotEmpty() && it.data.body()!!.crew != null) {
+                            binding.recyclerPersonMoviesAsCrew.adapter = PersonMoviesAdapter(
+                                PersonMoviesAdapter.AS_CREW,
+                                context,
+                                it.data.body()!!.crew
+                            )
+                        } else {
+                            binding.recyclerPersonMoviesAsCrew.visibility = View.GONE
+                            binding.txtPersonAsCrewMovie.visibility = View.GONE
+                        }
+                    }
+                }
+
+                is Resource.Error -> {
+                    binding.txtPersonAsCastMovie.text = "${it.data?.code()} : ${it.message}"
+                    binding.txtPersonAsCastMovie.setTextColor(Color.WHITE)
+                }
+            }
+        })
 
 
-        cast.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        crew.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        /*
 
-        PersonApi personApi = RetrofitInstance.getPersonApi();
-
-        Call<WorkForMovies> responseCall = personApi.getPersonMovieCredits(id, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<WorkForMovies>() {
-            @Override
-            public void onResponse(Call<WorkForMovies> call, Response<WorkForMovies> response) {
-                if (response.isSuccessful()) {
+        val responseCall: Call<WorkForMovies> = personApi.getPersonMovieCredits(id, ApiData.API_KEY)
+        responseCall.enqueue(object : Callback<WorkForMovies?> {
+            override fun onResponse(
+                call: Call<WorkForMovies?>,
+                response: Response<WorkForMovies?>
+            ) {
+                if (response.isSuccessful) {
                     if (response.body() != null) {
-                        if (response.body().getCast().size() != 0 && response.body().getCast() != null) {
-                            cast.setAdapter(new PersonMoviesAdapter(PersonMoviesAdapter.AS_CAST, getContext(), response.body().getCast(), 0));
+                        if (response.body()!!.cast.size != 0 && response.body()!!.cast != null) {
+                            cast.setAdapter(
+                                PersonMoviesAdapter(
+                                    PersonMoviesAdapter.AS_CAST,
+                                    context,
+                                    response.body()!!.cast,
+                                    0
+                                )
+                            )
                         } else {
-                            cast.setVisibility(View.GONE);
-                            asACast.setVisibility(View.GONE);
+                            cast.setVisibility(View.GONE)
+                            asACast.setVisibility(View.GONE)
                         }
-                        if (response.body().getCrew().size() != 0 && response.body().getCrew() != null) {
-                            crew.setAdapter(new PersonMoviesAdapter(PersonMoviesAdapter.AS_CREW, getContext(), response.body().getCrew()));
+                        if (response.body()!!.crew.size != 0 && response.body()!!.crew != null) {
+                            crew.setAdapter(
+                                PersonMoviesAdapter(
+                                    PersonMoviesAdapter.AS_CREW,
+                                    context,
+                                    response.body()!!.crew
+                                )
+                            )
                         } else {
-                            crew.setVisibility(View.GONE);
-                            asACrew.setVisibility(View.GONE);
+                            crew.setVisibility(View.GONE)
+                            asACrew.setVisibility(View.GONE)
                         }
-
                     } else {
-                        Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
 
             @SuppressLint("SetTextI18n")
-            @Override
-            public void onFailure(Call<WorkForMovies> call, Throwable t) {
-                asACast.setText("Error : " + t.getMessage());
-                asACast.setTextColor(Color.WHITE);
+            override fun onFailure(call: Call<WorkForMovies?>, t: Throwable) {
+                asACast.setText("Error : " + t.message)
+                asACast.setTextColor(Color.WHITE)
             }
-        });
+        })
+         */
 
-        return view;
+
     }
 }

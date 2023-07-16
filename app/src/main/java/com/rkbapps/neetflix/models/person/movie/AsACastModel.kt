@@ -1,63 +1,40 @@
-package com.rkbapps.neetflix.models.person.movie;
+package com.rkbapps.neetflix.models.person.movie
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
-public class AsACastModel {
+data class AsACastModel(
+
     @SerializedName("adult")
     @Expose
-    private Boolean adult;
+    val adult: Boolean,
+
     @SerializedName("id")
     @Expose
-    private Integer id;
+    val id: Int,
+
     @SerializedName("poster_path")
     @Expose
-    private String posterPath;
+    val posterPath: String,
+
     @SerializedName("release_date")
     @Expose
-    private String releaseDate;
+    val releaseDate: String,
+
     @SerializedName("title")
     @Expose
-    private String title;
+    val title: String,
+
     @SerializedName("vote_average")
     @Expose
-    private Double voteAverage;
+    val voteAverage: Double,
+
     @SerializedName("character")
     @Expose
-    private String character;
+    val character: String,
+
     @SerializedName("order")
     @Expose
-    private Integer order;
+    val order: Int,
 
-    public Boolean getAdult() {
-        return adult;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getPosterPath() {
-        return posterPath;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Double getVoteAverage() {
-        return voteAverage;
-    }
-
-    public String getCharacter() {
-        return character;
-    }
-
-    public Integer getOrder() {
-        return order;
-    }
-}
+    )

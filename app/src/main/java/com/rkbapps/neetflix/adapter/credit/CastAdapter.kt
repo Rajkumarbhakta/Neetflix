@@ -31,7 +31,7 @@ class CastAdapter(private val context: Context, private val casts: List<Cast>) :
             val i = Intent(context, PersonActivity::class.java)
             i.putExtra("id", casts[position].id)
             i.putExtra("name", casts[position].name)
-            i.putExtra("image", casts[position].profilePath)
+            i.putExtra("image", casts[position].profilePath ?: "")
             i.putExtra("gender", casts[position].gender)
             i.putExtra("popularity", casts[position].popularity)
             i.putExtra("department", casts[position].knownForDepartment)

@@ -37,8 +37,8 @@ interface PersonApi {
     ): Call<WorkForSeries?>?
 
     @GET("person/{person_id}/movie_credits")
-    fun getPersonMovieCredits(
+    suspend fun getPersonMovieCredits(
         @Path("person_id") personId: Int,
         @Query("api_key") apiKey: String
-    ): Call<WorkForMovies?>?
+    ): Response<WorkForMovies>
 }

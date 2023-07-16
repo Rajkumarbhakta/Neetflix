@@ -30,7 +30,7 @@ class CrewAdapter(private val context: Context, private val crews: List<Crew>) :
             i.putExtra("id", crews[position].id)
             i.putExtra("name", crews[position].name)
             i.putExtra("gender", crews[position].gender)
-            i.putExtra("image", crews[position].profilePath as String)
+            i.putExtra("image", crews[position].profilePath?:"")
             i.putExtra("popularity", crews[position].popularity)
             i.putExtra("department", crews[position].knownForDepartment)
             context.startActivity(i)

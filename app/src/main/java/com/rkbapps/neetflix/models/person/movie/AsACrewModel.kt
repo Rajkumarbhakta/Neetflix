@@ -1,71 +1,43 @@
-package com.rkbapps.neetflix.models.person.movie;
+package com.rkbapps.neetflix.models.person.movie
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
-
-public class AsACrewModel {
+data class AsACrewModel(
     @SerializedName("adult")
     @Expose
-    private Boolean adult;
+    val adult: Boolean,
+
     @SerializedName("id")
     @Expose
-    private Integer id;
+    val id: Int,
+
     @SerializedName("original_title")
     @Expose
-    private String originalTitle;
+    val originalTitle: String,
+
     @SerializedName("poster_path")
     @Expose
-    private String posterPath;
+    val posterPath: String,
+
     @SerializedName("release_date")
     @Expose
-    private String releaseDate;
+    val releaseDate: String,
+
     @SerializedName("title")
     @Expose
-    private String title;
+    val title: String,
+
     @SerializedName("vote_average")
     @Expose
-    private Double voteAverage;
+    val voteAverage: Double,
+
     @SerializedName("department")
     @Expose
-    private String department;
+    val department: String,
+
     @SerializedName("job")
     @Expose
-    private String job;
+    val job: String
 
-    public Boolean getAdult() {
-        return adult;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getOriginalTitle() {
-        return originalTitle;
-    }
-
-    public String getPosterPath() {
-        return posterPath;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Double getVoteAverage() {
-        return voteAverage;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public String getJob() {
-        return job;
-    }
-}
+)
