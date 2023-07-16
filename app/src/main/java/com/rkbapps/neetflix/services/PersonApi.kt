@@ -31,10 +31,10 @@ interface PersonApi {
     ): Response<PersonImageModel>
 
     @GET("person/{person_id}/tv_credits")
-    fun getPersonSeriesCredits(
+    suspend fun getPersonSeriesCredits(
         @Path("person_id") personId: Int,
         @Query("api_key") apiKey: String
-    ): Call<WorkForSeries>
+    ): Response<WorkForSeries>
 
     @GET("person/{person_id}/movie_credits")
     suspend fun getPersonMovieCredits(

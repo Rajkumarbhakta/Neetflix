@@ -1,89 +1,96 @@
-package com.rkbapps.neetflix.fragments.person;
+package com.rkbapps.neetflix.fragments.person
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.graphics.Color
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.adapter.person.PersonMoviesAdapter
+import com.rkbapps.neetflix.adapter.person.PersonSeriesAdapter
+import com.rkbapps.neetflix.databinding.FragmentPersonSeriesBinding
+import com.rkbapps.neetflix.repository.person.PersonSeriesRepository
+import com.rkbapps.neetflix.utils.Resource
+import com.rkbapps.neetflix.viewmodelfactories.person.PersonSeriesViewModelFactory
+import com.rkbapps.neetflix.viewmodels.person.PersonSeriesViewModel
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class PersonSeriesFragment : Fragment() {
 
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.person.PersonSeriesAdapter;
-import com.rkbapps.neetflix.models.person.tvseries.WorkForSeries;
-import com.rkbapps.neetflix.services.ApiData;
-import com.rkbapps.neetflix.services.PersonApi;
-import com.rkbapps.neetflix.services.RetrofitInstance;
+    private lateinit var binding: FragmentPersonSeriesBinding
+    private lateinit var viewModel: PersonSeriesViewModel
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_person_series, container, false)
+        val id = requireArguments().getInt("id")
+        val repository = PersonSeriesRepository()
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            PersonSeriesViewModelFactory(repository, id)
+        )[PersonSeriesViewModel::class.java]
 
 
-public class PersonSeriesFragment extends Fragment {
+        binding.recyclerPersonSeriesAsCast.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        binding.recyclerPersonSeriesAsCrew.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
 
-    private RecyclerView cast, crew;
-    private TextView asACast, asACrew;
+        loadPersonSeriesData()
 
-    public PersonSeriesFragment() {
-        // Required empty public constructor
+        return binding.root
     }
 
-    @SuppressLint("MissingInflatedId")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_person_series, container, false);
-        int id = getArguments().getInt("id");
-        cast = view.findViewById(R.id.recyclerPersonSeriesAsCast);
-        crew = view.findViewById(R.id.recyclerPersonSeriesAsCrew);
-        asACast = view.findViewById(R.id.txtPersonAsCastSeries);
-        asACrew = view.findViewById(R.id.txtPersonAsCrewSeries);
+    private fun loadPersonSeriesData() {
 
-        cast.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        crew.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
 
-        PersonApi personApi = RetrofitInstance.getPersonApi();
+        viewModel.personSeries.observe(viewLifecycleOwner, Observer {
+            when (it) {
 
-        Call<WorkForSeries> responseCall = personApi.getPersonSeriesCredits(id, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<WorkForSeries>() {
-            @Override
-            public void onResponse(Call<WorkForSeries> call, Response<WorkForSeries> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if (response.body().getCast().size() != 0 && response.body().getCast() != null) {
-                            cast.setAdapter(new PersonSeriesAdapter(PersonSeriesAdapter.AS_CAST, getContext(), response.body().getCast(), 1));
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data?.body() != null) {
+                        if (it.data.body()!!.cast.isNotEmpty() && it.data.body()!!.cast != null) {
+                            binding.recyclerPersonSeriesAsCast.adapter = PersonSeriesAdapter(
+                                PersonMoviesAdapter.AS_CAST,
+                                context,
+                                it.data.body()!!.cast,
+                                0
+                            )
                         } else {
-                            cast.setVisibility(View.GONE);
-                            asACast.setVisibility(View.GONE);
+                            binding.recyclerPersonSeriesAsCast.visibility = View.GONE
+                            binding.txtPersonAsCastSeries.visibility = View.GONE
                         }
-                        if (response.body().getCrew().size() != 0 && response.body().getCrew() != null) {
-                            crew.setAdapter(new PersonSeriesAdapter(PersonSeriesAdapter.AS_CREW, getContext(), response.body().getCrew()));
+                        if (it.data.body()!!.crew.isNotEmpty() && it.data.body()!!.crew != null) {
+                            binding.recyclerPersonSeriesAsCrew.adapter = PersonSeriesAdapter(
+                                PersonMoviesAdapter.AS_CREW,
+                                context,
+                                it.data.body()!!.crew
+                            )
                         } else {
-                            crew.setVisibility(View.GONE);
-                            asACrew.setVisibility(View.GONE);
+                            binding.recyclerPersonSeriesAsCrew.visibility = View.GONE
+                            binding.txtPersonAsCrewSeries.visibility = View.GONE
                         }
-
-                    } else {
-                        Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
                 }
+
+                is Resource.Error -> {
+                    binding.txtPersonAsCastSeries.text = "${it.data?.code()} : ${it.message}"
+                    binding.txtPersonAsCastSeries.setTextColor(Color.WHITE)
+                }
             }
-
-            @Override
-            public void onFailure(Call<WorkForSeries> call, Throwable t) {
-                asACast.setText("Error : " + t.getMessage());
-                asACast.setTextColor(Color.WHITE);
-            }
-        });
-
-
-        return view;
+        })
     }
 }
