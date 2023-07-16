@@ -1,62 +1,71 @@
-package com.rkbapps.neetflix.fragments.person;
+package com.rkbapps.neetflix.fragments.person
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.adapter.person.PersonImageAdapter
+import com.rkbapps.neetflix.databinding.FragmentPersonImageBinding
+import com.rkbapps.neetflix.repository.person.PersonImageRepository
+import com.rkbapps.neetflix.utils.Resource
+import com.rkbapps.neetflix.viewmodelfactories.person.PersonImageViewModelFactory
+import com.rkbapps.neetflix.viewmodels.person.PersonImageViewModel
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class PersonImageFragment : Fragment() {
 
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.person.PersonImageAdapter;
-import com.rkbapps.neetflix.models.person.images.PersonImageModel;
-import com.rkbapps.neetflix.services.ApiData;
-import com.rkbapps.neetflix.services.PersonApi;
-import com.rkbapps.neetflix.services.RetrofitInstance;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+    private lateinit var binding: FragmentPersonImageBinding
+    private lateinit var viewModel: PersonImageViewModel
 
 
-public class PersonImageFragment extends Fragment {
-
-    private RecyclerView recyclerView;
-
-    public PersonImageFragment() {
-        // Required empty public constructor
-    }
-
-    @SuppressLint("MissingInflatedId")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_person_image, container, false);
-        int id = getArguments().getInt("id");
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_person_image, container, false)
+        val id = requireArguments().getInt("id")
+        val repository = PersonImageRepository()
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            PersonImageViewModelFactory(repository, id)
+        )[PersonImageViewModel::class.java]
 
-        recyclerView = view.findViewById(R.id.recyclerPersonImage);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        binding.recyclerPersonImage.layoutManager = GridLayoutManager(context, 2)
 
-        PersonApi personApi = RetrofitInstance.getPersonApi();
-        Call<PersonImageModel> responseCall = personApi.getPersonImages(id, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<PersonImageModel>() {
-            @Override
-            public void onResponse(Call<PersonImageModel> call, Response<PersonImageModel> response) {
-                if (response.isSuccessful())
-                    recyclerView.setAdapter(new PersonImageAdapter(getContext(), response.body().getProfiles()));
-            }
-
-            @Override
-            public void onFailure(Call<PersonImageModel> call, Throwable t) {
-
-            }
-        });
-
-
-        return view;
+        loadImages()
+        return binding.root
     }
+
+    private fun loadImages() {
+
+        viewModel.images.observe(viewLifecycleOwner, Observer {
+            when (it) {
+
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data?.body() != null)
+                        binding.recyclerPersonImage.adapter =
+                            PersonImageAdapter(requireContext(), it.data.body()!!.profiles);
+                }
+
+                is Resource.Error -> {
+
+                }
+            }
+        })
+
+
+    }
+
+
 }

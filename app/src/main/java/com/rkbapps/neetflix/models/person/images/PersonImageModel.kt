@@ -1,31 +1,14 @@
-package com.rkbapps.neetflix.models.person.images;
+package com.rkbapps.neetflix.models.person.images
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
-import java.util.List;
-
-public class PersonImageModel {
+data class PersonImageModel(
     @SerializedName("id")
     @Expose
-    private Integer id;
+    val id: Int,
+
     @SerializedName("profiles")
     @Expose
-    private List<Profile> profiles;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public List<Profile> getProfiles() {
-        return profiles;
-    }
-
-    public void setProfiles(List<Profile> profiles) {
-        this.profiles = profiles;
-    }
-}
+    val profiles: List<Profile>,
+)
