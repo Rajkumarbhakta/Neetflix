@@ -1,146 +1,279 @@
-package com.rkbapps.neetflix.fragments;
+package com.rkbapps.neetflix.fragments
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.adapter.ParentAdapter
+import com.rkbapps.neetflix.databinding.FragmentTvSeriesBinding
+import com.rkbapps.neetflix.models.MovieList
+import com.rkbapps.neetflix.repository.series.SeriesFragmentRepository
+import com.rkbapps.neetflix.utils.Resource
+import com.rkbapps.neetflix.viewmodelfactories.series.SeriesFragmentViewModelFactory
+import com.rkbapps.neetflix.viewmodels.series.SeriesFragmentViewModel
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.ParentAdapter;
-import com.rkbapps.neetflix.models.MovieList;
-import com.rkbapps.neetflix.models.tvseries.TvSeriesListModel;
-import com.rkbapps.neetflix.services.ApiData;
-import com.rkbapps.neetflix.services.RetrofitInstance;
-import com.rkbapps.neetflix.services.TvSeriesApi;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-
-public class TvSeriesFragment extends Fragment {
-
-    private final List<MovieList> seriesLists = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private ParentAdapter adapter;
-
-    public TvSeriesFragment() {
-        // Required empty public constructor
-    }
+class TvSeriesFragment : Fragment() {
+    private val seriesLists: MutableList<MovieList> = ArrayList()
+    private lateinit var binding: FragmentTvSeriesBinding
+    private lateinit var viewModel: SeriesFragmentViewModel
+    private lateinit var adapter: ParentAdapter
 
     @SuppressLint("MissingInflatedId")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_tv_series, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tv_series, container, false)
+        val repository = SeriesFragmentRepository()
+        viewModel = ViewModelProvider(
+            this,
+            SeriesFragmentViewModelFactory(repository)
+        )[SeriesFragmentViewModel::class.java]
 
-        recyclerView = view.findViewById(R.id.recyclerTvSeries);
+        //recyclerView = view.findViewById(R.id.recyclerTvSeries)
+
+        adapter = ParentAdapter(seriesLists, context)
+        binding.recyclerTvSeries.layoutManager = LinearLayoutManager(context)
+        binding.recyclerTvSeries.adapter = adapter
+
+        loadPopularSeries()
+        loadTrendingSeries()
+        loadArrivingTodaySeries()
+        loadTopRatedSeries()
 
 
-        loadPopularSeries();
-        loadTrendingSeries();
-        loadArrivingTodaySeries();
-        loadTopRatedSeries();
-
-
-        adapter = new ParentAdapter(seriesLists, getContext());
-
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
-        return view;
+        return binding.root
     }
 
+    private fun loadPopularSeries() {
 
-    private void loadPopularSeries() {
-        TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
-        Call<TvSeriesListModel> responseCall = tvSeriesApi.getPopularSeries(ApiData.API_KEY, 1);
-        responseCall.enqueue(new Callback<TvSeriesListModel>() {
-            @Override
-            public void onResponse(Call<TvSeriesListModel> call, Response<TvSeriesListModel> response) {
-                if (response.isSuccessful()) {
-                    Log.d("respo", response + "");
-                    seriesLists.add(new MovieList(MovieList.TV_SERIES, "Popular", response.body().getResults()));
-                    adapter.notifyDataSetChanged();
+        viewModel.popularSeries.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data?.body() != null) {
+                        seriesLists.add(
+                            0,
+                            MovieList(
+                                MovieList.TV_SERIES,
+                                "Popular",
+                                it.data.body()!!.results
+                            )
+                        )
+                        adapter.notifyItemChanged(0)
+                    }
+                }
+
+                is Resource.Error -> {
+
+                }
+            }
+        })
+
+        /*
+        val tvSeriesApi = RetrofitInstance.getTvSeriesApi()
+        val responseCall = tvSeriesApi.getPopularSeries(ApiData.API_KEY, 1)
+        responseCall!!.enqueue(object : Callback<TvSeriesListModel> {
+            override fun onResponse(
+                call: Call<TvSeriesListModel>,
+                response: Response<TvSeriesListModel>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("respo", response.toString() + "")
+                    seriesLists.add(
+                        MovieList(
+                            MovieList.TV_SERIES,
+                            "Popular",
+                            response.body()!!.results
+                        )
+                    )
+                    adapter!!.notifyDataSetChanged()
                 }
             }
 
-            @Override
-            public void onFailure(Call<TvSeriesListModel> call, Throwable t) {
-                Log.d("respo", t + "");
+            override fun onFailure(call: Call<TvSeriesListModel>, t: Throwable) {
+                Log.d("respo", t.toString() + "")
             }
-        });
+        })
+         */
     }
 
-    private void loadTrendingSeries() {
-        TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
-        Call<TvSeriesListModel> responseCall = tvSeriesApi.getTrendingSeries(ApiData.API_KEY, 1);
-        responseCall.enqueue(new Callback<TvSeriesListModel>() {
-            @Override
-            public void onResponse(Call<TvSeriesListModel> call, Response<TvSeriesListModel> response) {
-                if (response.isSuccessful()) {
+    private fun loadTrendingSeries() {
+        viewModel.trendingSeries.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data?.body() != null) {
+                        seriesLists.add(
+                            1,
+                            MovieList(
+                                MovieList.TV_SERIES,
+                                "Trending",
+                                it.data.body()!!.results
+                            )
+                        )
+                        adapter.notifyItemChanged(1)
+                    }
+                }
+
+                is Resource.Error -> {
+
+                }
+            }
+        })
+
+        /*
+        val tvSeriesApi = RetrofitInstance.getTvSeriesApi()
+        val responseCall = tvSeriesApi.getTrendingSeries(ApiData.API_KEY, 1)
+        responseCall!!.enqueue(object : Callback<TvSeriesListModel> {
+            override fun onResponse(
+                call: Call<TvSeriesListModel>,
+                response: Response<TvSeriesListModel>
+            ) {
+                if (response.isSuccessful) {
                     //Log.d("repo",response+"");
-                    seriesLists.add(new MovieList(MovieList.TV_SERIES, "Trending", response.body().getResults()));
-                    adapter.notifyDataSetChanged();
+                    seriesLists.add(
+                        MovieList(
+                            MovieList.TV_SERIES,
+                            "Trending",
+                            response.body()!!.results
+                        )
+                    )
+                    adapter!!.notifyDataSetChanged()
                 }
             }
 
-            @Override
-            public void onFailure(Call<TvSeriesListModel> call, Throwable t) {
-                Log.d("repo", t + "");
+            override fun onFailure(call: Call<TvSeriesListModel>, t: Throwable) {
+                Log.d("repo", t.toString() + "")
             }
-        });
+        })
+
+         */
     }
 
-    private void loadTopRatedSeries() {
-        TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
-        Call<TvSeriesListModel> responseCall = tvSeriesApi.getTopRatedSeries(ApiData.API_KEY, 1);
-        responseCall.enqueue(new Callback<TvSeriesListModel>() {
-            @Override
-            public void onResponse(Call<TvSeriesListModel> call, Response<TvSeriesListModel> response) {
-                if (response.isSuccessful()) {
+    private fun loadTopRatedSeries() {
+
+        viewModel.topRatedSeries.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data?.body() != null) {
+                        seriesLists.add(
+                            2,
+                            MovieList(
+                                MovieList.TV_SERIES,
+                                "Top Rated",
+                                it.data.body()!!.results
+                            )
+                        )
+                        adapter.notifyItemChanged(2)
+                    }
+                }
+
+                is Resource.Error -> {
+
+                }
+            }
+        })
+        /*
+        val tvSeriesApi = RetrofitInstance.getTvSeriesApi()
+        val responseCall = tvSeriesApi.getTopRatedSeries(ApiData.API_KEY, 1)
+        responseCall!!.enqueue(object : Callback<TvSeriesListModel> {
+            override fun onResponse(
+                call: Call<TvSeriesListModel>,
+                response: Response<TvSeriesListModel>
+            ) {
+                if (response.isSuccessful) {
                     //Log.d("repo",response+"");
-                    seriesLists.add(new MovieList(MovieList.TV_SERIES, "Top Rated", response.body().getResults()));
-                    adapter.notifyDataSetChanged();
+                    seriesLists.add(
+                        MovieList(
+                            MovieList.TV_SERIES,
+                            "Top Rated",
+                            response.body()!!.results
+                        )
+                    )
+                    adapter!!.notifyDataSetChanged()
                 }
             }
 
-            @Override
-            public void onFailure(Call<TvSeriesListModel> call, Throwable t) {
-                Log.d("repo", t + "");
+            override fun onFailure(call: Call<TvSeriesListModel>, t: Throwable) {
+                Log.d("repo", t.toString() + "")
             }
-        });
+        })
+
+         */
     }
 
-    private void loadArrivingTodaySeries() {
-        TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
-        Call<TvSeriesListModel> responseCall = tvSeriesApi.getAiringTodaySeries(ApiData.API_KEY, 1);
-        responseCall.enqueue(new Callback<TvSeriesListModel>() {
-            @Override
-            public void onResponse(Call<TvSeriesListModel> call, Response<TvSeriesListModel> response) {
-                if (response.isSuccessful()) {
+    private fun loadArrivingTodaySeries() {
+
+        viewModel.arrivingTodaySeries.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data?.body() != null) {
+                        seriesLists.add(
+                            3,
+                            MovieList(
+                                MovieList.TV_SERIES,
+                                "Airing Today",
+                                it.data.body()!!.results
+                            )
+                        )
+                        adapter.notifyItemChanged(3)
+                    }
+                }
+
+                is Resource.Error -> {
+
+                }
+            }
+        })
+        /*
+        val tvSeriesApi = RetrofitInstance.getTvSeriesApi()
+        val responseCall = tvSeriesApi.getAiringTodaySeries(ApiData.API_KEY, 1)
+        responseCall!!.enqueue(object : Callback<TvSeriesListModel> {
+            override fun onResponse(
+                call: Call<TvSeriesListModel>,
+                response: Response<TvSeriesListModel>
+            ) {
+                if (response.isSuccessful) {
                     //Log.d("repo",response+"");
-                    seriesLists.add(new MovieList(MovieList.TV_SERIES, "Airing Today", response.body().getResults()));
-                    adapter.notifyDataSetChanged();
+                    seriesLists.add(
+                        MovieList(
+                            MovieList.TV_SERIES,
+                            "Airing Today",
+                            response.body()!!.results
+                        )
+                    )
+                    adapter!!.notifyDataSetChanged()
                 }
             }
 
-            @Override
-            public void onFailure(Call<TvSeriesListModel> call, Throwable t) {
-                Log.d("repo", t + "");
+            override fun onFailure(call: Call<TvSeriesListModel>, t: Throwable) {
+                Log.d("repo", t.toString() + "")
             }
-        });
+        })
+
+         */
     }
-
-
 }

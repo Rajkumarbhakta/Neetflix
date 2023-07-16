@@ -50,7 +50,7 @@ class SeasonsDetailsActivity : AppCompatActivity() {
     private fun loadSeasonsDetails(tvId: Int, seasonsNumber: Int, context: Context) {
         val tvSeriesApi = RetrofitInstance.getTvSeriesApi()
         val responseCall = tvSeriesApi.getSeasonsDetails(tvId, seasonsNumber, ApiData.API_KEY)
-        responseCall.enqueue(object : Callback<SeasonsDetails?> {
+        responseCall?.enqueue(object : Callback<SeasonsDetails?> {
             override fun onResponse(
                 call: Call<SeasonsDetails?>,
                 response: Response<SeasonsDetails?>

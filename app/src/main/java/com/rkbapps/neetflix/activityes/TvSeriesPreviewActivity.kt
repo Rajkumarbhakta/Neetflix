@@ -126,7 +126,7 @@ class TvSeriesPreviewActivity : AppCompatActivity() {
     private fun loadTvSeriesData(id: Int) {
 
         RetrofitInstance.getTvSeriesApi().getSeriesDetails(id, ApiData.API_KEY)
-            .enqueue(object : Callback<TvSeriesModel?> {
+            ?.enqueue(object : Callback<TvSeriesModel?> {
                 override fun onResponse(
                     call: Call<TvSeriesModel?>,
                     response: Response<TvSeriesModel?>

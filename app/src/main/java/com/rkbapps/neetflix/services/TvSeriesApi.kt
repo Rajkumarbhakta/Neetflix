@@ -1,55 +1,91 @@
-package com.rkbapps.neetflix.services;
+package com.rkbapps.neetflix.services
 
-import com.rkbapps.neetflix.models.Review.ReviewModel;
-import com.rkbapps.neetflix.models.castandcrew.CreditsModel;
-import com.rkbapps.neetflix.models.images.ImagesModel;
-import com.rkbapps.neetflix.models.tvseries.TvSeriesListModel;
-import com.rkbapps.neetflix.models.tvseries.TvSeriesModel;
-import com.rkbapps.neetflix.models.tvseries.seasons.SeasonsDetails;
-import com.rkbapps.neetflix.models.videos.VideoModel;
+import com.rkbapps.neetflix.models.Review.ReviewModel
+import com.rkbapps.neetflix.models.castandcrew.CreditsModel
+import com.rkbapps.neetflix.models.images.ImagesModel
+import com.rkbapps.neetflix.models.tvseries.TvSeriesListModel
+import com.rkbapps.neetflix.models.tvseries.TvSeriesModel
+import com.rkbapps.neetflix.models.tvseries.seasons.SeasonsDetails
+import com.rkbapps.neetflix.models.videos.VideoModel
+import retrofit2.Call
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-
-public interface TvSeriesApi {
-
+interface TvSeriesApi {
     @GET("trending/tv/day")
-    Call<TvSeriesListModel> getTrendingSeries(@Query("api_key") String apiKey, @Query("page") int page);
+    suspend fun getTrendingSeries(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Response<TvSeriesListModel>
 
     @GET("tv/popular")
-    Call<TvSeriesListModel> getPopularSeries(@Query("api_key") String apiKey, @Query("page") int page);
+    suspend fun getPopularSeries(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Response<TvSeriesListModel>
 
     @GET("tv/top_rated")
-    Call<TvSeriesListModel> getTopRatedSeries(@Query("api_key") String apiKey, @Query("page") int page);
+    suspend fun getTopRatedSeries(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Response<TvSeriesListModel>
 
     @GET("tv/airing_today")
-    Call<TvSeriesListModel> getAiringTodaySeries(@Query("api_key") String apiKey, @Query("page") int page);
+    suspend fun getAiringTodaySeries(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
+    ): Response<TvSeriesListModel>
 
     @GET("tv/{tv_id}")
-    Call<TvSeriesModel> getSeriesDetails(@Path("tv_id") int id, @Query("api_key") String apiKey);
+    fun getSeriesDetails(
+        @Path("tv_id") id: Int,
+        @Query("api_key") apiKey: String?
+    ): Call<TvSeriesModel?>?
 
     @GET("tv/{tv_id}/reviews")
-    Call<ReviewModel> getSeriesReview(@Path("tv_id") int id, @Query("api_key") String apiKey);
+    fun getSeriesReview(
+        @Path("tv_id") id: Int,
+        @Query("api_key") apiKey: String?
+    ): Call<ReviewModel?>?
 
     @GET("tv/{tv_id}/credits")
-    Call<CreditsModel> getSeriesCredits(@Path("tv_id") int id, @Query("api_key") String apiKey);
+    fun getSeriesCredits(
+        @Path("tv_id") id: Int,
+        @Query("api_key") apiKey: String?
+    ): Call<CreditsModel?>?
 
     @GET("tv/{tv_id}/similar")
-    Call<TvSeriesListModel> getSimilarTvSeries(@Path("tv_id") int id, @Query("api_key") String apiKey);
+    fun getSimilarTvSeries(
+        @Path("tv_id") id: Int,
+        @Query("api_key") apiKey: String?
+    ): Call<TvSeriesListModel?>?
 
     @GET("tv/{tv_id}/images")
-    Call<ImagesModel> getSeriesImages(@Path("tv_id") int id, @Query("api_key") String apiKey);
+    fun getSeriesImages(
+        @Path("tv_id") id: Int,
+        @Query("api_key") apiKey: String?
+    ): Call<ImagesModel?>?
 
     @GET("tv/{tv_id}/videos")
-    Call<VideoModel> getSeriesVideos(@Path("tv_id") int id, @Query("api_key") String apiKey);
+    fun getSeriesVideos(
+        @Path("tv_id") id: Int,
+        @Query("api_key") apiKey: String?
+    ): Call<VideoModel?>?
 
     @GET("search/tv")
-    Call<TvSeriesListModel> getSeriesSearchResult(@Query("api_key") String apiKey, @Query("query") String query, @Query("page") int page, @Query("include_adult") boolean include_adult);
+    fun getSeriesSearchResult(
+        @Query("api_key") apiKey: String?,
+        @Query("query") query: String?,
+        @Query("page") page: Int,
+        @Query("include_adult") include_adult: Boolean
+    ): Call<TvSeriesListModel?>?
 
     @GET("tv/{tv_id}/season/{season_number}")
-    Call<SeasonsDetails> getSeasonsDetails(@Path("tv_id") int tvId, @Path("season_number") int seasonsNumber, @Query("api_key") String apiKey);
-
+    fun getSeasonsDetails(
+        @Path("tv_id") tvId: Int,
+        @Path("season_number") seasonsNumber: Int,
+        @Query("api_key") apiKey: String?
+    ): Call<SeasonsDetails?>?
 }
-
