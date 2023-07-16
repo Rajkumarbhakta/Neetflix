@@ -19,10 +19,10 @@ interface PersonApi {
     ): Call<ExternalIds?>?
 
     @GET("person/{person_id}")
-    fun getPersonDetails(
+    suspend fun getPersonDetails(
         @Path("person_id") personId: Int,
         @Query("api_key") apiKey: String
-    ): Call<PersonDetails?>?
+    ): Response<PersonDetails>
 
     @GET("person/{person_id}/images")
     suspend fun getPersonImages(
@@ -34,7 +34,7 @@ interface PersonApi {
     fun getPersonSeriesCredits(
         @Path("person_id") personId: Int,
         @Query("api_key") apiKey: String
-    ): Call<WorkForSeries?>?
+    ): Call<WorkForSeries>
 
     @GET("person/{person_id}/movie_credits")
     suspend fun getPersonMovieCredits(

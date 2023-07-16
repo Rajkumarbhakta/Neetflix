@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragments.person.PersonPersonalInfoFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="Biography"
-        android:textColor="@color/amethyst"
-        android:textSize="20sp" />
+    <data>
+    <variable
+        name="biography"
+        type="String" />
+    </data>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        android:scrollbars="vertical">
-
+        android:orientation="vertical"
+        tools:context=".fragments.person.PersonPersonalInfoFragment">
 
         <TextView
-            android:id="@+id/txtBiography"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="Biography"
+            android:textColor="@color/amethyst"
+            android:textSize="20sp" />
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:paddingBottom="10dp"
-            android:text="---"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
 
-    </ScrollView>
-</LinearLayout>
+            android:scrollbars="vertical">
+
+
+            <TextView
+                android:id="@+id/txtBiography"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:paddingBottom="10dp"
+                android:text="@{biography}"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </ScrollView>
+    </LinearLayout>
+</layout>
