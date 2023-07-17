@@ -12,6 +12,7 @@ public class MovieList {
 
     private int viewType;
     private String type;
+
     private List<MovieResult> movieList;
 
     private List<TvSeriesResult> tvSeriesList;
