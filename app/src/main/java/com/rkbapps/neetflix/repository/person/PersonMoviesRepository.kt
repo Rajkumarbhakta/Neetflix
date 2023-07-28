@@ -17,7 +17,7 @@ class PersonMoviesRepository {
 
     suspend fun loadPersonMovies(personId: Int) {
         val response =
-            RetrofitInstance.getPersonApi().getPersonMovieCredits(personId, ApiData.API_KEY)
+            RetrofitInstance.personApi!!.getPersonMovieCredits(personId, ApiData.API_KEY)
 
         if(response.isSuccessful){
             personMoviesLiveData.postValue(Resource.Success(response))

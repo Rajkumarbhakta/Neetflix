@@ -15,7 +15,7 @@ class PersonSeriesRepository {
         get() = personSeriesLiveData
 
     suspend fun loadPersonSeries(id:Int){
-        val response = RetrofitInstance.getPersonApi().getPersonSeriesCredits(id,ApiData.API_KEY)
+        val response = RetrofitInstance.personApi!!.getPersonSeriesCredits(id,ApiData.API_KEY)
 
         if(response.isSuccessful){
             personSeriesLiveData.postValue(Resource.Success(response))

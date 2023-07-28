@@ -18,7 +18,7 @@ class SeriesFragmentRepository {
         get() = trendingSeriesLiveData
 
     suspend fun loadTrendingSeries(page: Int) {
-        val response = RetrofitInstance.getTvSeriesApi().getTrendingSeries(ApiData.API_KEY, page)
+        val response = RetrofitInstance.tvSeriesApi!!.getTrendingSeries(ApiData.API_KEY, page)
         if (response.isSuccessful) {
             trendingSeriesLiveData.postValue(Resource.Success(response))
         } else {
@@ -33,7 +33,7 @@ class SeriesFragmentRepository {
         get() = popularSeriesLiveData
 
     suspend fun loadPopularSeries(page: Int) {
-        val response = RetrofitInstance.getTvSeriesApi().getPopularSeries(ApiData.API_KEY, page)
+        val response = RetrofitInstance.tvSeriesApi!!.getPopularSeries(ApiData.API_KEY, page)
         if (response.isSuccessful) {
             popularSeriesLiveData.postValue(Resource.Success(response))
         } else {
@@ -48,7 +48,7 @@ class SeriesFragmentRepository {
         get() = topRatedSeriesLiveData
 
     suspend fun loadTopRatedSeries(page: Int) {
-        val response = RetrofitInstance.getTvSeriesApi().getTopRatedSeries(ApiData.API_KEY, page)
+        val response = RetrofitInstance.tvSeriesApi!!.getTopRatedSeries(ApiData.API_KEY, page)
         if (response.isSuccessful) {
             topRatedSeriesLiveData.postValue(Resource.Success(response))
         } else {
@@ -64,7 +64,7 @@ class SeriesFragmentRepository {
         get() = arrivingTodaySeriesLiveData
 
     suspend fun loadArrivingTodaySeries(page: Int) {
-        val response = RetrofitInstance.getTvSeriesApi().getAiringTodaySeries(ApiData.API_KEY, page)
+        val response = RetrofitInstance.tvSeriesApi!!.getAiringTodaySeries(ApiData.API_KEY, page)
         if (response.isSuccessful) {
             arrivingTodaySeriesLiveData.postValue(Resource.Success(response))
         } else {

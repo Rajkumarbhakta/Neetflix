@@ -17,7 +17,7 @@ class MovieOverviewFragmentRepository {
         get() = movieDetailsLiveData
 
     suspend fun loadMovieDetails(id: Int) {
-        val response = RetrofitInstance.getMovieApi().getMovieDetails(id, ApiData.API_KEY)
+        val response = RetrofitInstance.movieApi!!.getMovieDetails(id, ApiData.API_KEY)
         if (response.isSuccessful) {
             movieDetailsLiveData.postValue(Resource.Success(response))
         } else {
@@ -30,7 +30,7 @@ class MovieOverviewFragmentRepository {
         get() = creditsLiveData
 
     suspend fun loadCredits(id: Int) {
-        val response = RetrofitInstance.getMovieApi().getMovieCredits(id, ApiData.API_KEY)
+        val response = RetrofitInstance.movieApi!!.getMovieCredits(id, ApiData.API_KEY)
         if (response.isSuccessful) {
             creditsLiveData.postValue(Resource.Success(response))
         } else {
@@ -43,7 +43,7 @@ class MovieOverviewFragmentRepository {
         get() = similarMoviesLiveData
 
     suspend fun loadSimilarMovies(id: Int) {
-        val response = RetrofitInstance.getMovieApi().getSimilarMovies(id, ApiData.API_KEY)
+        val response = RetrofitInstance.movieApi!!.getSimilarMovies(id, ApiData.API_KEY)
         if (response.isSuccessful) {
             similarMoviesLiveData.postValue(Resource.Success(response))
         } else {

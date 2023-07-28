@@ -16,7 +16,7 @@ class PersonImageRepository {
         get() = imagesLiveData
 
     suspend fun loadImages(personId: Int) {
-        val response = RetrofitInstance.getPersonApi().getPersonImages(personId, ApiData.API_KEY)
+        val response = RetrofitInstance.personApi!!.getPersonImages(personId, ApiData.API_KEY)
         if (response.isSuccessful) {
             imagesLiveData.postValue(Resource.Success(response))
         } else {

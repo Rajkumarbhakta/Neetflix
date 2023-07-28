@@ -16,7 +16,7 @@ class ReviewsMovieFragmentRepository {
         get() = reviewsLiveDate
 
     suspend fun loadMovieReviews(id: Int) {
-        val response = RetrofitInstance.getMovieApi().getMovieReviews(id, ApiData.API_KEY, "en-US")
+        val response = RetrofitInstance.movieApi!!.getMovieReviews(id, ApiData.API_KEY, "en-US")
 
         if (response.isSuccessful) {
             reviewsLiveDate.postValue(Resource.Success(response))

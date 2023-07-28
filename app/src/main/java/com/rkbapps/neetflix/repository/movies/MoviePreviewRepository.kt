@@ -16,7 +16,7 @@ class MoviePreviewRepository {
         get() = movieLiveData
 
     suspend fun loadMovieData(id: Int) {
-        val response = RetrofitInstance.getMovieApi().getMovieDetails(id, ApiData.API_KEY)
+        val response = RetrofitInstance.movieApi!!.getMovieDetails(id, ApiData.API_KEY)
 
         if (response.isSuccessful) {
             movieLiveData.postValue(Resource.Success(response))

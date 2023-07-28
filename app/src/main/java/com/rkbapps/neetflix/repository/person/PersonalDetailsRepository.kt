@@ -16,7 +16,7 @@ class PersonalDetailsRepository {
         get() = personalDetailsLiveData
 
     suspend fun loadPersonalDetails(personId: Int) {
-        val response = RetrofitInstance.getPersonApi().getPersonDetails(personId, ApiData.API_KEY)
+        val response = RetrofitInstance.personApi!!.getPersonDetails(personId, ApiData.API_KEY)
 
         if (response.isSuccessful) {
             personalDetailsLiveData.postValue(Resource.Success(response))

@@ -16,7 +16,7 @@ class VideoAndImageRepository {
         get() = imagesLiveData
 
     suspend fun loadImages(id: Int) {
-        val response = RetrofitInstance.getMovieApi().getMovieImages(id, ApiData.API_KEY)
+        val response = RetrofitInstance.movieApi!!.getMovieImages(id, ApiData.API_KEY)
         if (response.isSuccessful) {
             imagesLiveData.postValue(Resource.Success(response))
         } else {
@@ -30,7 +30,7 @@ class VideoAndImageRepository {
         get() = videosLiveData
 
     suspend fun loadVideos(id: Int) {
-        val response = RetrofitInstance.getMovieApi().getMovieVideos(id, ApiData.API_KEY)
+        val response = RetrofitInstance.movieApi!!.getMovieVideos(id, ApiData.API_KEY)
         if (response.isSuccessful) {
             videosLiveData.postValue(Resource.Success(response))
         } else {
