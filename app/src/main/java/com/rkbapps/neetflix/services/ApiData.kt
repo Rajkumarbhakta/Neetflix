@@ -1,6 +1,8 @@
 package com.rkbapps.neetflix.services
 
+import com.rkbapps.neetflix.BuildConfig
+
 object ApiData {
-    const val API_KEY = "87cf048214cccf59b662945bed55490f"
+    const val API_KEY = BuildConfig.API_KEY
     const val BASE_URL = "https://api.themoviedb.org/3/"
 }
