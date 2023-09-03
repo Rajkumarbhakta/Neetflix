@@ -3,8 +3,7 @@ package com.rkbapps.neetflix.models.movies
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class MovieResult(
-
+data class MovieResult(
     @SerializedName("adult")
     @Expose
     var adult: Boolean,

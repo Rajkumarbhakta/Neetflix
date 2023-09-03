@@ -2,6 +2,7 @@ package com.rkbapps.neetflix.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rkbapps.neetflix.R;
+import com.rkbapps.neetflix.activityes.SeeMoreActivity;
 import com.rkbapps.neetflix.models.MovieList;
 
 import java.util.ArrayList;
@@ -45,15 +47,12 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ParentView
             holder.recyclerViewMovieList.setAdapter(new TvSeriesListChildAdapter(discoverRecycler.get(position).getTvSeriesList(), context));
         }
 
-//        holder.seeMore.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(context, SeeMoreActivity.class);
-//                i.putExtra("Type", discoverRecycler.get(position).getType());
-//                i.putExtra("contentType", discoverRecycler.get(position).getViewType());
-//                context.startActivity(i);
-//            }
-//        });
+        holder.seeMore.setOnClickListener(v -> {
+            Intent i = new Intent(context, SeeMoreActivity.class);
+            i.putExtra("Type", discoverRecycler.get(position).getType());
+            i.putExtra("contentType", discoverRecycler.get(position).getViewType());
+            context.startActivity(i);
+        });
 
 
     }
