@@ -1,204 +1,262 @@
-package com.rkbapps.neetflix.fragments.series;
+package com.rkbapps.neetflix.fragments.series
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.rkbapps.neetflix.R
+import com.rkbapps.neetflix.adapter.ProductionCompanyAdapter
+import com.rkbapps.neetflix.adapter.TvSeriesListChildAdapter
+import com.rkbapps.neetflix.adapter.credit.CastAdapter
+import com.rkbapps.neetflix.adapter.credit.CrewAdapter
+import com.rkbapps.neetflix.adapter.series.SeasonAdapter
+import com.rkbapps.neetflix.databinding.FragmentSeriesOverviewBinding
+import com.rkbapps.neetflix.repository.series.SeriesOverviewRepository
+import com.rkbapps.neetflix.services.RetrofitInstance
+import com.rkbapps.neetflix.viewmodelfactories.series.SeriesOverviewViewModelFactory
+import com.rkbapps.neetflix.viewmodels.series.SeriesOverviewViewModel
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class SeriesOverviewFragment : Fragment() {
 
-import com.rkbapps.neetflix.R;
-import com.rkbapps.neetflix.adapter.ProductionCompanyAdapter;
-import com.rkbapps.neetflix.adapter.TvSeriesListChildAdapter;
-import com.rkbapps.neetflix.adapter.credit.CastAdapter;
-import com.rkbapps.neetflix.adapter.credit.CrewAdapter;
-import com.rkbapps.neetflix.adapter.series.SeasonAdapter;
-import com.rkbapps.neetflix.models.castandcrew.CreditsModel;
-import com.rkbapps.neetflix.models.tvseries.TvSeriesListModel;
-import com.rkbapps.neetflix.models.tvseries.TvSeriesModel;
-import com.rkbapps.neetflix.services.ApiData;
-import com.rkbapps.neetflix.services.RetrofitInstance;
-import com.rkbapps.neetflix.services.TvSeriesApi;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+    private lateinit var binding: FragmentSeriesOverviewBinding
+    private lateinit var viewModel: SeriesOverviewViewModel
 
 
-public class SeriesOverviewFragment extends Fragment {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
 
-    private final TvSeriesApi tvSeriesApi = RetrofitInstance.getTvSeriesApi();
-    private TextView overview, status, type, firstAirDate, lastAirDate;
-    private RecyclerView cast, crew, productionCompanies, similarSeries, network, seasons;
-    private TextView txtCast, txtCrew, txtProductionCo, txtSimilarSeries, txtNetwork, txtSeason;
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_series_overview,
+            container,
+            false
+        )
 
-    public SeriesOverviewFragment() {
-        // Required empty public constructor
+        val id = arguments?.getInt("id")!!
+        val repository = SeriesOverviewRepository(RetrofitInstance.tvSeriesApi!!)
+        viewModel = ViewModelProvider(
+            this,
+            SeriesOverviewViewModelFactory(repository, id)
+        )[SeriesOverviewViewModel::class.java]
+
+        binding.txtCastSeriesOverview.visibility = View.GONE
+        binding.txtCrewSeriesOverview.visibility = View.GONE
+        binding.txtNetworkSeriesOverview.visibility = View.GONE
+        binding.txtProductionCompanySeriesOverview.visibility = View.GONE
+        binding.txtSeasons.visibility = View.GONE
+        binding.txtSimilarSeries.visibility = View.GONE
+
+        binding.recyclerSeasons.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        binding.recyclerCrewSeries.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        binding.recyclerCastSeries.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        binding.recyclerProductionCompanySeries.layoutManager = LinearLayoutManager(
+            context,
+            RecyclerView.HORIZONTAL,
+            false
+        )
+        binding.recyclerNetwork.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        binding.recyclerSimilarSeries.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        loadSeriesData()
+        loadSeriesCredits()
+        loadSimilarSeries()
+        return binding.root
     }
 
-    @SuppressLint("MissingInflatedId")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_series_overview, container, false);
-        int id = getArguments().getInt("id");
-        overview = view.findViewById(R.id.txtSeriesOverview);
-        status = view.findViewById(R.id.txtSeriesStatus);
-        type = view.findViewById(R.id.txtSeriesType);
-        firstAirDate = view.findViewById(R.id.txtFirstAirDate);
-        lastAirDate = view.findViewById(R.id.lastAirDate);
-        seasons = view.findViewById(R.id.recyclerSeasons);
-        cast = view.findViewById(R.id.recyclerCastSeries);
-        crew = view.findViewById(R.id.recyclerCrewSeries);
-        productionCompanies = view.findViewById(R.id.recyclerProductionCompanySeries);
-        similarSeries = view.findViewById(R.id.recyclerSimilarSeries);
-        network = view.findViewById(R.id.recyclerNetwork);
+    private fun loadSeriesData() {
 
-
-        txtCast = view.findViewById(R.id.txtCastSeriesOverview);
-        txtCrew = view.findViewById(R.id.txtCrewSeriesOverview);
-        txtNetwork = view.findViewById(R.id.txtNetworkSeriesOverview);
-        txtProductionCo = view.findViewById(R.id.txtProductionCompanySeriesOverview);
-        txtSeason = view.findViewById(R.id.txtSeasons);
-        txtSimilarSeries = view.findViewById(R.id.txtSimilarSeries);
-
-
-        txtCast.setVisibility(View.GONE);
-        txtCrew.setVisibility(View.GONE);
-        txtNetwork.setVisibility(View.GONE);
-        txtProductionCo.setVisibility(View.GONE);
-        txtSeason.setVisibility(View.GONE);
-        txtSimilarSeries.setVisibility(View.GONE);
-
-
-        seasons.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        crew.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        cast.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        productionCompanies.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        network.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        similarSeries.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-
-        loadSeriesData(id);
-        loadSeriesCredits(id);
-        loadSimilarSeries(id);
-
-        return view;
-    }
-
-    private void loadSeriesData(int id) {
-        Call<TvSeriesModel> responseCall = tvSeriesApi.getSeriesDetails(id, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<TvSeriesModel>() {
-            @Override
-            public void onResponse(Call<TvSeriesModel> call, Response<TvSeriesModel> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() == null) {
-                        Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        TvSeriesModel tvSeriesModel = response.body();
-                        overview.setText(tvSeriesModel.overview);
-                        status.setText(tvSeriesModel.status);
-                        type.setText(tvSeriesModel.type);
-                        firstAirDate.setText(tvSeriesModel.firstAirDate);
-                        lastAirDate.setText(tvSeriesModel.lastAirDate);
-                        if (tvSeriesModel.seasons.size() != 0 && tvSeriesModel.seasons != null) {
-                            txtSeason.setVisibility(View.VISIBLE);
-                            seasons.setAdapter(new SeasonAdapter(getContext(), tvSeriesModel.seasons, id));
-                        } else {
-                            seasons.setVisibility(View.GONE);
-                        }
-
-                        if (tvSeriesModel.networks.size() != 0 && tvSeriesModel.networks != null) {
-                            txtNetwork.setVisibility(View.VISIBLE);
-                            network.setAdapter(new ProductionCompanyAdapter(getContext(), tvSeriesModel.networks));
-                        } else {
-                            network.setVisibility(View.GONE);
-                        }
-
-                        if (tvSeriesModel.productionCompanies.size() != 0 && tvSeriesModel.productionCompanies != null) {
-                            txtProductionCo.setVisibility(View.VISIBLE);
-                            productionCompanies.setAdapter(new ProductionCompanyAdapter(getContext(), tvSeriesModel.productionCompanies));
-                        } else {
-                            productionCompanies.setVisibility(View.GONE);
-                        }
-                    }
+        viewModel.seriesDetails.observe(viewLifecycleOwner) {
+            if (it != null) {
+                binding.txtSeriesOverview.text = it.overview
+                binding.txtSeriesStatus.text = it.status
+                binding.txtSeriesType.text = it.type
+                binding.txtFirstAirDate.text = it.firstAirDate
+                binding.lastAirDate.text = it.lastAirDate
+                if (it.seasons.isNotEmpty() && it.seasons != null) {
+                    binding.txtSeasons.visibility = View.VISIBLE
+                    binding.recyclerSeasons.adapter =
+                        SeasonAdapter(requireContext(), it.seasons, id)
                 } else {
-                    Toast.makeText(getContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
+                    binding.recyclerSeasons.visibility = View.GONE
+                }
+                if (it.networks.isNotEmpty() && it.networks != null) {
+                    binding.txtNetworkSeriesOverview.visibility = View.VISIBLE
+                    binding.recyclerNetwork.adapter =
+                        ProductionCompanyAdapter(requireContext(), it.networks)
+                } else {
+                    binding.recyclerNetwork.visibility = View.GONE
+                }
+                if (it.productionCompanies.isNotEmpty() && it.productionCompanies != null) {
+                    binding.txtProductionCompanySeriesOverview.visibility = View.VISIBLE
+                    binding.recyclerProductionCompanySeries.adapter =
+                        ProductionCompanyAdapter(requireContext(), it.productionCompanies)
+                } else {
+                    binding.recyclerProductionCompanySeries.visibility = View.GONE
+                }
+
+            } else {
+                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+//        val responseCall = tvSeriesApi!!.getSeriesDetails(id, ApiData.API_KEY)
+//        responseCall!!.enqueue(object : Callback<TvSeriesModel?> {
+//            override fun onResponse(
+//                call: Call<TvSeriesModel?>,
+//                response: Response<TvSeriesModel?>,
+//            ) {
+//                if (response.isSuccessful) {
+//                    if (response.body() == null) {
+//                        Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show()
+//                    } else {
+//                        val tvSeriesModel = response.body()
+//                        overview!!.text = tvSeriesModel!!.overview
+//                        status!!.text = tvSeriesModel.status
+//                        type!!.text = tvSeriesModel.type
+//                        firstAirDate!!.text = tvSeriesModel.firstAirDate
+//                        lastAirDate!!.text = tvSeriesModel.lastAirDate
+//                        if (tvSeriesModel.seasons.size != 0 && tvSeriesModel.seasons != null) {
+//                            txtSeason!!.visibility = View.VISIBLE
+//                            seasons!!.adapter = SeasonAdapter(context!!, tvSeriesModel.seasons, id)
+//                        } else {
+//                            seasons!!.visibility = View.GONE
+//                        }
+//                        if (tvSeriesModel.networks.size != 0 && tvSeriesModel.networks != null) {
+//                            txtNetwork!!.visibility = View.VISIBLE
+//                            network!!.adapter =
+//                                ProductionCompanyAdapter(context, tvSeriesModel.networks)
+//                        } else {
+//                            network!!.visibility = View.GONE
+//                        }
+//                        if (tvSeriesModel.productionCompanies.size != 0 && tvSeriesModel.productionCompanies != null) {
+//                            txtProductionCo!!.visibility = View.VISIBLE
+//                            productionCompanies!!.adapter =
+//                                ProductionCompanyAdapter(context, tvSeriesModel.productionCompanies)
+//                        } else {
+//                            productionCompanies!!.visibility = View.GONE
+//                        }
+//                    }
+//                } else {
+//                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<TvSeriesModel?>, t: Throwable) {
+//                Toast.makeText(context, "" + t.message, Toast.LENGTH_SHORT).show()
+//            }
+//        })
+    }
+
+    private fun loadSeriesCredits() {
+
+        viewModel.seriesCredits.observe(viewLifecycleOwner) {
+            if (it != null) {
+                if (it.cast.size != 0 && it.cast != null) {
+                    binding.txtCastSeriesOverview.visibility = View.VISIBLE
+                    binding.recyclerCastSeries.adapter = CastAdapter(requireContext(), it.cast)
+                } else {
+                    binding.txtCastSeriesOverview.visibility = View.GONE
+                    binding.recyclerCastSeries.visibility = View.GONE
+                }
+
+                if (it.crew.size != 0 && it.crew != null) {
+                    binding.txtCrewSeriesOverview.visibility = View.VISIBLE
+                    binding.recyclerCrewSeries.adapter = CrewAdapter(requireContext(), it.crew)
+                } else {
+                    binding.recyclerCrewSeries.visibility = View.GONE
+                    binding.txtCrewSeriesOverview.visibility = View.GONE
+                }
+
+            } else {
+                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+//        val responseCall = tvSeriesApi!!.getSeriesCredits(id, ApiData.API_KEY)
+//        responseCall!!.enqueue(object : Callback<CreditsModel?> {
+//            override fun onResponse(call: Call<CreditsModel?>, response: Response<CreditsModel?>) {
+//                if (response.isSuccessful) {
+//                    if (response.body() != null) {
+//                        if (response.body()!!.cast.size != 0 && response.body()!!.cast != null) {
+//                            txtCast!!.visibility = View.VISIBLE
+//                            cast!!.adapter = CastAdapter(context!!, response.body()!!.cast)
+//                        } else {
+//                            txtCast!!.visibility = View.GONE
+//                            cast!!.visibility = View.GONE
+//                        }
+//                        if (response.body()!!.crew.size != 0 && response.body()!!.crew != null) {
+//                            txtCrew!!.visibility = View.VISIBLE
+//                            crew!!.adapter = CrewAdapter(context!!, response.body()!!.crew)
+//                        } else {
+//                            crew!!.visibility = View.GONE
+//                            txtCrew!!.visibility = View.GONE
+//                        }
+//                    }
+//                } else {
+//                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<CreditsModel?>, t: Throwable) {
+//                Toast.makeText(context, "" + t.message, Toast.LENGTH_SHORT).show()
+//            }
+//        })
+    }
+
+    private fun loadSimilarSeries() {
+
+        viewModel.seriesSimilar.observe(viewLifecycleOwner) {
+            if (it != null) {
+                if (it.results.isNotEmpty() && it.results != null) {
+                    binding.txtSimilarSeries.visibility = View.VISIBLE
+                    binding.recyclerSimilarSeries.adapter =
+                        TvSeriesListChildAdapter(it.results, requireContext())
+                } else {
+                    binding.recyclerSimilarSeries.visibility = View.GONE
+                    binding.txtSimilarSeries.visibility = View.GONE
                 }
             }
 
-            @Override
-            public void onFailure(Call<TvSeriesModel> call, Throwable t) {
-                Toast.makeText(getContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        val responseCall = tvSeriesApi!!.getSimilarTvSeries(id, ApiData.API_KEY)
+//        responseCall!!.enqueue(object : Callback<TvSeriesListModel?> {
+//            override fun onResponse(
+//                call: Call<TvSeriesListModel?>,
+//                response: Response<TvSeriesListModel?>,
+//            ) {
+//                if (response.isSuccessful) {
+//                    if (response.body() != null) {
+//                        if (response.body()!!.results != null && response.body()!!.results.size != 0) {
+//                            txtSimilarSeries!!.visibility = View.VISIBLE
+//                            similarSeries!!.adapter =
+//                                TvSeriesListChildAdapter(response.body()!!.results, context!!)
+//                        } else {
+//                            similarSeries!!.visibility = View.GONE
+//                            txtSimilarSeries!!.visibility = View.GONE
+//                        }
+//                    }
+//                } else {
+//                    Toast.makeText(context, "" + response.message(), Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<TvSeriesListModel?>, t: Throwable) {
+//                Toast.makeText(context, "" + t.message, Toast.LENGTH_SHORT).show()
+//            }
+//        })
+        }
     }
-
-    private void loadSeriesCredits(int id) {
-        Call<CreditsModel> responseCall = tvSeriesApi.getSeriesCredits(id, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<CreditsModel>() {
-            @Override
-            public void onResponse(Call<CreditsModel> call, Response<CreditsModel> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if (response.body().getCast().size() != 0 && response.body().getCast() != null) {
-                            txtCast.setVisibility(View.VISIBLE);
-                            cast.setAdapter(new CastAdapter(getContext(), response.body().getCast()));
-                        } else {
-                            txtCast.setVisibility(View.GONE);
-                            cast.setVisibility(View.GONE);
-                        }
-                        if (response.body().getCrew().size() != 0 && response.body().getCrew() != null) {
-                            txtCrew.setVisibility(View.VISIBLE);
-                            crew.setAdapter(new CrewAdapter(getContext(), response.body().getCrew()));
-                        } else {
-                            crew.setVisibility(View.GONE);
-                            txtCrew.setVisibility(View.GONE);
-                        }
-                    }
-                } else {
-                    Toast.makeText(getContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CreditsModel> call, Throwable t) {
-                Toast.makeText(getContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void loadSimilarSeries(int id) {
-        Call<TvSeriesListModel> responseCall = tvSeriesApi.getSimilarTvSeries(id, ApiData.API_KEY);
-        responseCall.enqueue(new Callback<TvSeriesListModel>() {
-            @Override
-            public void onResponse(Call<TvSeriesListModel> call, Response<TvSeriesListModel> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if (response.body().results != null && response.body().results.size() != 0) {
-                            txtSimilarSeries.setVisibility(View.VISIBLE);
-                            similarSeries.setAdapter(new TvSeriesListChildAdapter(response.body().results, getContext()));
-                        } else {
-                            similarSeries.setVisibility(View.GONE);
-                            txtSimilarSeries.setVisibility(View.GONE);
-                        }
-                    }
-                } else {
-                    Toast.makeText(getContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<TvSeriesListModel> call, Throwable t) {
-                Toast.makeText(getContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
 }

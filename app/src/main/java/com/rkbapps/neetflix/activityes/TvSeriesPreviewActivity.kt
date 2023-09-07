@@ -5,6 +5,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rkbapps.neetflix.R
@@ -15,28 +16,33 @@ import com.rkbapps.neetflix.db.Database
 import com.rkbapps.neetflix.db.DatabaseReference.getDatabase
 import com.rkbapps.neetflix.db.EntityModel
 import com.rkbapps.neetflix.models.tvseries.TvSeriesModel
-import com.rkbapps.neetflix.services.ApiData
+import com.rkbapps.neetflix.repository.series.TvSeriesPreviewRepository
 import com.rkbapps.neetflix.services.RetrofitInstance
 import com.rkbapps.neetflix.utils.ContentType
+import com.rkbapps.neetflix.viewmodelfactories.series.TvSeriesPreviewViewModelFactory
+import com.rkbapps.neetflix.viewmodels.series.TvSeriesPreviewViewModel
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class TvSeriesPreviewActivity : AppCompatActivity() {
 
     private lateinit var tvSeriesModel: TvSeriesModel
     private lateinit var binding: ActivityTvSeriesPreviewBinding
+    private lateinit var viewModel: TvSeriesPreviewViewModel
     private lateinit var mDatabase: Database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tv_series_preview)
         mDatabase = getDatabase(this)
-
         val id = intent.getIntExtra("id", -1)
         val tittle = intent.getStringExtra("tittle")
+        val repository = TvSeriesPreviewRepository(RetrofitInstance.tvSeriesApi!!)
+        viewModel =
+            ViewModelProvider(
+                this,
+                TvSeriesPreviewViewModelFactory(repository, id)
+            )[TvSeriesPreviewViewModel::class.java]
 
         val viewPager = binding.pager
         val tabLayout = binding.tabLayout
@@ -125,33 +131,51 @@ class TvSeriesPreviewActivity : AppCompatActivity() {
 
     private fun loadTvSeriesData(id: Int) {
 
-        RetrofitInstance.tvSeriesApi!!.getSeriesDetails(id, ApiData.API_KEY)
-            ?.enqueue(object : Callback<TvSeriesModel?> {
-                override fun onResponse(
-                    call: Call<TvSeriesModel?>,
-                    response: Response<TvSeriesModel?>
-                ) {
-                    if (response.isSuccessful) {
-                        if (response.body() != null) {
-                            tvSeriesModel = response.body()!!
-                            binding.recyclerGenre.adapter =
-                                GenreAdapter(this@TvSeriesPreviewActivity, tvSeriesModel.genres)
+        viewModel.seriesDetails.observe(this) {
+            if (it != null) {
+                tvSeriesModel = it
+                binding.recyclerGenre.adapter =
+                    GenreAdapter(this@TvSeriesPreviewActivity, tvSeriesModel.genres)
 
-                            binding.tvSeriesModel = tvSeriesModel
+                binding.tvSeriesModel = tvSeriesModel
 
-                            binding.bookmarkSeries.isEnabled = true
-                        }
-                    }
-                }
+                binding.bookmarkSeries.isEnabled = true
+            } else {
+                Toast.makeText(
+                    this@TvSeriesPreviewActivity,
+                    "Something went wrong",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
-                override fun onFailure(call: Call<TvSeriesModel?>, t: Throwable) {
-                    Toast.makeText(
-                        this@TvSeriesPreviewActivity,
-                        t.localizedMessage!!.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+//        RetrofitInstance.tvSeriesApi!!.getSeriesDetails(id, ApiData.API_KEY)
+//            ?.enqueue(object : Callback<TvSeriesModel?> {
+//                override fun onResponse(
+//                    call: Call<TvSeriesModel?>,
+//                    response: Response<TvSeriesModel?>,
+//                ) {
+//                    if (response.isSuccessful) {
+//                        if (response.body() != null) {
+//                            tvSeriesModel = response.body()!!
+//                            binding.recyclerGenre.adapter =
+//                                GenreAdapter(this@TvSeriesPreviewActivity, tvSeriesModel.genres)
+//
+//                            binding.tvSeriesModel = tvSeriesModel
+//
+//                            binding.bookmarkSeries.isEnabled = true
+//                        }
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<TvSeriesModel?>, t: Throwable) {
+//                    Toast.makeText(
+//                        this@TvSeriesPreviewActivity,
+//                        t.localizedMessage!!.toString(),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//            })
     }
 
 

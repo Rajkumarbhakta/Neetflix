@@ -39,10 +39,10 @@ interface TvSeriesApi {
     ): Response<TvSeriesListModel>
 
     @GET("tv/{tv_id}")
-    fun getSeriesDetails(
+    suspend fun getSeriesDetails(
         @Path("tv_id") id: Int,
         @Query("api_key") apiKey: String = ApiData.API_KEY,
-    ): Call<TvSeriesModel?>?
+    ): Response<TvSeriesModel>
 
     @GET("tv/{tv_id}/reviews")
     fun getSeriesReview(
@@ -51,16 +51,16 @@ interface TvSeriesApi {
     ): Call<ReviewModel?>?
 
     @GET("tv/{tv_id}/credits")
-    fun getSeriesCredits(
+    suspend fun getSeriesCredits(
         @Path("tv_id") id: Int,
         @Query("api_key") apiKey: String = ApiData.API_KEY,
-    ): Call<CreditsModel?>?
+    ): Response<CreditsModel>
 
     @GET("tv/{tv_id}/similar")
-    fun getSimilarTvSeries(
+    suspend fun getSimilarTvSeries(
         @Path("tv_id") id: Int,
         @Query("api_key") apiKey: String = ApiData.API_KEY,
-    ): Call<TvSeriesListModel?>?
+    ): Response<TvSeriesListModel>
 
     @GET("tv/{tv_id}/images")
     fun getSeriesImages(

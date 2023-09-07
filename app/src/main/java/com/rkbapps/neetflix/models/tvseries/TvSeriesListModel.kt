@@ -19,4 +19,6 @@ data class TvSeriesListModel(
     @SerializedName("total_results")
     @Expose
     var totalResults: Int,
-)
+){
+    constructor(): this(0, emptyList(), 0, 0)
+}
