@@ -63,16 +63,16 @@ interface TvSeriesApi {
     ): Response<TvSeriesListModel>
 
     @GET("tv/{tv_id}/images")
-    fun getSeriesImages(
+    suspend fun getSeriesImages(
         @Path("tv_id") id: Int,
         @Query("api_key") apiKey: String = ApiData.API_KEY,
-    ): Call<ImagesModel?>?
+    ): Response<ImagesModel>
 
     @GET("tv/{tv_id}/videos")
-    fun getSeriesVideos(
+    suspend fun getSeriesVideos(
         @Path("tv_id") id: Int,
         @Query("api_key") apiKey: String = ApiData.API_KEY,
-    ): Call<VideoModel?>?
+    ): Response<VideoModel>
 
     @GET("search/tv")
     fun getSeriesSearchResult(
