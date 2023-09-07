@@ -65,7 +65,7 @@ public class SearchSeriesResultFragment extends Fragment {
                     @Override
                     public void onResponse(Call<TvSeriesListModel> call, Response<TvSeriesListModel> response) {
                         if (response.isSuccessful()) {
-                            if (response.body().getResults().size() == 0 || response.body().getResults() == null) {
+                            if (response.body().results.size() == 0 || response.body().results == null) {
                                 recyclerView.setVisibility(View.GONE);
                                 txtNoSeries.setText("No tv series found.");
                                 txtNoSeries.setVisibility(View.VISIBLE);
@@ -73,7 +73,7 @@ public class SearchSeriesResultFragment extends Fragment {
                                 txtNoSeries.setVisibility(View.GONE);
                                 recyclerView.setVisibility(View.VISIBLE);
                                 tvSeriesList = response.body();
-                                results.addAll(response.body().getResults());
+                                results.addAll(response.body().results);
                                 adapter.notifyDataSetChanged();
                                 isLoading = false;
                             }
@@ -119,7 +119,7 @@ public class SearchSeriesResultFragment extends Fragment {
                     //bottom of list!
                     if (!isLoading) {
                         page++;
-                        if (tvSeriesList.getTotalPages() >= page) {
+                        if (tvSeriesList.totalPages >= page) {
                             loadSeriesSearchResult(searchQuery, page);
                         }
                     }

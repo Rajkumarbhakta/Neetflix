@@ -19,9 +19,9 @@ data class ProductionCompany(
 
     @SerializedName("origin_country")
     @Expose
-    val originCountry: String
+    val originCountry: String,
 
-)
+    )
 //{
 //    @SerializedName("id")
 //    @Expose

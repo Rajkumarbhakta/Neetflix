@@ -10,5 +10,5 @@ data class SpokenLanguage(
 
     @SerializedName("name")
     @Expose
-    val name: String
+    val name: String,
 )

@@ -26,7 +26,7 @@ data class MovieResult(
 
     @SerializedName("vote_average")
     @Expose
-    var voteAverage: Double
+    var voteAverage: Double,
 )
 
 

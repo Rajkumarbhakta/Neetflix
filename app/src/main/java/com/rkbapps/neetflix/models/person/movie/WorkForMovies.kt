@@ -12,5 +12,5 @@ data class WorkForMovies(
     val crew: List<AsACrewModel>,
     @SerializedName("id")
     @Expose
-    val id: Int
+    val id: Int,
 )

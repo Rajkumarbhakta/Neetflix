@@ -9,7 +9,7 @@ data class Genre(
     val id: Int,
     @SerializedName("name")
     @Expose
-    val name: String
+    val name: String,
 )
 
 /*

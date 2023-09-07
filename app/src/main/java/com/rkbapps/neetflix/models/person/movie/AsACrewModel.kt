@@ -38,6 +38,6 @@ data class AsACrewModel(
 
     @SerializedName("job")
     @Expose
-    val job: String
+    val job: String,
 
-)
+    )

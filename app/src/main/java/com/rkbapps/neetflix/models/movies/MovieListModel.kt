@@ -18,9 +18,9 @@ data class MovieListModel(
 
     @SerializedName("total_results")
     @Expose
-    var totalResults: Int
+    var totalResults: Int,
 
-) {
+    ) {
     constructor() : this(0, ArrayList(), 0, 0)
 }
 
