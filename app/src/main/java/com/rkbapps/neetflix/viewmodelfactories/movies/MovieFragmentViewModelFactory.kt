@@ -7,6 +7,7 @@ import com.rkbapps.neetflix.viewmodels.movies.MovieFragmentViewModel
 
 class MovieFragmentViewModelFactory(private val repository: MovieFragmentRepository) :
     ViewModelProvider.Factory {
+    @Suppress("Unchecked cast")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return MovieFragmentViewModel(repository) as T
     }

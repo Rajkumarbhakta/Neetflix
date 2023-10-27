@@ -9,7 +9,7 @@ class VideoAndImagesViewModelFactory(
     private val repository: VideoAndImageRepository,
     private val id: Int
 ) : ViewModelProvider.Factory {
-
+    @Suppress("Unchecked cast")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return VideoAndImageViewModel(repository, id) as T
     }

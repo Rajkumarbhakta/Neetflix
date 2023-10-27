@@ -9,7 +9,7 @@ class PersonalDetailsViewModelFactory(
     private val repository: PersonalDetailsRepository,
     private val personId:Int
 ) :ViewModelProvider.Factory{
-
+    @Suppress("Unchecked cast")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return PersonalDetailViewModel(repository, personId) as T
     }

@@ -9,7 +9,7 @@ class ReviewsMovieFragmentViewModelFactory(
     private val repository: ReviewsMovieFragmentRepository,
     private val id: Int
 ) : ViewModelProvider.Factory {
-
+    @Suppress("Unchecked cast")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ReviewsMovieFragmentViewModel(repository, id) as T
     }

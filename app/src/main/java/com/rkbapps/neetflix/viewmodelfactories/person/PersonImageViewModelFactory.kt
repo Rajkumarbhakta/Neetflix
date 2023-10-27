@@ -9,7 +9,7 @@ class PersonImageViewModelFactory(
     private val repository:PersonImageRepository,
     private val id:Int
 ) :ViewModelProvider.Factory{
-
+    @Suppress("Unchecked cast")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return PersonImageViewModel(repository, id) as T
     }
