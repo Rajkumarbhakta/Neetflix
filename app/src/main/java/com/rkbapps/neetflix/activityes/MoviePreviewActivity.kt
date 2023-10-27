@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.rkbapps.neetflix.R
 import com.rkbapps.neetflix.adapter.GenreAdapter
 import com.rkbapps.neetflix.adapter.tab.TabLayoutAdapter

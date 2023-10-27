@@ -12,6 +12,6 @@ object SharedPreferanceValues {
         val mPerf = context.getSharedPreferences("isNsfwAllowed", Context.MODE_PRIVATE)
         val editor = mPerf.edit()
         editor.putBoolean("nsfw", isAllowed)
-        editor.commit()
+        editor.apply()
     }
 }

@@ -8,7 +8,7 @@ import com.rkbapps.neetflix.adapter.GenreAdapter.GenreViewHolder
 import com.rkbapps.neetflix.databinding.GenreItemBinding
 import com.rkbapps.neetflix.models.Genre
 
-class GenreAdapter(var context: Context, var genres: List<Genre>) :
+class GenreAdapter(private var context: Context, private var genres: List<Genre>) :
     RecyclerView.Adapter<GenreViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreViewHolder {
         return GenreViewHolder(

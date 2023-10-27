@@ -21,7 +21,7 @@ interface ContentDao {
     @Query("select * from content")
     fun getAllMyBookmarks(): LiveData<List<EntityModel>>
 
-    @Query("select id from content where id=:enterId")
+    @Query("select exists(select * from content where id=:enterId)")
     fun isBookmarked(enterId: Int): Boolean
 
     @Query("delete from content where id=:enterId")
