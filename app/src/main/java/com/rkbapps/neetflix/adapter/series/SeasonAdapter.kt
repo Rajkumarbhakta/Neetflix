@@ -27,7 +27,6 @@ class SeasonAdapter(
         holder: SeasonViewHolder,
         @SuppressLint("RecyclerView") position: Int
     ) {
-
         holder.binding.season = seasonList[position]
         holder.itemView.setOnClickListener {
             val i = Intent(context, SeasonsDetailsActivity::class.java)

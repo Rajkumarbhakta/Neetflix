@@ -26,8 +26,6 @@ class SeriesOverviewFragment : Fragment() {
 
     private lateinit var binding: FragmentSeriesOverviewBinding
     private lateinit var viewModel: SeriesOverviewViewModel
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -39,7 +37,6 @@ class SeriesOverviewFragment : Fragment() {
             container,
             false
         )
-
         val id = arguments?.getInt("id")!!
         val repository = SeriesOverviewRepository(RetrofitInstance.tvSeriesApi!!)
         viewModel = ViewModelProvider(
@@ -69,13 +66,13 @@ class SeriesOverviewFragment : Fragment() {
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         binding.recyclerSimilarSeries.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        loadSeriesData()
+        loadSeriesData(id)
         loadSeriesCredits()
         loadSimilarSeries()
         return binding.root
     }
 
-    private fun loadSeriesData() {
+    private fun loadSeriesData(tvId:Int) {
 
         viewModel.seriesDetails.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -87,7 +84,7 @@ class SeriesOverviewFragment : Fragment() {
                 if (it.seasons.isNotEmpty() && it.seasons != null) {
                     binding.txtSeasons.visibility = View.VISIBLE
                     binding.recyclerSeasons.adapter =
-                        SeasonAdapter(requireContext(), it.seasons, id)
+                        SeasonAdapter(requireContext(), it.seasons, tvId)
                 } else {
                     binding.recyclerSeasons.visibility = View.GONE
                 }
