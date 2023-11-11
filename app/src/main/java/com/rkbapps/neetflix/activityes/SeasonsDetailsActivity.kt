@@ -28,9 +28,7 @@ class SeasonsDetailsActivity : AppCompatActivity() {
         val seasonsNumber = intent.getIntExtra("seasonsNumber", -1)
         val seasonsName = intent.getStringExtra("seasonsName")
 
-
         val context: Context = this
-
 
         setSupportActionBar(binding.toolbarSeasonsPreview)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
