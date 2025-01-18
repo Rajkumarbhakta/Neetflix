@@ -11,12 +11,12 @@ apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
     namespace 'com.rkbapps.neetflix'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.rkbapps.neetflix"
         minSdk 24
-        targetSdk 34
+        targetSdk 35
         versionCode 3
         versionName "1.2"
 

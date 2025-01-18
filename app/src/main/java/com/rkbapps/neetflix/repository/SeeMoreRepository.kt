@@ -25,50 +25,66 @@ class SeeMoreRepository(private val movieApi: MovieApi,private val tvSeriesApi: 
 
 
     suspend fun loadPopularMovies(page: Int) {
-        val response = movieApi.getPopularMovies(page = page)
-        if (response.isSuccessful && response.body() != null) {
-            _movieList.postValue(Resource.Success(response.body()!!))
-            val tempList = _movieListLiveData.value
-            tempList?.addAll(response.body()!!.results)
-            _movieListLiveData.postValue(tempList!!)
-        } else {
-            _movieList.postValue(Resource.Error(response.message()))
+        try {
+            val response = movieApi.getPopularMovies(page = page)
+            if (response.isSuccessful && response.body() != null) {
+                _movieList.postValue(Resource.Success(response.body()!!))
+                val tempList = _movieListLiveData.value
+                tempList?.addAll(response.body()!!.results)
+                _movieListLiveData.postValue(tempList!!)
+            } else {
+                _movieList.postValue(Resource.Error(response.message()))
+            }
+        } catch (e: Exception) {
+            _movieList.postValue(Resource.Error(e.localizedMessage?:"Something went wrong."))
         }
     }
 
     suspend fun loadTrendingMovies(page: Int) {
-        val response = movieApi.getTrendingMovies(page = page)
-        if (response.isSuccessful && response.body() != null) {
-            _movieList.postValue(Resource.Success(response.body()!!))
-            val tempList = _movieListLiveData.value
-            tempList?.addAll(response.body()!!.results)
-            _movieListLiveData.postValue(tempList!!)
-        } else {
-            _movieList.postValue(Resource.Error(response.message()))
+        try {
+            val response = movieApi.getTrendingMovies(page = page)
+            if (response.isSuccessful && response.body() != null) {
+                _movieList.postValue(Resource.Success(response.body()!!))
+                val tempList = _movieListLiveData.value
+                tempList?.addAll(response.body()!!.results)
+                _movieListLiveData.postValue(tempList!!)
+            } else {
+                _movieList.postValue(Resource.Error(response.message()))
+            }
+        } catch (e: Exception) {
+            _movieList.postValue(Resource.Error(e.localizedMessage?:"Something went wrong."))
         }
     }
 
     suspend fun loadTopRatedMovies(page: Int) {
-        val response = movieApi.getTopRatedMovies(page = page)
-        if (response.isSuccessful && response.body() != null) {
-            _movieList.postValue(Resource.Success(response.body()!!))
-            val tempList = _movieListLiveData.value
-            tempList?.addAll(response.body()!!.results)
-            _movieListLiveData.postValue(tempList!!)
-        } else {
-            _movieList.postValue(Resource.Error(response.message()))
+        try {
+            val response = movieApi.getTopRatedMovies(page = page)
+            if (response.isSuccessful && response.body() != null) {
+                _movieList.postValue(Resource.Success(response.body()!!))
+                val tempList = _movieListLiveData.value
+                tempList?.addAll(response.body()!!.results)
+                _movieListLiveData.postValue(tempList!!)
+            } else {
+                _movieList.postValue(Resource.Error(response.message()))
+            }
+        } catch (e: Exception) {
+            _movieList.postValue(Resource.Error(e.localizedMessage?:"Something went wrong."))
         }
     }
 
     suspend fun loadUpcomingMovies(page: Int) {
-        val response = movieApi.getUpcomingMovies(page = page)
-        if (response.isSuccessful && response.body() != null) {
-            _movieList.postValue(Resource.Success(response.body()!!))
-            val tempList = _movieListLiveData.value
-            tempList?.addAll(response.body()!!.results)
-            _movieListLiveData.postValue(tempList!!)
-        } else {
-            _movieList.postValue(Resource.Error(response.message()))
+        try {
+            val response = movieApi.getUpcomingMovies(page = page)
+            if (response.isSuccessful && response.body() != null) {
+                _movieList.postValue(Resource.Success(response.body()!!))
+                val tempList = _movieListLiveData.value
+                tempList?.addAll(response.body()!!.results)
+                _movieListLiveData.postValue(tempList!!)
+            } else {
+                _movieList.postValue(Resource.Error(response.message()))
+            }
+        } catch (e: Exception) {
+            _movieList.postValue(Resource.Error(e.localizedMessage?:"Something went wrong."))
         }
     }
 
@@ -82,50 +98,66 @@ class SeeMoreRepository(private val movieApi: MovieApi,private val tvSeriesApi: 
         get() = _tvSeriesListLiveData
 
     suspend fun loadPopularTvSeries(page: Int) {
-        val response = tvSeriesApi.getPopularSeries(page = page)
-        if (response.isSuccessful && response.body() != null) {
-            _tvSeriesData.postValue(Resource.Success(response.body()!!))
-            val tempList = _tvSeriesListLiveData.value
-            tempList?.addAll(response.body()!!.results)
-            _tvSeriesListLiveData.postValue(tempList!!)
-        } else {
-            _tvSeriesData.postValue(Resource.Error(response.message()))
+        try {
+            val response = tvSeriesApi.getPopularSeries(page = page)
+            if (response.isSuccessful && response.body() != null) {
+                _tvSeriesData.postValue(Resource.Success(response.body()!!))
+                val tempList = _tvSeriesListLiveData.value
+                tempList?.addAll(response.body()!!.results)
+                _tvSeriesListLiveData.postValue(tempList!!)
+            } else {
+                _tvSeriesData.postValue(Resource.Error(response.message()))
+            }
+        } catch (e: Exception) {
+            _tvSeriesData.postValue(Resource.Error(e.localizedMessage?:"Something went wrong."))
         }
     }
 
     suspend fun loadTrendingTvSeries(page: Int) {
-        val response = tvSeriesApi.getTrendingSeries(page = page)
-        if (response.isSuccessful && response.body() != null) {
-            _tvSeriesData.postValue(Resource.Success(response.body()!!))
-            val tempList = _tvSeriesListLiveData.value
-            tempList?.addAll(response.body()!!.results)
-            _tvSeriesListLiveData.postValue(tempList!!)
-        } else {
-            _tvSeriesData.postValue(Resource.Error(response.message()))
+        try {
+            val response = tvSeriesApi.getTrendingSeries(page = page)
+            if (response.isSuccessful && response.body() != null) {
+                _tvSeriesData.postValue(Resource.Success(response.body()!!))
+                val tempList = _tvSeriesListLiveData.value
+                tempList?.addAll(response.body()!!.results)
+                _tvSeriesListLiveData.postValue(tempList!!)
+            } else {
+                _tvSeriesData.postValue(Resource.Error(response.message()))
+            }
+        } catch (e: Exception) {
+            _tvSeriesData.postValue(Resource.Error(e.localizedMessage?:"Something went wrong."))
         }
     }
 
     suspend fun loadTopRatedTvSeries(page: Int) {
-        val response = tvSeriesApi.getTopRatedSeries(page = page)
-        if (response.isSuccessful && response.body() != null) {
-            _tvSeriesData.postValue(Resource.Success(response.body()!!))
-            val tempList = _tvSeriesListLiveData.value
-            tempList?.addAll(response.body()!!.results)
-            _tvSeriesListLiveData.postValue(tempList!!)
-        } else {
-            _tvSeriesData.postValue(Resource.Error(response.message()))
+        try {
+            val response = tvSeriesApi.getTopRatedSeries(page = page)
+            if (response.isSuccessful && response.body() != null) {
+                _tvSeriesData.postValue(Resource.Success(response.body()!!))
+                val tempList = _tvSeriesListLiveData.value
+                tempList?.addAll(response.body()!!.results)
+                _tvSeriesListLiveData.postValue(tempList!!)
+            } else {
+                _tvSeriesData.postValue(Resource.Error(response.message()))
+            }
+        } catch (e: Exception) {
+            _tvSeriesData.postValue(Resource.Error(e.localizedMessage?:"Something went wrong."))
         }
     }
 
     suspend fun loadOnAirTvSeries(page: Int) {
-        val response = tvSeriesApi.getAiringTodaySeries(page = page)
-        if (response.isSuccessful && response.body() != null) {
-            _tvSeriesData.postValue(Resource.Success(response.body()!!))
-            val tempList = _tvSeriesListLiveData.value
-            tempList?.addAll(response.body()!!.results)
-            _tvSeriesListLiveData.postValue(tempList!!)
-        } else {
-            _tvSeriesData.postValue(Resource.Error(response.message()))
+        try {
+            val response = tvSeriesApi.getAiringTodaySeries(page = page)
+            if (response.isSuccessful && response.body() != null) {
+                _tvSeriesData.postValue(Resource.Success(response.body()!!))
+                val tempList = _tvSeriesListLiveData.value
+                tempList?.addAll(response.body()!!.results)
+                _tvSeriesListLiveData.postValue(tempList!!)
+            } else {
+                _tvSeriesData.postValue(Resource.Error(response.message()))
+            }
+        } catch (e: Exception) {
+            _tvSeriesData.postValue(Resource.Error(e.localizedMessage?:"Something went wrong."))
         }
     }
 
